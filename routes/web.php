@@ -53,6 +53,7 @@ Route::prefix('admin')->group(function () {
     // Cronograma
     Route::get('/cronograma', [AdminController::class, 'cronograma'])->name('admin.cronograma');
     Route::post('/cronograma', [AdminController::class, 'storeCronograma'])->name('admin.cronograma.store');
+    Route::get('/aluno/cronograma', [AlunoController::class, 'cronograma'])->name('aluno.cronograma');
 
     // Boletins
     Route::get('/boletins', [AdminController::class, 'boletins'])->name('admin.boletins');

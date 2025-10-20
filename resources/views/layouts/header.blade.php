@@ -29,6 +29,7 @@
             <a class="hover:underline" href="{{ route('aluno.dashboard') }}">Painel do Aluno</a>
             <a class="hover:underline" href="{{ route('aluno.boletim') }}">Boletim</a>
             <a class="hover:underline" href="{{ route('aluno.saeb') }}">SAEB</a>
+            <li><a class="hover:underline" href="{{ route('aluno.cronograma') }}">Cronograma Semanal</a></li>
           @endif
 
           @if(session('admin_id'))

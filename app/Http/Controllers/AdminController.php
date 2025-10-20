@@ -55,7 +55,7 @@ class AdminController extends Controller
         $this->requireAdmin();
 
         $data = $request->validate([
-            'data'        => 'required|date',
+            'dia_semana'  => 'required|string|max:20',
             'turma'       => 'required|string|max:50',
             'disciplina'  => 'required|string|max:150',
             'professor'   => 'required|string|max:150',
@@ -68,6 +68,7 @@ class AdminController extends Controller
         Cronograma::create($data);
         return back()->with('ok', 'Aula adicionada ao cronograma.');
     }
+
 
     // ---------------- Boletins ----------------
     public function boletins()

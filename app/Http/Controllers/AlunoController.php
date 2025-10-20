@@ -42,6 +42,26 @@ class AlunoController extends Controller
         return view('aluno.dashboard', compact('aluno', 'boletins', 'cronograma', 'saeb'));
     }
 
+    public function cronograma()
+{
+    if (!session('aluno_id')) abort(403);
+
+    $aluno = Aluno::findOrFail(session('aluno_id'));
+
+    $cronograma = Cronograma::where('turma', $aluno->turma)
+        ->orderByRaw("CASE
+            WHEN dia_semana = 'Segunda' THEN 1
+            WHEN dia_semana = 'Terça' THEN 2
+            WHEN dia_semana = 'Quarta' THEN 3
+            WHEN dia_semana = 'Quinta' THEN 4
+            WHEN dia_semana = 'Sexta' THEN 5
+            ELSE 6 END")
+        ->orderBy('inicio')
+        ->get();
+
+    return view('aluno.cronograma', compact('aluno', 'cronograma'));
+}
+
     // Boletim completo
     public function boletim()
     {

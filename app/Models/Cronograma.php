@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cronograma extends Model
 {
-    protected $fillable = ['data','turma','disciplina','professor','inicio','fim','sala','observacoes'];
+    protected $fillable = ['dia_semana', 'turma', 'disciplina', 'professor', 'inicio', 'fim', 'sala', 'observacoes'];
+
     protected $casts = ['data' => 'date', 'inicio' => 'datetime:H:i', 'fim' => 'datetime:H:i'];
 }

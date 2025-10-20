@@ -1,7 +1,7 @@
 @include('layouts.header', ['title' => 'Mapear Alunos — SAEB'])
 
 <section class="max-w-6xl mx-auto mt-10 bg-white rounded-xl shadow-soft p-6">
-  <h1 class="text-2xl font-bold mb-4">Mapear Alunos da Planilha</h1>
+  <h1 class="text-2xl font-bold mb-4 text-red-700">Mapear Alunos da Planilha</h1>
 
   @if(session('ok'))
     <div class="mb-4 p-2 bg-green-100 text-green-700 rounded">
@@ -24,7 +24,7 @@
 
     <div class="overflow-x-auto">
       <table class="min-w-full text-sm border border-slate-200">
-        <thead class="bg-slate-100 text-slate-700">
+        <thead class="bg-yellow-100 text-red-800">
           <tr>
             <th class="py-2 px-3 text-left">Aluno (Planilha)</th>
             <th class="py-2 px-3 text-left">Disciplina</th>
@@ -37,25 +37,25 @@
         </thead>
         <tbody>
           @foreach($dados as $i => $linha)
-            <tr class="border-b hover:bg-slate-50">
+            <tr class="border-b hover:bg-yellow-50">
               <!-- Nome original da planilha -->
-              <td class="py-2 px-3 font-medium">{{ $linha['aluno_nome'] }}</td>
+              <td class="py-2 px-3 font-medium">{{ $linha['aluno_nome'] ?? '—' }}</td>
 
               <!-- Disciplina detectada -->
-              <td class="py-2 px-3">{{ $linha['disciplina'] }}</td>
+              <td class="py-2 px-3">{{ $linha['disciplina'] ?? '—' }}</td>
 
               <!-- Ano -->
-              <td class="py-2 px-3">{{ $linha['ano'] }}</td>
+              <td class="py-2 px-3">{{ $linha['ano'] ?? '—' }}</td>
 
               <!-- Etapa -->
-              <td class="py-2 px-3">{{ $linha['etapa'] }}</td>
+              <td class="py-2 px-3">{{ $linha['etapa'] ?? '—' }}</td>
 
               <!-- Média -->
-              <td class="py-2 px-3 font-bold text-blue-700">{{ $linha['media'] }}</td>
+              <td class="py-2 px-3 font-bold text-red-700">{{ $linha['media'] ?? '—' }}</td>
 
               <!-- Tipo de prova -->
               <td class="py-2 px-3">
-                <select name="tipo[{{ $i }}]" class="rounded border-slate-300 w-full" required>
+                <select name="tipo[{{ $i }}]" class="rounded border-slate-300 w-full">
                   <option value="">-- Selecione --</option>
                   <option value="LP1">LP1</option>
                   <option value="LP2">LP2</option>
@@ -84,7 +84,7 @@
     </div>
 
     <div class="mt-6 flex justify-end">
-      <button class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+      <button class="px-6 py-2 bg-yellow-500 text-white font-semibold rounded hover:bg-yellow-600">
         Salvar Resultados
       </button>
     </div>
