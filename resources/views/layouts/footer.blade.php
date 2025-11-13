@@ -5,7 +5,7 @@
       <div>
         <h3 class="font-semibold mb-2">Sobre</h3>
         <p class="text-sm opacity-80">
-          Sistema Acadêmico para CEEP & Carrão: boletins, cronograma diário e gestão simplificada.
+          Sistema Acadêmico para CEEP: boletins, cronograma diário e gestão simplificada.
         </p>
       </div>
       <div>
