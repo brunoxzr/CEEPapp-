@@ -68,6 +68,27 @@ class AdminController extends Controller
         Cronograma::create($data);
         return back()->with('ok', 'Aula adicionada ao cronograma.');
     }
+    public function cronogramaEdit($id)
+{
+    $item = Cronograma::findOrFail($id);
+    return view('admin.cronograma_edit', compact('item'));
+}public function cronogramaUpdate(Request $req, $id)
+{
+    $item = Cronograma::findOrFail($id);
+
+    $item->update($req->all());
+
+    return redirect()->route('admin.cronograma')
+                     ->with('ok', 'Horário atualizado com sucesso!');
+}public function cronogramaDelete($id)
+{
+    Cronograma::findOrFail($id)->delete();
+
+    return redirect()->route('admin.cronograma')
+                     ->with('ok', 'Horário removido!');
+}
+
+
 
 
     // ---------------- Boletins ----------------

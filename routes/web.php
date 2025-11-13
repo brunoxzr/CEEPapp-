@@ -17,19 +17,20 @@ Route::get('/', function () {
     return view('index');
 })->name('home');
 
-// Login Aluno
+/* LOGIN ALUNO */
 Route::get('/login/aluno', [AlunoAuthController::class, 'showLogin'])->name('aluno.login');
 Route::post('/login/aluno', [AlunoAuthController::class, 'login'])->name('aluno.login.submit');
 
-// Login Admin
+/* LOGIN ADMIN */
 Route::get('/login/admin', [AdminAuthController::class, 'showLogin'])->name('admin.login');
 Route::post('/login/admin', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 
-// Logout (aluno e admin)
+/* LOGOUT */
 Route::post('/logout', function () {
     session()->flush();
     return redirect('/');
 })->name('logout');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +38,15 @@ Route::post('/logout', function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('aluno')->group(function () {
+
     Route::get('/dashboard', [AlunoController::class, 'dashboard'])->name('aluno.dashboard');
     Route::get('/boletim', [AlunoController::class, 'boletim'])->name('aluno.boletim');
     Route::get('/saeb', [SaebController::class, 'alunoResultados'])->name('aluno.saeb');
+
+    // Cronograma Acesso do Aluno
+    Route::get('/cronograma', [AlunoController::class, 'cronograma'])->name('aluno.cronograma');
 });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -48,35 +54,70 @@ Route::prefix('aluno')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->group(function () {
+
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-    // Cronograma
+
+    /*
+    |--------------------------------------------------------------------------
+    | CRONOGRAMA (CRUD COMPLETO)
+    |--------------------------------------------------------------------------
+    */
     Route::get('/cronograma', [AdminController::class, 'cronograma'])->name('admin.cronograma');
     Route::post('/cronograma', [AdminController::class, 'storeCronograma'])->name('admin.cronograma.store');
-    Route::get('/aluno/cronograma', [AlunoController::class, 'cronograma'])->name('aluno.cronograma');
 
-    // Boletins
+    // *** Correções importantes ***
+    Route::get('/cronograma/{id}/edit', [AdminController::class, 'cronogramaEdit'])
+        ->name('admin.cronograma.edit');
+
+    Route::put('/cronograma/{id}', [AdminController::class, 'cronogramaUpdate'])
+        ->name('admin.cronograma.update');
+
+    Route::delete('/cronograma/{id}', [AdminController::class, 'cronogramaDelete'])
+        ->name('admin.cronograma.delete');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | BOLETINS
+    |--------------------------------------------------------------------------
+    */
     Route::get('/boletins', [AdminController::class, 'boletins'])->name('admin.boletins');
     Route::post('/boletins', [AdminController::class, 'storeBoletim'])->name('admin.boletins.store');
 
-    // Usuários (listar + criar)
+
+    /*
+    |--------------------------------------------------------------------------
+    | USUÁRIOS
+    |--------------------------------------------------------------------------
+    */
     Route::get('/usuarios', [AdminController::class, 'usuarios'])->name('admin.usuarios');
     Route::post('/usuarios', [AdminController::class, 'storeUsuario'])->name('admin.usuarios.store');
 
-    // Usuários (editar/excluir)
-    Route::get('/usuarios/{tipo}/{id}/edit', [AdminController::class, 'editUsuario'])->name('admin.usuarios.edit');
-    Route::put('/usuarios/{tipo}/{id}', [AdminController::class, 'updateUsuario'])->name('admin.usuarios.update');
-    Route::delete('/usuarios/{tipo}/{id}', [AdminController::class, 'deleteUsuario'])->name('admin.usuarios.delete');
+    // Editar / Atualizar / Excluir usuário
+    Route::get('/usuarios/{tipo}/{id}/edit', [AdminController::class, 'editUsuario'])
+        ->name('admin.usuarios.edit');
 
-    // Alunos (CRUD direto — opcional)
-    Route::get('/alunos/create', [AdminController::class, 'createAluno'])->name('admin.alunos.create');
-    Route::post('/alunos', [AdminController::class, 'storeAluno'])->name('admin.alunos.store');
+    Route::put('/usuarios/{tipo}/{id}', [AdminController::class, 'updateUsuario'])
+        ->name('admin.usuarios.update');
 
-    // SAEB
+    Route::delete('/usuarios/{tipo}/{id}', [AdminController::class, 'deleteUsuario'])
+        ->name('admin.usuarios.delete');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SAEB
+    |--------------------------------------------------------------------------
+    */
     Route::get('/saeb', [SaebController::class, 'index'])->name('admin.saeb');
     Route::post('/saeb/upload', [SaebController::class, 'upload'])->name('admin.saeb.upload');
     Route::post('/saeb/mapear', [SaebController::class, 'mapearAlunos'])->name('admin.saeb.mapear');
-
 });
-Route::get('/admin/saeb/protocolo', [ProtocolController::class, 'protocolo'])->name('admin.saeb.protocolo');
-Route::post('/admin/saeb/publicar/{id}', [ProtocolController::class, 'publicar'])->name('admin.saeb.publicar');
+
+/* SAEB Protocolo */
+Route::get('/admin/saeb/protocolo', [ProtocolController::class, 'protocolo'])
+    ->name('admin.saeb.protocolo');
+
+Route::post('/admin/saeb/publicar/{id}', [ProtocolController::class, 'publicar'])
+    ->name('admin.saeb.publicar');

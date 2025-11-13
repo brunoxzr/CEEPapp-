@@ -1,12 +1,12 @@
 @include('layouts.header', ['title' => 'Editar Usuário'])
 
-<section class="max-w-2xl mx-auto mt-10 bg-white rounded-xl shadow-soft p-6">
+<section class="max-w-2xl mx-auto mt-10 bg-white rounded-xl shadow-soft p-6 border border-gray-300">
   <h1 class="text-2xl font-bold mb-4">
     Editar {{ $tipo === 'aluno' ? 'Aluno' : 'Gestor' }}
   </h1>
 
   @if($errors->any())
-    <div class="mb-4 p-2 bg-red-100 text-red-700 rounded">
+    <div class="mb-4 p-2 bg-red-100 text-red-700 rounded border border-red-300">
       <ul class="list-disc pl-5">
         @foreach($errors->all() as $e)
           <li>{{ $e }}</li>
@@ -16,7 +16,7 @@
   @endif
 
   @if(session('ok'))
-    <div class="mb-4 p-2 bg-green-100 text-green-700 rounded">
+    <div class="mb-4 p-2 bg-green-100 text-green-700 rounded border border-green-300">
       {{ session('ok') }}
     </div>
   @endif
@@ -28,31 +28,32 @@
     <label class="block">
       <span class="text-sm font-medium">Nome</span>
       <input type="text" name="nome" value="{{ old('nome', $user->nome) }}"
-             class="w-full mt-1 rounded border-slate-300" required>
+             class="w-full mt-1 rounded border border-gray-400 bg-white text-black px-3 py-2" required>
     </label>
 
     <label class="block">
       <span class="text-sm font-medium">E-mail</span>
       <input type="email" name="email" value="{{ old('email', $user->email) }}"
-             class="w-full mt-1 rounded border-slate-300" required>
+             class="w-full mt-1 rounded border border-gray-400 bg-white text-black px-3 py-2" required>
     </label>
 
     <label class="block">
       <span class="text-sm font-medium">Senha (deixe em branco para não alterar)</span>
-      <input type="password" name="senha" class="w-full mt-1 rounded border-slate-300">
+      <input type="password" name="senha"
+             class="w-full mt-1 rounded border border-gray-400 bg-white text-black px-3 py-2">
     </label>
 
     @if($tipo === 'aluno')
       <label class="block">
         <span class="text-sm font-medium">Escola</span>
         <input type="text" name="escola" value="{{ old('escola', $user->escola) }}"
-               class="w-full mt-1 rounded border-slate-300">
+               class="w-full mt-1 rounded border border-gray-400 bg-white text-black px-3 py-2">
       </label>
 
       <label class="block">
         <span class="text-sm font-medium">Turma</span>
         <input type="text" name="turma" value="{{ old('turma', $user->turma) }}"
-               class="w-full mt-1 rounded border-slate-300">
+               class="w-full mt-1 rounded border border-gray-400 bg-white text-black px-3 py-2">
       </label>
     @endif
 

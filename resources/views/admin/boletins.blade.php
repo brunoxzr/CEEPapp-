@@ -8,7 +8,7 @@
 
       <label>
         <span class="text-sm font-medium">Aluno</span>
-        <select name="aluno_id" class="mt-1 w-full rounded border-slate-300" required>
+        <select name="aluno_id" class="mt-1 w-full rounded border border-slate-300 bg-transparent text-black focus:border-blue-500 focus:ring-0" required>
           <option value="">Selecione...</option>
           @foreach($alunos as $a)
             <option value="{{ $a->id }}">{{ $a->nome }} — {{ $a->turma ?? '' }}</option>
@@ -18,22 +18,22 @@
 
       <label>
         <span class="text-sm font-medium">Disciplina</span>
-        <input type="text" name="disciplina" class="mt-1 w-full rounded border-slate-300" required>
+        <input type="text" name="disciplina" class="mt-1 w-full rounded border border-slate-300 bg-transparent text-black placeholder-slate-500 focus:border-blue-500 focus:ring-0" required>
       </label>
 
       <label>
         <span class="text-sm font-medium">Ano</span>
-        <input type="number" name="ano" class="mt-1 w-full rounded border-slate-300" value="{{ date('Y') }}" required>
+        <input type="number" name="ano" class="mt-1 w-full rounded border border-slate-300 bg-transparent text-black focus:border-blue-500 focus:ring-0" value="{{ date('Y') }}" required>
       </label>
 
       <label>
         <span class="text-sm font-medium">Tipo</span>
-        <input type="text" name="tipo" class="mt-1 w-full rounded border-slate-300" placeholder="Ex: Prova 1, Trabalho" required>
+        <input type="text" name="tipo" class="mt-1 w-full rounded border border-slate-300 bg-transparent text-black placeholder-slate-500 focus:border-blue-500 focus:ring-0" placeholder="Ex: Prova 1, Trabalho" required>
       </label>
 
       <label>
         <span class="text-sm font-medium">Origem</span>
-        <select name="origem" id="origemSelect" class="mt-1 w-full rounded border-slate-300" required>
+        <select name="origem" id="origemSelect" class="mt-1 w-full rounded border border-slate-300 bg-transparent text-black focus:border-blue-500 focus:ring-0" required>
           <option value="manual">Manual</option>
           <option value="saeb">SAEB</option>
         </select>
@@ -43,12 +43,12 @@
       <div id="campoNota" class="col-span-2">
         <label>
           <span class="text-sm font-medium">Nota</span>
-          <input type="number" step="0.01" name="nota" class="mt-1 w-full rounded border-slate-300">
+          <input type="number" step="0.01" name="nota" class="mt-1 w-full rounded border border-slate-300 bg-transparent text-black focus:border-blue-500 focus:ring-0">
         </label>
       </div>
 
       <div class="col-span-2">
-        <button class="px-4 py-2 bg-blue-600 text-white rounded">Lançar</button>
+        <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Lançar</button>
       </div>
     </form>
   </div>
