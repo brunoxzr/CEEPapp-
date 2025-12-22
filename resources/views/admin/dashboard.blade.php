@@ -1,4 +1,4 @@
-@include('layouts.header', ['title' => 'Painel do Gestor'])
+@include('layouts.portal.header', ['title' => 'Painel do Gestor'])
 
 <section class="max-w-7xl mx-auto px-4 mt-8 space-y-8">
 

@@ -1,4 +1,4 @@
-@include('layouts.header', ['title' => 'Cadastrar Aluno'])
+@include('layouts.portal.header', ['title' => 'Cadastrar Aluno'])
 
 <section class="max-w-2xl mx-auto mt-10 bg-white rounded-xl shadow-soft p-6">
   <h1 class="text-2xl font-bold mb-4">Cadastrar Novo Aluno</h1>

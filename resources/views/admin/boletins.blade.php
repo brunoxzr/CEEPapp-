@@ -1,4 +1,4 @@
-@include('layouts.header', ['title' => 'Gerenciar Boletins'])
+@include('layouts.portal.header', ['title' => 'Gerenciar Boletins'])
 
 <section class="max-w-6xl mx-auto px-4 mt-8">
   <div class="bg-white rounded-xl shadow-soft p-6 mb-6">

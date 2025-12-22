@@ -1,150 +1,164 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>{{ $title ?? 'CEEPApp — Sistema Acadêmico' }}</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <meta name="color-scheme" content="light dark">
-<style>
-  /* utilidades extras */
-  .tap { transform: scale(0.98); }
-  .shadow-soft { box-shadow: 0 10px 30px rgba(2,6,23,.12); }
-  .grid-auto { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ $title ?? 'CEEP Assaí — Portal Institucional' }}</title>
 
-  /* REMOVE O FUNDO PRETO DO FOCUS */
-  *:focus {
-    outline: none !important;
-    box-shadow: 0 0 0 2px rgba(59,130,246,0.5) !important; /* azul suave */
-    border-radius: 4px;
-  }
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="color-scheme" content="light">
 
-  /* REMOVE O FUNDO PRETO DO SELECTION */
-  ::selection {
-    background: rgba(59,130,246,0.3); /* azul tailwind */
-    color: #fff;
-  }
-  ::-moz-selection {
-    background: rgba(59,130,246,0.3);
-    color: #fff;
-  }
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                         "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+        }
 
-  /* REMOVE HIGHLIGHT PRETO EM LINKS CLICADOS NO MOBILE */
-  a, button {
-    -webkit-tap-highlight-color: transparent;
-  }
-</style>
+        *:focus {
+            outline: none !important;
+            box-shadow: 0 0 0 2px rgba(185,28,28,.35) !important;
+            border-radius: 4px;
+        }
 
+        ::selection {
+            background: rgba(185,28,28,.25);
+            color: #111;
+        }
+
+        a, button {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
-<header class="bg-red-700 text-white sticky top-0 z-50 shadow-lg border-b-4 border-yellow-400">
-    <div class="max-w-6xl mx-auto px-4">
-        <div class="flex items-center justify-between h-16">
 
-            <!-- LOGO / NOME -->
-            <a href="{{ session('admin_id') ? route('admin.dashboard') : (session('aluno_id') ? route('aluno.dashboard') : url('/')) }}"
-               class="font-black tracking-wide text-2xl hover:opacity-90 transition">
-                CEEP<span class="text-yellow-300">App</span>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+<header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+
+    <!-- FAIXA INSTITUCIONAL -->
+    <div class="bg-red-800 text-white text-xs">
+        <div class="max-w-7xl mx-auto px-6 py-2 flex justify-between">
+            <span>Centro Estadual de Educação Profissional de Assaí</span>
+            <span class="hidden sm:block">Governo do Estado do Paraná</span>
+        </div>
+    </div>
+
+    <!-- BARRA PRINCIPAL -->
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex items-center justify-between h-20">
+
+            <!-- IDENTIDADE -->
+            <a href="{{ url('/') }}" class="leading-tight">
+                <div class="text-2xl font-extrabold text-red-800">
+                    CEEP Assaí
+                </div>
+                <div class="text-xs text-slate-500 font-medium uppercase tracking-wide">
+                    Portal Institucional
+                </div>
             </a>
 
             <!-- MENU DESKTOP -->
-            <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
-                @if(session('aluno_id'))
-                    <a class="hover:text-yellow-300 transition" href="{{ route('aluno.dashboard') }}">Painel do Aluno</a>
-                    <a class="hover:text-yellow-300 transition" href="{{ route('aluno.boletim') }}">Boletim</a>
-                    <a class="hover:text-yellow-300 transition" href="{{ route('aluno.saeb') }}">SAEB</a>
-                    <a class="hover:text-yellow-300 transition" href="{{ route('aluno.cronograma') }}">Cronograma</a>
-                @endif
+            <nav class="hidden md:flex items-center gap-10 text-sm font-semibold text-slate-700">
 
-                @if(session('admin_id'))
-                    <a class="hover:text-yellow-300 transition" href="{{ route('admin.dashboard') }}">Painel Gestor</a>
-                    <a class="hover:text-yellow-300 transition" href="{{ route('admin.cronograma') }}">Cronograma</a>
-                    <a class="hover:text-yellow-300 transition" href="{{ route('admin.boletins') }}">Boletins</a>
-                    <a class="hover:text-yellow-300 transition" href="{{ route('admin.saeb') }}">SAEB</a>
-                    <a class="hover:text-yellow-300 transition" href="{{ route('admin.usuarios') }}">Usuários</a>
-                @endif
+                <a href="{{ url('/noticias') }}" class="hover:text-red-800 transition">
+                    Notícias
+                </a>
 
-                @if(!session('aluno_id') && !session('admin_id'))
-                    <a class="hover:text-yellow-300 transition" href="{{ route('aluno.login') }}">Login Aluno</a>
-                    <a class="hover:text-yellow-300 transition" href="{{ route('admin.login') }}">Login Gestor</a>
-                @endif
+                <a href="{{ url('/cursos') }}" class="hover:text-red-800 transition">
+                    Cursos
+                </a>
+
+                <a href="{{ url('/institucional') }}" class="hover:text-red-800 transition">
+                    Institucional
+                </a>
+
+                <a href="{{ url('/contato') }}" class="hover:text-red-800 transition">
+                    Contato
+                </a>
+
+                <!-- ÁREA ACADÊMICA -->
+                <div class="pl-6 border-l border-slate-200">
+                    @if(session('aluno_id'))
+                        <a href="{{ route('aluno.dashboard') }}"
+                           class="px-4 py-2 bg-red-800 text-white text-sm rounded hover:bg-red-900 transition">
+                            Área do Aluno
+                        </a>
+                    @elseif(session('admin_id'))
+                        <a href="{{ route('admin.dashboard') }}"
+                           class="px-4 py-2 bg-red-800 text-white text-sm rounded hover:bg-red-900 transition">
+                            Área do Gestor
+                        </a>
+                    @else
+                        <a href="{{ route('login.unificado') }}"
+                           class="px-4 py-2 border border-red-800 text-red-800 text-sm rounded hover:bg-red-50 transition">
+                            Área Acadêmica
+                        </a>
+                    @endif
+                </div>
             </nav>
 
             <!-- BOTÃO MOBILE -->
             <button id="menuBtn"
-                    class="md:hidden p-2 rounded focus:outline-none hover:bg-red-800 transition">
-                <svg id="iconMenu" class="h-7 w-7 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="md:hidden p-2 rounded hover:bg-slate-100 transition"
+                    aria-label="Abrir menu">
+                <svg class="h-7 w-7 text-red-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4 6h16M4 12h16M4 18h16" />
+                          d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
             </button>
 
-            <!-- AÇÕES DESKTOP -->
-            <div class="hidden md:flex items-center gap-2 ml-3">
-                @if(session('aluno_id') || session('admin_id'))
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit"
-                                class="px-3 py-1.5 rounded bg-red-800 hover:bg-red-900 text-white border border-white/20 transition">
-                            Sair
-                        </button>
-                    </form>
-                @endif
-            </div>
-        </div>
-    </div>
-
-    <!-- MENU MOBILE / OFFCANVAS -->
-    <div id="mobileMenu"
-        class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden opacity-0 pointer-events-none transition">
-
-        <div class="absolute top-0 left-0 w-72 h-full bg-red-700 text-white shadow-xl border-r-4 border-yellow-400 transform -translate-x-full transition-transform duration-300"
-             id="menuPanel">
-
-            <div class="p-4">
-                <h2 class="text-xl font-black tracking-wide mb-4">
-                    Menu <span class="text-yellow-300">CEEP</span>
-                </h2>
-
-                <nav class="flex flex-col gap-4 text-base font-semibold">
-
-                    @if(session('aluno_id'))
-                        <a class="hover:text-yellow-300 transition" href="{{ route('aluno.dashboard') }}">Painel do Aluno</a>
-                        <a class="hover:text-yellow-300 transition" href="{{ route('aluno.boletim') }}">Boletim</a>
-                        <a class="hover:text-yellow-300 transition" href="{{ route('aluno.saeb') }}">SAEB</a>
-                        <a class="hover:text-yellow-300 transition" href="{{ route('aluno.cronograma') }}">Cronograma</a>
-                    @endif
-
-                    @if(session('admin_id'))
-                        <a class="hover:text-yellow-300 transition" href="{{ route('admin.dashboard') }}">Painel Gestor</a>
-                        <a class="hover:text-yellow-300 transition" href="{{ route('admin.cronograma') }}">Cronograma</a>
-                        <a class="hover:text-yellow-300 transition" href="{{ route('admin.boletins') }}">Boletins</a>
-                        <a class="hover:text-yellow-300 transition" href="{{ route('admin.saeb') }}">SAEB</a>
-                        <a class="hover:text-yellow-300 transition" href="{{ route('admin.usuarios') }}">Usuários</a>
-                    @endif
-
-                    @if(!session('aluno_id') && !session('admin_id'))
-                        <a class="hover:text-yellow-300 transition" href="{{ route('aluno.login') }}">Login Aluno</a>
-                        <a class="hover:text-yellow-300 transition" href="{{ route('admin.login') }}">Login Gestor</a>
-                    @endif
-
-                    @if(session('aluno_id') || session('admin_id'))
-                        <form action="{{ route('logout') }}" method="POST" class="mt-4">
-                            @csrf
-                            <button type="submit"
-                                class="w-full bg-red-800 hover:bg-red-900 py-2 rounded transition border border-white/20">
-                                Sair
-                            </button>
-                        </form>
-                    @endif
-
-                </nav>
-            </div>
         </div>
     </div>
 </header>
 
-<!-- SCRIPT DO MENU MOBILE -->
+<!-- MENU MOBILE -->
+<div id="mobileMenu"
+     class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] hidden">
+
+    <aside id="menuPanel"
+           class="absolute top-0 left-0 w-72 h-full bg-white shadow-xl
+                  transform -translate-x-full transition-transform duration-300">
+
+        <div class="p-6">
+            <div class="mb-8">
+                <h2 class="text-xl font-extrabold text-red-800">
+                    CEEP Assaí
+                </h2>
+                <p class="text-xs text-slate-500 uppercase tracking-wide">
+                    Portal Institucional
+                </p>
+            </div>
+
+            <nav class="flex flex-col gap-4 text-sm font-semibold text-slate-700">
+                <a href="{{ url('/noticias') }}" class="hover:text-red-800">Notícias</a>
+                <a href="{{ url('/cursos') }}" class="hover:text-red-800">Cursos</a>
+                <a href="{{ url('/institucional') }}" class="hover:text-red-800">Institucional</a>
+                <a href="{{ url('/contato') }}" class="hover:text-red-800">Contato</a>
+
+                <div class="border-t pt-4 mt-4">
+                    @if(session('aluno_id'))
+                        <a href="{{ route('aluno.dashboard') }}"
+                           class="block text-red-800 font-bold">
+                            Área do Aluno
+                        </a>
+                    @elseif(session('admin_id'))
+                        <a href="{{ route('admin.dashboard') }}"
+                           class="block text-red-800 font-bold">
+                            Área do Gestor
+                        </a>
+                    @else
+                        <a href="{{ route('aluno.login') }}"
+                           class="block text-red-800 font-bold">
+                            Área Acadêmica
+                        </a>
+                    @endif
+                </div>
+            </nav>
+        </div>
+    </aside>
+</div>
+
+<!-- SCRIPT MENU MOBILE -->
 <script>
     const btn = document.getElementById('menuBtn');
     const menu = document.getElementById('mobileMenu');
@@ -152,17 +166,17 @@
 
     btn.addEventListener('click', () => {
         menu.classList.remove('hidden');
-        setTimeout(() => {
-            menu.classList.remove('opacity-0', 'pointer-events-none');
+        requestAnimationFrame(() => {
             panel.classList.remove('-translate-x-full');
-        }, 10);
+        });
     });
 
     menu.addEventListener('click', (e) => {
         if (e.target === menu) {
             panel.classList.add('-translate-x-full');
-            menu.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(() => menu.classList.add('hidden'), 300);
+            setTimeout(() => {
+                menu.classList.add('hidden');
+            }, 300);
         }
     });
 </script>

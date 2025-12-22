@@ -1,4 +1,4 @@
-@include('layouts.header', ['title' => 'Editar Horário'])
+@include('layouts.portal.header', ['title' => 'Editar Horário'])
 
 <section class="max-w-3xl mx-auto px-4 mt-10">
 

@@ -1,4 +1,4 @@
-@include('layouts.header', ['title' => 'Mapear Alunos — SAEB'])
+@include('layouts.portal.header', ['title' => 'Mapear Alunos — SAEB'])
 
 <section class="max-w-6xl mx-auto mt-10 bg-white rounded-xl shadow-soft p-6">
   <h1 class="text-2xl font-bold mb-4 text-red-700">Mapear Alunos da Planilha</h1>

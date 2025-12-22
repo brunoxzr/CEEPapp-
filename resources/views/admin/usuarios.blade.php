@@ -1,4 +1,4 @@
-    @include('layouts.header', ['title' => 'Gerenciar Usuários'])
+    @include('layouts.portal.header', ['title' => 'Gerenciar Usuários'])
 
     <section class="max-w-6xl mx-auto px-4 mt-8 grid md:grid-cols-2 gap-6">
 

@@ -1,4 +1,4 @@
-@include('layouts.header', ['title' => 'Gerenciar SAEB'])
+@include('layouts.portal.header', ['title' => 'Gerenciar SAEB'])
 
 <section class="max-w-6xl mx-auto px-4 mt-8 space-y-6">
 

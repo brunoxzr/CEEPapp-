@@ -1,4 +1,4 @@
-@include('layouts.header', ['title' => 'Protocolo SAEB'])
+@include('layouts.portal.header', ['title' => 'Protocolo SAEB'])
 
 <section class="max-w-6xl mx-auto px-4 mt-8">
   <div class="bg-white rounded-xl shadow p-6 mb-6">
