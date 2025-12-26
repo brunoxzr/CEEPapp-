@@ -2,31 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\News;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use App\Models\News;
 
 class AdminNewsController extends Controller
 {
-    public function index()
-    {
-        $news = News::orderByDesc('created_at')->get();
-        return view('admin.news.index', compact('news'));
-    }
+    /* =========================
+     * LISTAGEM
+     * ========================= */
+public function index()
+{
+    $news = News::orderBy('published_at', 'desc')->paginate(12);
 
+    return view('admin.news.index', compact('news'));
+}
+
+
+    /* =========================
+     * CREATE
+     * ========================= */
     public function create()
     {
         return view('admin.news.create');
     }
 
+    /* =========================
+     * STORE
+     * ========================= */
     public function store(Request $request)
     {
         $request->validate([
-            'title'        => 'required|string|max:255',
-            'content'      => 'required',
-            'cover'        => 'nullable|image|max:4096',
-            'published_at' => 'nullable|date',
+            'title'   => 'required|string|max:255',
+            'slug'    => 'required|string|max:255|unique:news,slug',
+            'author'  => 'nullable|string|max:255',
+            'content' => 'required',
+            'cover'   => 'nullable|image|max:4096',
         ]);
 
         $coverPath = null;
@@ -37,58 +49,64 @@ class AdminNewsController extends Controller
 
         News::create([
             'title'        => $request->title,
-            'slug'         => Str::slug($request->title),
-            'excerpt'      => $this->makeExcerpt($request->content),
-            'content'      => $request->content,
+            'slug'         => Str::slug($request->slug),
+            'author'       => $request->author ?? 'CEEP Assaí',
+            'content'      => $request->content, // HTML DO QUILL
             'cover_path'   => $coverPath,
-            'is_active'    => $request->boolean('is_active'),
-            'published_at' => $request->published_at ?? now(),
+            'published_at' => now(),
         ]);
 
         return redirect()
             ->route('admin.news.index')
-            ->with('success', 'Notícia criada com sucesso.');
+            ->with('success', 'Notícia publicada com sucesso!');
     }
 
+    /* =========================
+     * EDIT
+     * ========================= */
     public function edit($id)
     {
         $news = News::findOrFail($id);
         return view('admin.news.edit', compact('news'));
     }
 
+    /* =========================
+     * UPDATE
+     * ========================= */
     public function update(Request $request, $id)
     {
         $news = News::findOrFail($id);
 
         $request->validate([
-            'title'        => 'required|string|max:255',
-            'content'      => 'required',
-            'cover'        => 'nullable|image|max:4096',
-            'published_at' => 'nullable|date',
+            'title'   => 'required|string|max:255',
+            'slug'    => 'required|string|max:255|unique:news,slug,' . $news->id,
+            'author'  => 'nullable|string|max:255',
+            'content' => 'required',
+            'cover'   => 'nullable|image|max:4096',
         ]);
 
         if ($request->hasFile('cover')) {
             if ($news->cover_path) {
                 Storage::disk('public')->delete($news->cover_path);
             }
-
             $news->cover_path = $request->file('cover')->store('news/covers', 'public');
         }
 
         $news->update([
-            'title'        => $request->title,
-            'slug'         => Str::slug($request->title),
-            'excerpt'      => $this->makeExcerpt($request->content),
-            'content'      => $request->content,
-            'is_active'    => $request->boolean('is_active'),
-            'published_at' => $request->published_at,
+            'title'   => $request->title,
+            'slug'    => Str::slug($request->slug),
+            'author'  => $request->author ?? 'CEEP Assaí',
+            'content' => $request->content,
         ]);
 
         return redirect()
             ->route('admin.news.index')
-            ->with('success', 'Notícia atualizada com sucesso.');
+            ->with('success', 'Notícia atualizada com sucesso!');
     }
 
+    /* =========================
+     * DELETE
+     * ========================= */
     public function destroy($id)
     {
         $news = News::findOrFail($id);
@@ -99,33 +117,24 @@ class AdminNewsController extends Controller
 
         $news->delete();
 
-        return back()->with('success', 'Notícia removida.');
+        return redirect()
+            ->route('admin.news.index')
+            ->with('success', 'Notícia excluída com sucesso.');
     }
 
+    /* =========================
+     * UPLOAD DE IMAGEM (QUILL)
+     * ========================= */
     public function uploadImage(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|max:4096',
+            'image' => 'required|image|max:4096'
         ]);
 
-        $path = $request->file('image')->store('news/editor', 'public');
+        $path = $request->file('image')->store('news/content', 'public');
 
         return response()->json([
-            'url' => asset('storage/' . $path),
+            'url' => asset('storage/' . $path)
         ]);
-    }
-
-    /**
-     * Gera resumo limpo do conteúdo HTML
-     */
-    private function makeExcerpt(string $content, int $limit = 180): string
-    {
-        $text = trim(strip_tags($content));
-
-        if (mb_strlen($text) <= $limit) {
-            return $text;
-        }
-
-        return mb_substr($text, 0, $limit) . '…';
     }
 }

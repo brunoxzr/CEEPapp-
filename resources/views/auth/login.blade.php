@@ -33,7 +33,7 @@
     <div class="w-full max-w-md">
 
         <div class="mb-10 text-center">
-            <img src="/img/logoCeep.png" class="mx-auto w-20 mb-4">
+            <img src="/img/logo_ceep.jpeg" class="mx-auto w-22 mb-4">
             <h2 class="text-2xl font-black text-red-800">Área Acadêmica</h2>
             <p class="text-sm text-slate-500 mt-1">
                 Alunos e gestores

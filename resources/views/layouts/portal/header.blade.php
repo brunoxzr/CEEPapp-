@@ -68,6 +68,7 @@
 
     <a class="hover:text-yellow-300 transition" href="{{ route('admin.news.index') }}">Notícias</a>
     <a class="hover:text-yellow-300 transition" href="{{ route('admin.news.create') }}">Nova Notícia</a>
+        <a class="hover:text-yellow-300 transition" href="{{ route('admin.institucional.index') }}">Institucional</a>
 
     <a class="hover:text-yellow-300 transition" href="{{ route('home') }}">Portal</a>
 @endif
@@ -135,6 +136,7 @@
     <a class="hover:text-yellow-300 transition" href="{{ route('admin.news.index') }}">Gerenciar Notícias</a>
     <a class="hover:text-yellow-300 transition" href="{{ route('admin.news.create') }}">Criar Notícia</a>
 
+    <a class="hover:text-yellow-300 transition" href="{{ route('admin.institucional.index') }}">Institucional</a>
     <a class="hover:text-yellow-300 transition" href="{{ route('home') }}">Portal Público</a>
 @endif
 

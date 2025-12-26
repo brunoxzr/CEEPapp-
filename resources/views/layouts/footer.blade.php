@@ -1,5 +1,3 @@
-</main>
-
 <footer class="mt-10 bg-red-800 text-red-100 border-t-4 border-yellow-400">
     <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-8">
 
@@ -86,5 +84,3 @@
     });
 </script>
 
-</body>
-</html>

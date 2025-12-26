@@ -15,7 +15,7 @@ class NewsController extends Controller
             ->whereNotNull('published_at')
             ->when($search, function ($query) use ($search) {
                 $query->where('title', 'ILIKE', "%{$search}%")
-                      ->orWhere('excerpt', 'ILIKE', "%{$search}%");
+                    ->orWhere('excerpt', 'ILIKE', "%{$search}%");
             })
             ->orderBy('published_at', 'desc')
             ->paginate(9)
@@ -24,9 +24,16 @@ class NewsController extends Controller
         return view('news.index', compact('news', 'search'));
     }
 
-    public function show($slug)
-    {
-        $news = News::where('slug', $slug)->firstOrFail();
-        return view('news.show', compact('news'));
-    }
+public function show($slug)
+{
+    $news = News::where('slug', $slug)->firstOrFail();
+
+    $recentNews = News::where('id', '!=', $news->id)
+        ->orderByDesc('published_at')
+        ->limit(6)
+        ->get();
+
+    return view('news.show', compact('news', 'recentNews'));
+}
+
 }

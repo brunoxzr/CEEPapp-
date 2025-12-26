@@ -20,16 +20,24 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminNewsController;
 use App\Http\Controllers\SaebController;
 use App\Http\Controllers\ProtocolController;
-
+use App\Http\Controllers\InstitucionalAdminController;
 /*
 |--------------------------------------------------------------------------
 | ROTAS PÚBLICAS – PORTAL
 |--------------------------------------------------------------------------
 */
-Route::get('/', [PortalController::class, 'index'])->name('home');
+Route::get('/', [PortalController::class, 'index'])
+    ->name('home');
+
+Route::get('/institucional', [PortalController::class, 'institucional'])
+    ->name('portal.institucional');
+Route::get('/institucional/{slug}', [PortalController::class, 'institucionalShow'])
+    ->name('portal.institucional.show');
 
 /* Cursos */
-Route::get('/cursos', fn () => view('cursos.index'))->name('portal.courses');
+Route::get('/cursos', fn () => view('cursos.index'))
+    ->name('portal.courses');
+
 Route::get('/cursos/desenvolvimento-de-sistemas', fn () => view('cursos.desenvolvimento'));
 Route::get('/cursos/enfermagem', fn () => view('cursos.enfermagem'));
 Route::get('/cursos/mecanica-industrial', fn () => view('cursos.mecanica'));
@@ -57,7 +65,7 @@ Route::post('/area-academica', [UnifiedLoginController::class, 'login'])
 
 /*
 |--------------------------------------------------------------------------
-| LOGIN SEPARADO (se quiser manter)
+| LOGIN SEPARADO (OPCIONAL)
 |--------------------------------------------------------------------------
 */
 Route::get('/login/aluno', [AlunoAuthController::class, 'showLogin'])
@@ -113,9 +121,9 @@ Route::prefix('admin')->group(function () {
         ->name('admin.dashboard');
 
     /*
-    |-------------------------
+    |--------------------------------------------------------------------------
     | NOTÍCIAS (ADMIN)
-    |-------------------------
+    |--------------------------------------------------------------------------
     */
     Route::get('/noticias', [AdminNewsController::class, 'index'])
         ->name('admin.news.index');
@@ -135,13 +143,35 @@ Route::prefix('admin')->group(function () {
     Route::delete('/noticias/{id}', [AdminNewsController::class, 'destroy'])
         ->name('admin.news.destroy');
 
-    Route::post('/noticias/upload-imagem', [AdminNewsController::class, 'uploadImage'])
-        ->name('admin.news.upload');
+Route::post('/noticias/upload-imagem',
+    [AdminNewsController::class, 'uploadImage']
+)->name('admin.news.upload');
+Route::prefix('admin')->group(function () {
+
+    Route::get('/institucional', [AdminController::class, 'institucionalIndex'])
+        ->name('admin.institucional.index');
+
+    Route::get('/institucional/criar', [AdminController::class, 'institucionalCreate'])
+        ->name('admin.institucional.create');
+
+    Route::post('/institucional', [AdminController::class, 'institucionalStore'])
+        ->name('admin.institucional.store');
+
+    Route::get('/institucional/{id}/editar', [AdminController::class, 'institucionalEdit'])
+        ->name('admin.institucional.edit');
+
+    Route::put('/institucional/{id}', [AdminController::class, 'institucionalUpdate'])
+        ->name('admin.institucional.update');
+
+    Route::delete('/institucional/{id}', [AdminController::class, 'institucionalDestroy'])
+        ->name('admin.institucional.destroy');
+});
+
 
     /*
-    |-------------------------
+    |--------------------------------------------------------------------------
     | CRONOGRAMA
-    |-------------------------
+    |--------------------------------------------------------------------------
     */
     Route::get('/cronograma', [AdminController::class, 'cronograma'])
         ->name('admin.cronograma');
@@ -159,9 +189,9 @@ Route::prefix('admin')->group(function () {
         ->name('admin.cronograma.delete');
 
     /*
-    |-------------------------
+    |--------------------------------------------------------------------------
     | BOLETINS
-    |-------------------------
+    |--------------------------------------------------------------------------
     */
     Route::get('/boletins', [AdminController::class, 'boletins'])
         ->name('admin.boletins');
@@ -170,9 +200,9 @@ Route::prefix('admin')->group(function () {
         ->name('admin.boletins.store');
 
     /*
-    |-------------------------
+    |--------------------------------------------------------------------------
     | USUÁRIOS
-    |-------------------------
+    |--------------------------------------------------------------------------
     */
     Route::get('/usuarios', [AdminController::class, 'usuarios'])
         ->name('admin.usuarios');
@@ -190,9 +220,9 @@ Route::prefix('admin')->group(function () {
         ->name('admin.usuarios.delete');
 
     /*
-    |-------------------------
+    |--------------------------------------------------------------------------
     | SAEB
-    |-------------------------
+    |--------------------------------------------------------------------------
     */
     Route::get('/saeb', [SaebController::class, 'index'])
         ->name('admin.saeb');

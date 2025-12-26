@@ -2,12 +2,13 @@
 
 <main class="bg-white text-slate-800">
 
-<!-- HERO PREMIUM -->
+<!-- ================= HERO ================= -->
 <section class="relative overflow-hidden border-b">
     <div class="absolute inset-0 bg-gradient-to-r from-red-800 to-red-900"></div>
 
     <div class="relative max-w-7xl mx-auto px-6 py-32 grid lg:grid-cols-2 gap-20 items-center text-white">
 
+        <!-- TEXTO -->
         <div>
             <span class="inline-block mb-6 text-xs font-bold uppercase tracking-widest text-yellow-300">
                 Centro Estadual de Educação Profissional
@@ -35,16 +36,19 @@
             </div>
         </div>
 
+        <!-- IMAGEM HERO -->
         <div class="relative hidden lg:block">
-            <img src="/img/frenteCeep.jpg"
-                 alt="CEEP Assaí"
-                 class="w-full h-[420px] object-cover rounded-lg shadow-2xl border-4 border-white/20">
+            <div class="aspect-[16/9] overflow-hidden rounded-xl shadow-2xl border-4 border-white/20">
+                <img src="/img/frenteCeep.jpg"
+                     alt="CEEP Assaí"
+                     class="w-full h-full object-cover">
+            </div>
         </div>
 
     </div>
 </section>
 
-<!-- INSTITUCIONAL -->
+<!-- ================= INSTITUCIONAL ================= -->
 <section id="institucional" class="py-28 bg-white">
     <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-24 items-start">
 
@@ -63,36 +67,36 @@
             <p class="text-slate-600 leading-relaxed">
                 Integrante da rede pública estadual de ensino do Paraná, o CEEP
                 atua com foco em qualidade, organização acadêmica e inserção
-                profissional de seus estudantes.
+                profissional.
             </p>
         </div>
 
         <div class="grid grid-cols-2 gap-6">
             <div class="border-l-4 border-red-700 pl-5">
-                <strong class="block text-slate-900">Ano de Inauguração</strong>
-                <span class="text-slate-600">2014</span>
+                <strong>Ano de Inauguração</strong>
+                <span class="block text-slate-600">2014</span>
             </div>
 
             <div class="border-l-4 border-red-700 pl-5">
-                <strong class="block text-slate-900">Investimento</strong>
-                <span class="text-slate-600">R$ 8,46 milhões</span>
+                <strong>Investimento</strong>
+                <span class="block text-slate-600">R$ 8,46 milhões</span>
             </div>
 
             <div class="border-l-4 border-red-700 pl-5">
-                <strong class="block text-slate-900">Estrutura</strong>
-                <span class="text-slate-600">12 salas • 9 laboratórios</span>
+                <strong>Estrutura</strong>
+                <span class="block text-slate-600">12 salas • 9 laboratórios</span>
             </div>
 
             <div class="border-l-4 border-red-700 pl-5">
-                <strong class="block text-slate-900">Modalidades</strong>
-                <span class="text-slate-600">Integrado e Subsequente</span>
+                <strong>Modalidades</strong>
+                <span class="block text-slate-600">Integrado e Subsequente</span>
             </div>
         </div>
 
     </div>
 </section>
 
-<!-- CURSOS -->
+<!-- ================= CURSOS ================= -->
 <section id="cursos" class="py-28 bg-slate-50 border-t">
     <div class="max-w-7xl mx-auto px-6">
 
@@ -115,15 +119,14 @@
 
             @foreach($cursos as $curso)
                 <a href="{{ url('/cursos/'.$curso['slug']) }}"
-                   class="group bg-white border rounded-lg p-8 hover:shadow-xl transition">
+                   class="group bg-white border rounded-xl p-8 hover:shadow-xl transition">
 
-                    <h3 class="text-lg font-bold text-slate-900 group-hover:text-red-700 transition">
+                    <h3 class="text-lg font-bold text-slate-900 group-hover:text-red-700">
                         {{ $curso['nome'] }}
                     </h3>
 
                     <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-                        Formação técnica voltada ao mercado de trabalho, com
-                        base científica e prática profissional.
+                        Formação técnica com base científica e prática profissional.
                     </p>
 
                     <span class="inline-block mt-6 text-sm font-semibold text-red-700">
@@ -135,56 +138,238 @@
         </div>
     </div>
 </section>
-
-<!-- NOTÍCIAS -->
+<!-- ================= NOTÍCIAS (G1 STYLE) ================= -->
 <section id="noticias" class="py-28 bg-white border-t">
     <div class="max-w-7xl mx-auto px-6">
 
-        <div class="flex justify-between items-center mb-14">
+        <!-- TÍTULO -->
+        <div class="flex justify-between items-end mb-14">
             <h2 class="text-3xl font-black text-slate-900">
                 Notícias
             </h2>
 
             <a href="{{ route('portal.news.index') }}"
                class="text-sm font-bold text-red-700 hover:underline">
-                Ver todas
+                Ver todas →
             </a>
         </div>
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        @if($featured)
+        <!-- GRID PRINCIPAL -->
+        <div class="grid lg:grid-cols-3 gap-10">
 
-            @forelse(($news ?? collect()) as $item)
-                <article class="border rounded-lg overflow-hidden hover:shadow-lg transition">
+            <!-- DESTAQUE -->
+            <a href="{{ route('portal.news.show', $featured->slug) }}"
+               class="lg:col-span-2 group">
 
-                    <img src="{{ asset('storage/'.$item->cover_path) }}"
-                         class="w-full h-44 object-cover">
+                <div class="aspect-[16/9] overflow-hidden rounded-xl bg-slate-200">
+                    <img
+                        src="{{ asset('storage/'.$featured->cover_path) }}"
+                        alt="{{ $featured->title }}"
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
 
-                    <div class="p-6">
-                        <p class="text-xs text-slate-500 mb-2">
-                            {{ $item->published_at?->format('d/m/Y') }}
-                        </p>
+                <div class="mt-6">
+                    <p class="text-xs text-slate-500 mb-2">
+                        {{ $featured->published_at?->format('d/m/Y') }}
+                    </p>
 
-                        <h3 class="font-bold text-slate-900 leading-snug">
-                            {{ $item->title }}
-                        </h3>
+                    <h3 class="text-2xl font-black leading-tight group-hover:text-red-700 transition">
+                        {{ $featured->title }}
+                    </h3>
+                </div>
+            </a>
 
-                        <a href="{{ route('portal.news.show',$item->slug) }}"
-                           class="inline-block mt-4 text-sm font-semibold text-red-700">
-                            Ler notícia →
-                        </a>
-                    </div>
-                </article>
-            @empty
-                <p class="col-span-full text-center text-slate-500">
-                    Nenhuma notícia publicada no momento.
-                </p>
-            @endforelse
+            <!-- SECUNDÁRIAS -->
+            <div class="grid gap-6">
+                @foreach($secondary as $item)
+                    <a href="{{ route('portal.news.show', $item->slug) }}"
+                       class="flex gap-4 group">
+
+                        <div class="w-32 aspect-[16/9] overflow-hidden rounded bg-slate-200 flex-shrink-0">
+                            <img
+                                src="{{ asset('storage/'.$item->cover_path) }}"
+                                alt="{{ $item->title }}"
+                                class="w-full h-full object-cover">
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-slate-500 mb-1">
+                                {{ $item->published_at?->format('d/m/Y') }}
+                            </p>
+
+                            <h4 class="font-bold leading-snug group-hover:text-red-700 transition">
+                                {{ $item->title }}
+                            </h4>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
 
         </div>
+        @endif
+
+        <!-- LISTA ABAIXO -->
+        @if($list->count())
+        <div class="mt-20 border-t pt-12 grid md:grid-cols-2 gap-x-10 gap-y-6">
+
+            @foreach($list as $item)
+                <a href="{{ route('portal.news.show', $item->slug) }}"
+                   class="flex justify-between items-start gap-4 hover:text-red-700 transition">
+
+                    <div>
+                        <h5 class="font-semibold leading-snug">
+                            {{ $item->title }}
+                        </h5>
+
+                        <p class="text-xs text-slate-500 mt-1">
+                            {{ $item->published_at?->format('d/m/Y') }}
+                        </p>
+                    </div>
+
+                    <span class="text-slate-400 text-xl">›</span>
+                </a>
+            @endforeach
+
+        </div>
+        @endif
+
     </div>
 </section>
+<!-- ================= DIREÇÃO ================= -->
+@if($direcao->count())
+<section class="py-28 bg-slate-50 border-t">
+    <div class="max-w-6xl mx-auto px-6 text-center">
 
-<!-- CONTATO -->
+        <h2 class="text-3xl font-black text-red-800 mb-14">
+            Direção
+        </h2>
+
+        <div class="flex flex-wrap justify-center gap-12">
+
+            @foreach($direcao as $pessoa)
+                <a href="{{ route('portal.institucional.show', $pessoa->slug) }}"
+                   class="group w-72 bg-white rounded-2xl shadow hover:shadow-xl transition p-8">
+
+                    <!-- FOTO -->
+                    @if($pessoa->foto)
+                        <img src="{{ asset('storage/'.$pessoa->foto) }}"
+                             class="w-36 h-36 mx-auto rounded-full object-cover border-4 border-red-700/30">
+                    @else
+                        <div class="w-36 h-36 mx-auto rounded-full bg-slate-200"></div>
+                    @endif
+
+                    <!-- TEXTO -->
+                    <h3 class="mt-6 font-bold text-lg group-hover:text-red-700 transition">
+                        {{ $pessoa->nome }}
+                    </h3>
+
+                    <p class="text-sm text-red-700 font-semibold mt-1">
+                        {{ $pessoa->cargo }}
+                    </p>
+                </a>
+            @endforeach
+
+        </div>
+
+    </div>
+</section>
+@endif<!-- ================= DESENVOLVEDORES (DESTAQUE ESPECIAL) ================= -->
+@if($desenvolvedores->count())
+<div>
+
+    <h3 class="text-center text-xl font-black text-slate-900 mb-6">
+        Desenvolvimento de Sistemas
+    </h3>
+
+    <p class="text-center text-slate-600 max-w-xl mx-auto mb-16">
+        Responsável pelo desenvolvimento, manutenção e inovação
+        dos sistemas digitais institucionais do CEEP Assaí.
+    </p>
+
+    @if($desenvolvedores->count() === 1)
+        @php $pessoa = $desenvolvedores->first(); @endphp
+
+        <!-- CARD CENTRAL (SÓ UM DEV) -->
+        <div class="flex justify-center">
+            <a href="{{ route('portal.institucional.show', $pessoa->slug) }}"
+               class="group w-[420px] bg-white rounded-3xl shadow-xl
+                      hover:shadow-2xl transition p-10 text-center
+                      border border-red-700/20 relative">
+
+                <!-- BADGE -->
+                <span class="absolute -top-4 left-1/2 -translate-x-1/2
+                             bg-red-700 text-white text-xs font-bold
+                             px-4 py-1 rounded-full tracking-wide">
+                    Desenvolvedor
+                </span>
+
+                <!-- FOTO -->
+                @if($pessoa->foto)
+                    <img src="{{ asset('storage/'.$pessoa->foto) }}"
+                         alt="{{ $pessoa->nome }}"
+                         class="w-40 h-40 mx-auto rounded-full object-cover
+                                border-4 border-red-700/40">
+                @else
+                    <div class="w-40 h-40 mx-auto rounded-full bg-slate-200"></div>
+                @endif
+
+                <!-- NOME -->
+                <h4 class="mt-8 font-black text-2xl text-slate-900
+                           group-hover:text-red-700 transition">
+                    {{ $pessoa->nome }}
+                </h4>
+
+                <!-- CARGO -->
+                <p class="mt-2 text-red-700 font-semibold">
+                    {{ $pessoa->cargo }}
+                </p>
+
+                <!-- COMPLEMENTO ACADÊMICO -->
+                <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+                    Estudante de <strong>Desenvolvimento de Sistemas</strong>,
+                    com atuação no desenvolvimento de soluções digitais,
+                    portais institucionais e sistemas educacionais.
+                </p>
+
+            </a>
+        </div>
+
+    @else
+        <!-- GRID NORMAL (CASO TENHA MAIS DE UM DEV) -->
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-14">
+
+            @foreach($desenvolvedores as $pessoa)
+                <a href="{{ route('portal.institucional.show', $pessoa->slug) }}"
+                   class="group text-center">
+
+                    @if($pessoa->foto)
+                        <img src="{{ asset('storage/'.$pessoa->foto) }}"
+                             alt="{{ $pessoa->nome }}"
+                             class="w-28 h-28 mx-auto rounded-full object-cover
+                                    border-2 border-red-700/30
+                                    group-hover:scale-110 transition">
+                    @else
+                        <div class="w-28 h-28 mx-auto rounded-full bg-slate-200"></div>
+                    @endif
+
+                    <h4 class="mt-5 font-semibold text-slate-900 group-hover:text-red-700 transition">
+                        {{ $pessoa->nome }}
+                    </h4>
+
+                    <p class="text-xs text-slate-500 mt-1">
+                        {{ $pessoa->cargo }}
+                    </p>
+                </a>
+            @endforeach
+
+        </div>
+    @endif
+
+</div>
+@endif
+
+<!-- ================= CONTATO ================= -->
 <section id="contato" class="py-28 bg-slate-50 border-t">
     <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
 
@@ -201,7 +386,7 @@
         </div>
 
         <iframe
-            class="w-full h-72 border rounded-lg"
+            class="w-full h-80 border rounded-xl"
             loading="lazy"
             src="https://www.google.com/maps?q=Centro+Estadual+de+Educação+Profissional+Assaí&output=embed">
         </iframe>

@@ -1,5 +1,5 @@
 <?php /** @var \App\Models\Aluno $aluno */ ?>
-@include('layouts.header', ['title' => 'Painel do Aluno'])
+@include('layouts.portal.header', ['title' => 'Painel do Aluno'])
 
 <section class="max-w-6xl mx-auto px-4 mt-8">
 

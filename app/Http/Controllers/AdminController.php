@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use App\Models\Admin;
 use App\Models\Aluno;
 use App\Models\Boletim;
@@ -10,6 +11,7 @@ use App\Models\SaebResultado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use App\Models\InstitucionalPessoa;
 
 class AdminController extends Controller
 {
@@ -264,5 +266,135 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.usuarios')->with('ok', 'Aluno criado com sucesso!');
+    }public function institucionalIndex()
+{
+    $this->requireAdmin();
+
+    // PAGINATE (senão links() dá erro)
+    $pessoas = InstitucionalPessoa::orderBy('nivel')
+        ->orderBy('ordem')
+        ->orderBy('nome')
+        ->paginate(12);
+
+    return view('admin.institucional.index', compact('pessoas'));
+}
+
+public function institucionalCreate()
+{
+    $this->requireAdmin();
+    return view('admin.institucional.create');
+}
+
+public function institucionalStore(Request $request)
+{
+    $this->requireAdmin();
+
+    $data = $request->validate([
+        'nome'      => 'required|string|max:150',
+        'slug'      => 'nullable|string|max:180',
+        'cargo'     => 'required|string|max:150',
+        'nivel'     => 'required|integer|min:1|max:10',
+        'ordem'     => 'nullable|integer|min:0|max:9999',
+        'biografia' => 'nullable|string',
+        'foto'      => 'nullable|image|max:4096',
+        'ativo'     => 'nullable|boolean',
+    ]);
+
+    // slug: se não vier, gera do nome
+    $slugBase = $data['slug'] ?? '';
+    $slugBase = trim($slugBase) !== '' ? $slugBase : $data['nome'];
+    $slug = Str::slug($slugBase);
+
+    // garante unique
+    $finalSlug = $slug;
+    $i = 2;
+    while (InstitucionalPessoa::where('slug', $finalSlug)->exists()) {
+        $finalSlug = $slug . '-' . $i;
+        $i++;
     }
+    $data['slug'] = $finalSlug;
+
+    $data['ordem'] = $data['ordem'] ?? 0;
+    $data['ativo'] = $request->boolean('ativo', true);
+
+    if ($request->hasFile('foto')) {
+        $data['foto'] = $request->file('foto')->store('institucional', 'public');
+    }
+
+    InstitucionalPessoa::create($data);
+
+    return redirect()->route('admin.institucional.index')
+        ->with('ok', 'Pessoa adicionada no Institucional!');
+}
+
+public function institucionalEdit($id)
+{
+    $this->requireAdmin();
+
+    $pessoa = InstitucionalPessoa::findOrFail($id);
+    return view('admin.institucional.edit', compact('pessoa'));
+}
+
+public function institucionalUpdate(Request $request, $id)
+{
+    $this->requireAdmin();
+
+    $pessoa = InstitucionalPessoa::findOrFail($id);
+
+    $data = $request->validate([
+        'nome'      => 'required|string|max:150',
+        'slug'      => 'nullable|string|max:180',
+        'cargo'     => 'required|string|max:150',
+        'nivel'     => 'required|integer|min:1|max:10',
+        'ordem'     => 'nullable|integer|min:0|max:9999',
+        'biografia' => 'nullable|string',
+        'foto'      => 'nullable|image|max:4096',
+        'ativo'     => 'nullable|boolean',
+    ]);
+
+    // slug: se vier vazio, regenera do nome
+    $slugBase = $data['slug'] ?? '';
+    $slugBase = trim($slugBase) !== '' ? $slugBase : $data['nome'];
+    $slug = Str::slug($slugBase);
+
+    // unique (ignorando o atual)
+    $finalSlug = $slug;
+    $i = 2;
+    while (InstitucionalPessoa::where('slug', $finalSlug)->where('id', '!=', $pessoa->id)->exists()) {
+        $finalSlug = $slug . '-' . $i;
+        $i++;
+    }
+    $data['slug'] = $finalSlug;
+
+    $data['ordem'] = $data['ordem'] ?? 0;
+    $data['ativo'] = $request->boolean('ativo', true);
+
+    if ($request->hasFile('foto')) {
+        if ($pessoa->foto) {
+            Storage::disk('public')->delete($pessoa->foto);
+        }
+        $data['foto'] = $request->file('foto')->store('institucional', 'public');
+    }
+
+    $pessoa->update($data);
+
+    return redirect()->route('admin.institucional.index')
+        ->with('ok', 'Pessoa atualizada com sucesso!');
+}
+
+public function institucionalDestroy($id)
+{
+    $this->requireAdmin();
+
+    $pessoa = InstitucionalPessoa::findOrFail($id);
+
+    if ($pessoa->foto) {
+        Storage::disk('public')->delete($pessoa->foto);
+    }
+
+    $pessoa->delete();
+
+    return redirect()->route('admin.institucional.index')
+        ->with('ok', 'Pessoa removida do Institucional.');
+}
 }

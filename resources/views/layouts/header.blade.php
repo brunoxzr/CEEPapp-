@@ -47,15 +47,24 @@
     <div class="max-w-7xl mx-auto px-6">
         <div class="flex items-center justify-between h-20">
 
-            <!-- IDENTIDADE -->
-            <a href="{{ url('/') }}" class="leading-tight">
-                <div class="text-2xl font-extrabold text-red-800">
-                    CEEP Assaí
-                </div>
-                <div class="text-xs text-slate-500 font-medium uppercase tracking-wide">
-                    Portal Institucional
-                </div>
-            </a>
+<a href="{{ url('/') }}" class="flex items-center gap-4">
+
+    <!-- LOGO -->
+    <img
+        src="{{ asset('img/logo_ceep.jpeg') }}"
+        alt="CEEP Assaí"
+        class="h-20 w-auto object-contain"
+    >
+
+    <!-- TEXTO -->
+    <div class="leading-tight">
+        <div class="text-xs text-slate-500 font-medium uppercase tracking-wide">
+            Portal Institucional
+        </div>
+    </div>
+
+</a>
+
 
             <!-- MENU DESKTOP -->
             <nav class="hidden md:flex items-center gap-10 text-sm font-semibold text-slate-700">
@@ -147,7 +156,7 @@
                             Área do Gestor
                         </a>
                     @else
-                        <a href="{{ route('aluno.login') }}"
+                        <a href="{{ route('login.unificado') }}"
                            class="block text-red-800 font-bold">
                             Área Acadêmica
                         </a>
