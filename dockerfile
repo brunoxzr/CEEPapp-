@@ -26,9 +26,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -
 # Instala dependências
 RUN composer install --no-dev --optimize-autoloader
 
-# Permissões Laravel
+# Permissões Laravel (CRÍTICO para storage público)
 RUN chown -R www-data:www-data /var/www \
-    && chmod -R 775 storage bootstrap/cache
+    && chmod -R 775 /var/www/storage \
+    && chmod -R 775 /var/www/bootstrap/cache
 
 # Porta
 EXPOSE 8080
