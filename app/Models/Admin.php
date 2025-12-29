@@ -38,4 +38,12 @@ public function permissoes()
 
         return $this->permissoes()->where('chave', $chave)->exists();
     }
+public function disciplinas()
+{
+    return $this->belongsToMany(
+        Disciplina::class,
+        'admin_disciplina'
+    );
+}
+
 }

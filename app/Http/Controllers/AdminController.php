@@ -13,6 +13,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Models\InstitucionalPessoa;
 use App\Models\Permissao;
+use App\Models\Disciplina;
 class AdminController extends Controller
 {
     private function requireAdmin()
@@ -524,19 +525,166 @@ public function projetosIndex()
         return view('admin.projetos.index', compact('admin', 'projetos'));
     }
 public function professoresIndex()
-    {
-        $this->requireAdmin();
+{
+    $this->requireAdmin();
 
-        $admin = \App\Models\Admin::find(session('admin_id'));
+    $professores = Admin::where('role', 'professor')
+        ->with('disciplinas')
+        ->orderBy('nome')
+        ->get();
 
-        // Exemplo de dados fictícios para professores
-        $professores = [
-            ['id' => 1, 'nome' => 'Professor A', 'disciplina' => 'Matemática'],
-            ['id' => 2, 'nome' => 'Professor B', 'disciplina' => 'História'],
-        ];
+    return view('admin.professores.index', compact('professores'));
+}
 
-        return view('admin.professores.index', compact('admin', 'professores'));
-    }
+public function editarProfessor($id)
+{
+    $this->requireAdmin();
 
+    $professor = Admin::where('role', 'professor')
+        ->with('disciplinas')
+        ->findOrFail($id);
+
+    $disciplinas = Disciplina::orderBy('nome')->get();
+
+    return view('admin.professores.edit', compact(
+        'professor',
+        'disciplinas'
+    ));
+}
+
+// ============================
+// SALVAR DISCIPLINAS
+// ============================
+public function salvarProfessor(Request $request, $id)
+{
+    $this->requireAdmin();
+
+    $professor = Admin::where('role', 'professor')
+        ->findOrFail($id);
+
+    $professor->disciplinas()->sync(
+        $request->input('disciplinas', [])
+    );
+
+    return redirect()
+        ->route('admin.professores')
+        ->with('ok', 'Disciplinas atualizadas com sucesso!');
+}
+
+    public function professores()
+{
+    $this->requireAdmin();
+
+    $professores = Admin::where('role', 'professor')
+        ->with('disciplinas')
+        ->orderBy('nome')
+        ->get();
+
+    return view('admin.professores.index', compact('professores'));
+}
+// FORM CREATE
+public function createProfessor()
+{
+    $this->requireAdmin();
+
+    return view('admin.professores.create');
+}
+
+// STORE
+public function storeProfessor(Request $request)
+{
+    $this->requireAdmin();
+
+    $data = $request->validate([
+        'nome'  => 'required|string|max:150',
+        'email' => 'required|email|unique:admins,email',
+        'senha' => 'required|string|min:4',
+    ]);
+
+    Admin::create([
+        'nome'  => $data['nome'],
+        'email' => $data['email'],
+        'senha' => Hash::make($data['senha']),
+        'role'  => 'professor',
+    ]);
+
+    return redirect()
+        ->route('admin.professores')
+        ->with('ok', 'Professor criado com sucesso! Agora atribua as disciplinas.');
+}
+
+
+public function disciplinasIndex()
+{
+    $this->requireAdmin();
+
+    $disciplinas = Disciplina::orderBy('nome')->get();
+
+    return view('admin.disciplinas.index', compact('disciplinas'));
+}
+
+// FORM CREATE
+public function disciplinasCreate()
+{
+    $this->requireAdmin();
+
+    return view('admin.disciplinas.create');
+}
+
+// STORE
+public function disciplinasStore(Request $request)
+{
+    $this->requireAdmin();
+
+    $data = $request->validate([
+        'nome'   => 'required|string|max:150',
+        'codigo' => 'required|string|max:50|unique:disciplinas,codigo',
+    ]);
+
+    Disciplina::create($data);
+
+    return redirect()
+        ->route('admin.disciplinas')
+        ->with('ok', 'Disciplina criada com sucesso.');
+}
+
+// EDIT
+public function disciplinasEdit($id)
+{
+    $this->requireAdmin();
+
+    $disciplina = Disciplina::findOrFail($id);
+
+    return view('admin.disciplinas.edit', compact('disciplina'));
+}
+
+// UPDATE
+public function disciplinasUpdate(Request $request, $id)
+{
+    $this->requireAdmin();
+
+    $disciplina = Disciplina::findOrFail($id);
+
+    $data = $request->validate([
+        'nome'   => 'required|string|max:150',
+        'codigo' => 'required|string|max:50|unique:disciplinas,codigo,' . $id,
+    ]);
+
+    $disciplina->update($data);
+
+    return redirect()
+        ->route('admin.disciplinas')
+        ->with('ok', 'Disciplina atualizada.');
+}
+
+// DELETE
+public function disciplinasDelete($id)
+{
+    $this->requireAdmin();
+
+    Disciplina::findOrFail($id)->delete();
+
+    return back()->with('ok', 'Disciplina removida.');
+}
 
 }

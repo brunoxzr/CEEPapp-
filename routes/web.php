@@ -301,4 +301,57 @@ Route::prefix('admin')
 
         Route::get('/professores', [AdminController::class, 'professoresIndex'])
             ->name('admin.professores');
+
+
+            Route::middleware(['admin'])->prefix('admin')->group(function () {
+
+    Route::get('/professores',
+        [AdminController::class, 'professoresIndex']
+    )->name('admin.professores');
+
+    Route::get('/professores/create',
+        [AdminController::class, 'createProfessor']
+    )->name('admin.professores.create');
+
+    Route::post('/professores/store',
+        [AdminController::class, 'storeProfessor']
+    )->name('admin.professores.store');
+
+    Route::get('/professores/{id}/edit',
+        [AdminController::class, 'editarProfessor']
+    )->name('admin.professores.edit');
+
+    Route::post('/professores/{id}/salvar',
+        [AdminController::class, 'salvarProfessor']
+    )->name('admin.professores.salvar');
+
+});
+
+
+
+
+
+Route::middleware('permissao:gerenciar_cronograma')->group(function () {
+
+    Route::get('/disciplinas', [AdminController::class, 'disciplinasIndex'])
+        ->name('admin.disciplinas.index');
+
+    Route::get('/disciplinas/create', [AdminController::class, 'disciplinasCreate'])
+        ->name('admin.disciplinas.create');
+
+    Route::post('/disciplinas', [AdminController::class, 'disciplinasStore'])
+        ->name('admin.disciplinas.store');
+
+    Route::get('/disciplinas/{id}/edit', [AdminController::class, 'disciplinasEdit'])
+        ->name('admin.disciplinas.edit');
+
+    Route::put('/disciplinas/{id}', [AdminController::class, 'disciplinasUpdate'])
+        ->name('admin.disciplinas.update');
+
+    Route::delete('/disciplinas/{id}', [AdminController::class, 'disciplinasDelete'])
+        ->name('admin.disciplinas.delete');
+});
+
+
+
     });

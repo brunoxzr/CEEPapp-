@@ -1,54 +1,123 @@
-<aside class="w-64 bg-gradient-to-b from-red-800 to-red-600 text-white min-h-screen p-6">
-    <h2 class="text-2xl font-black mb-10 text-white">
-        CEEP<span class="text-gray-200">Admin</span>
-    </h2>
+<!-- BOTÃO ABRIR SIDEBAR (MOBILE) -->
+<button
+    id="openSidebar"
+    class="md:hidden fixed top-4 left-4 z-50 bg-red-800 text-white p-3 rounded-lg shadow-lg">
+    ☰
+</button>
 
-    <nav class="space-y-4">
-        <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 rounded hover:bg-red-700">
+<!-- OVERLAY -->
+<div id="sidebarOverlay"
+     class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
+
+<!-- SIDEBAR -->
+<aside
+    id="sidebar"
+    class="fixed md:static top-0 left-0 z-50
+           w-64 min-h-screen
+           bg-gradient-to-b from-red-800 to-red-600
+           text-white p-6
+           transform -translate-x-full md:translate-x-0
+           transition-transform duration-300">
+
+    <!-- HEADER -->
+    <div class="flex items-center justify-between mb-10">
+        <h2 class="text-2xl font-black">
+            CEEP<span class="text-gray-200">Admin</span>
+        </h2>
+
+        <!-- FECHAR (MOBILE) -->
+        <button id="closeSidebar" class="md:hidden text-white text-xl">
+            ✕
+        </button>
+    </div>
+
+    <!-- MENU -->
+    <nav class="space-y-2 text-sm font-semibold">
+
+        <a href="{{ route('admin.dashboard') }}"
+           class="block px-4 py-2 rounded hover:bg-red-700">
             Dashboard
         </a>
 
         @if(adminPode('publicar_noticias'))
-        <a href="{{ route('admin.news.index') }}" class="block px-4 py-2 rounded hover:bg-red-700">
+        <a href="{{ route('admin.news.index') }}"
+           class="block px-4 py-2 rounded hover:bg-red-700">
             Notícias
         </a>
         @endif
 
         @if(adminPode('gerenciar_usuarios'))
-        <a href="{{ route('admin.usuarios') }}" class="block px-4 py-2 rounded hover:bg-red-700">
+        <a href="{{ route('admin.usuarios') }}"
+           class="block px-4 py-2 rounded hover:bg-red-700">
             Usuários
         </a>
         @endif
 
+        <!-- 🔥 DISCIPLINAS / MATÉRIAS -->
+        @if(adminPode('gerenciar_disciplinas'))
+        <a href="{{ route('admin.disciplinas.index') }}"
+           class="block px-4 py-2 rounded hover:bg-red-700">
+            Disciplinas
+        </a>
+        @endif
+
+        <!-- PROFESSORES -->
+        @if(adminPode('gerenciar_professores'))
+        <a href="{{ route('admin.professores') }}"
+           class="block px-4 py-2 rounded hover:bg-red-700">
+            Professores
+        </a>
+        @endif
+
         @if(adminPode('gerenciar_cronograma'))
-        <a href="{{ route('admin.cronograma') }}" class="block px-4 py-2 rounded hover:bg-red-700">
+        <a href="{{ route('admin.cronograma') }}"
+           class="block px-4 py-2 rounded hover:bg-red-700">
             Cronograma
         </a>
         @endif
 
         @if(adminPode('ver_relatorios'))
-        <a href="{{ route('admin.boletins') }}" class="block px-4 py-2 rounded hover:bg-red-700">
+        <a href="{{ route('admin.boletins') }}"
+           class="block px-4 py-2 rounded hover:bg-red-700">
             Relatórios
         </a>
         @endif
 
         @if(adminPode('gerenciar_projetos'))
-        <a href="{{ route('admin.projetos') }}" class="block px-4 py-2 rounded hover:bg-red-700">
+        <a href="{{ route('admin.projetos') }}"
+           class="block px-4 py-2 rounded hover:bg-red-700">
             Projetos Técnicos
         </a>
         @endif
 
-        @if(adminPode('gerenciar_professores'))
-        <a href="{{ route('admin.professores') }}" class="block px-4 py-2 rounded hover:bg-red-700">
-            Professores
-        </a>
-        @endif
-
-        @if(session('admin_role') === 'diretor')
-        <a href="{{ route('admin.permissoes.index') }}" class="block px-4 py-2 rounded bg-red-900 hover:bg-red-800">
+        <!-- SÓ DIRETOR -->
+        @if(auth()->check() && auth()->user()?->role === 'diretor')
+        <a href="{{ route('admin.permissoes.index') }}"
+           class="block px-4 py-2 rounded bg-red-900 hover:bg-red-800 mt-4">
             Controle de Permissões
         </a>
         @endif
     </nav>
 </aside>
 
+<!-- SCRIPT MOBILE -->
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const openBtn = document.getElementById('openSidebar');
+    const closeBtn = document.getElementById('closeSidebar');
+
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    }
+
+    openBtn?.addEventListener('click', openSidebar);
+    closeBtn?.addEventListener('click', closeSidebar);
+    overlay?.addEventListener('click', closeSidebar);
+</script>
