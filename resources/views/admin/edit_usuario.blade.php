@@ -1,5 +1,5 @@
-@include('layouts.portal.header', ['title' => 'Editar Usuário'])
-
+@include('layouts.admin_nav', ['title' => 'Gestor — Dashboard'])
+@include('layouts.sidebar')
 <section class="max-w-2xl mx-auto mt-10 bg-white rounded-xl shadow-soft p-6 border border-gray-300">
   <h1 class="text-2xl font-bold mb-4">
     Editar {{ $tipo === 'aluno' ? 'Aluno' : 'Gestor' }}

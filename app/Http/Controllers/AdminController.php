@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Models\InstitucionalPessoa;
-
+use App\Models\Permissao;
 class AdminController extends Controller
 {
     private function requireAdmin()
@@ -22,25 +22,109 @@ class AdminController extends Controller
         }
         return Admin::findOrFail(session('admin_id'));
     }
+// ---------------- Dashboard ----------------
+public function dashboard()
+{
+    $this->requireAdmin();
 
-    // ---------------- Dashboard ----------------
-    public function dashboard()
-    {
-        $this->requireAdmin();
+    $admin = \App\Models\Admin::find(session('admin_id'));
 
-        $totAlunos   = Aluno::count();
-        $totBoletins = Boletim::count();
-        $hoje        = Cronograma::where('data', now()->toDateString())->count();
-        $recentes    = Boletim::with('aluno')->orderByDesc('created_at')->take(8)->get();
+    /*
+    |--------------------------------------------------------------------------
+    | Dados BASE (todos veem)
+    |--------------------------------------------------------------------------
+    */
+    $totAlunos = \App\Models\Aluno::count();
+    $totNoticias = \App\Models\News::count();
+    $ultimasNoticias = \App\Models\News::orderByDesc('published_at')->take(5)->get();
 
-        $totSaeb      = SaebResultado::count();
-        $recentesSaeb = SaebResultado::with('aluno')->orderByDesc('created_at')->take(8)->get();
+    /*
+    |--------------------------------------------------------------------------
+    | Dados condicionais por permissão
+    |--------------------------------------------------------------------------
+    */
+    $totBoletins   = null;
+    $recentes      = collect();
+    $totSaeb       = null;
+    $recentesSaeb  = collect();
+    $hoje          = null;
 
-        return view('admin.dashboard', compact(
-            'totAlunos', 'totBoletins', 'hoje',
-            'recentes', 'totSaeb', 'recentesSaeb'
+    // Diretor vê tudo
+    if ($admin->role === 'diretor') {
+        $totAlunos = \App\Models\Aluno::count();
+        $totBoletins = \App\Models\Boletim::count();
+        $totNoticias = \App\Models\News::count();
+        $hoje = \App\Models\Cronograma::whereDate('data', now())->count();
+        $ultimasNoticias = \App\Models\News::orderByDesc('published_at')->take(5)->get();
+
+        // Gráficos: exemplos, troque por queries reais se quiser
+        $alunosPorTurma = \App\Models\Aluno::selectRaw('turma, COUNT(*) as total')->groupBy('turma')->pluck('total','turma');
+        $boletinsPorAno = \App\Models\Boletim::selectRaw('ano, COUNT(*) as total')->groupBy('ano')->pluck('total','ano');
+        $noticiasPorMes = \App\Models\News::selectRaw("to_char(published_at, 'MM/YYYY') as mes, COUNT(*) as total")
+            ->groupBy('mes')->orderBy('mes')->pluck('total','mes');
+
+        $gestores = Admin::where('role', 'gestor')->get();
+        $permissoes = \App\Models\Permissao::orderBy('descricao')->get();
+        $map = [];
+        foreach ($gestores as $g) {
+            $map[$g->id] = $g->permissoes()->pluck('permissoes.id')->toArray();
+        }
+
+        return view('admin.diretor.dashboard', compact(
+            'admin', 'totAlunos', 'totBoletins', 'totNoticias', 'hoje', 'ultimasNoticias',
+            'alunosPorTurma', 'boletinsPorAno', 'noticiasPorMes',
+            'gestores', 'permissoes', 'map'
         ));
     }
+
+    // Gestor: só se tiver permissão
+    else {
+
+        if (adminPode('ver_relatorios')) {
+
+            $totBoletins = \App\Models\Boletim::count();
+            $recentes = \App\Models\Boletim::with('aluno')
+                ->orderByDesc('created_at')
+                ->take(8)
+                ->get();
+
+            $totSaeb = \App\Models\SaebResultado::count();
+            $recentesSaeb = \App\Models\SaebResultado::with('aluno')
+                ->orderByDesc('created_at')
+                ->take(8)
+                ->get();
+        }
+
+        if (adminPode('gerenciar_cronograma')) {
+            $hoje = \App\Models\Cronograma::whereDate('data', now())->count();
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | View correta por tipo de admin
+    |--------------------------------------------------------------------------
+    */
+return view(
+    $admin->role === 'diretor'
+        ? 'admin.diretor.dashboard'
+        : 'admin.gestor.dashboard',
+    compact(
+        'admin',
+        'totAlunos',
+        'totBoletins',
+        'hoje',
+        'recentes',
+        'totSaeb',
+        'recentesSaeb',
+        'totNoticias',
+        'ultimasNoticias'
+    )
+);
+
+
+}
+
 
     // ---------------- Cronograma ----------------
     public function cronograma()
@@ -396,5 +480,63 @@ public function institucionalDestroy($id)
 
     return redirect()->route('admin.institucional.index')
         ->with('ok', 'Pessoa removida do Institucional.');
+}public function permissoesIndex()
+{
+    $admin = Admin::find(session('admin_id'));
+
+    if ($admin->role !== 'diretor') {
+        abort(403);
+    }
+
+    return view('admin.permissoes.index', [
+        'gestores' => Admin::where('role', 'gestor')->get(),
+        'permissoes' => Permissao::all()
+    ]);
 }
+
+public function permissoesUpdate(Admin $admin, Request $request)
+{
+    $diretor = Admin::find(session('admin_id'));
+
+    if ($diretor->role !== 'diretor') {
+        abort(403);
+    }
+
+    $admin->permissoes()->sync(
+        $request->input('permissoes', [])
+    );
+
+    return back()->with('success', 'Permissões atualizadas.');
+}
+
+public function projetosIndex()
+    {
+        $this->requireAdmin();
+
+        $admin = \App\Models\Admin::find(session('admin_id'));
+
+        // Exemplo de dados fictícios para projetos
+        $projetos = [
+            ['id' => 1, 'nome' => 'Projeto A', 'descricao' => 'Descrição do Projeto A'],
+            ['id' => 2, 'nome' => 'Projeto B', 'descricao' => 'Descrição do Projeto B'],
+        ];
+
+        return view('admin.projetos.index', compact('admin', 'projetos'));
+    }
+public function professoresIndex()
+    {
+        $this->requireAdmin();
+
+        $admin = \App\Models\Admin::find(session('admin_id'));
+
+        // Exemplo de dados fictícios para professores
+        $professores = [
+            ['id' => 1, 'nome' => 'Professor A', 'disciplina' => 'Matemática'],
+            ['id' => 2, 'nome' => 'Professor B', 'disciplina' => 'História'],
+        ];
+
+        return view('admin.professores.index', compact('admin', 'professores'));
+    }
+
+
 }

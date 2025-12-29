@@ -1,5 +1,5 @@
-@include('layouts.portal.header', ['title' => 'Painel do Gestor'])
-
+@include('layouts.admin_nav', ['title' => 'Gestor — Dashboard'])
+@include('layouts.sidebar')
 <section class="max-w-7xl mx-auto px-4 mt-8 space-y-8">
 
   <!-- Cards Resumo -->

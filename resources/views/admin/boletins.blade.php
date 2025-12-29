@@ -1,5 +1,5 @@
-@include('layouts.portal.header', ['title' => 'Gerenciar Boletins'])
-
+@include('layouts.admin_nav', ['title' => 'Gestor — Dashboard'])
+@include('layouts.sidebar')
 <section class="max-w-6xl mx-auto px-4 mt-8">
   <div class="bg-white rounded-xl shadow-soft p-6 mb-6">
     <h2 class="text-xl font-bold mb-3">Lançar Boletim</h2>

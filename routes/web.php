@@ -7,30 +7,38 @@ use Illuminate\Support\Facades\Route;
 | Controllers
 |--------------------------------------------------------------------------
 */
+
+// Portal / Público
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\NewsController;
-use App\Http\Controllers\CourseController;
 
+// Auth
 use App\Http\Controllers\Auth\AlunoAuthController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\UnifiedLoginController;
 
+// Aluno
 use App\Http\Controllers\AlunoController;
+use App\Http\Controllers\SaebController;
+
+// Admin / Gestão
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminNewsController;
-use App\Http\Controllers\SaebController;
 use App\Http\Controllers\ProtocolController;
-use App\Http\Controllers\InstitucionalAdminController;
+use App\Http\Controllers\AdminDiretorController;
 /*
 |--------------------------------------------------------------------------
-| ROTAS PÚBLICAS – PORTAL
+| ROTAS PÚBLICAS — PORTAL
 |--------------------------------------------------------------------------
 */
+
 Route::get('/', [PortalController::class, 'index'])
     ->name('home');
 
+/* Institucional */
 Route::get('/institucional', [PortalController::class, 'institucional'])
     ->name('portal.institucional');
+
 Route::get('/institucional/{slug}', [PortalController::class, 'institucionalShow'])
     ->name('portal.institucional.show');
 
@@ -38,12 +46,12 @@ Route::get('/institucional/{slug}', [PortalController::class, 'institucionalShow
 Route::get('/cursos', fn () => view('cursos.index'))
     ->name('portal.courses');
 
-Route::get('/cursos/desenvolvimento-de-sistemas', fn () => view('cursos.desenvolvimento'));
-Route::get('/cursos/enfermagem', fn () => view('cursos.enfermagem'));
-Route::get('/cursos/mecanica-industrial', fn () => view('cursos.mecanica'));
-Route::get('/cursos/eletrotecnica', fn () => view('cursos.eletrotecnica'));
-Route::get('/cursos/edificacoes', fn () => view('cursos.edificacoes'));
-Route::get('/cursos/agropecuaria', fn () => view('cursos.agropecuaria'));
+Route::view('/cursos/desenvolvimento-de-sistemas', 'cursos.desenvolvimento');
+Route::view('/cursos/enfermagem', 'cursos.enfermagem');
+Route::view('/cursos/mecanica-industrial', 'cursos.mecanica');
+Route::view('/cursos/eletrotecnica', 'cursos.eletrotecnica');
+Route::view('/cursos/edificacoes', 'cursos.edificacoes');
+Route::view('/cursos/agropecuaria', 'cursos.agropecuaria');
 
 /* Notícias públicas */
 Route::get('/noticias', [NewsController::class, 'index'])
@@ -54,9 +62,10 @@ Route::get('/noticias/{slug}', [NewsController::class, 'show'])
 
 /*
 |--------------------------------------------------------------------------
-| LOGIN UNIFICADO – ÁREA ACADÊMICA
+| LOGIN — ÁREA ACADÊMICA (UNIFICADO)
 |--------------------------------------------------------------------------
 */
+
 Route::get('/area-academica', [UnifiedLoginController::class, 'show'])
     ->name('login.unificado');
 
@@ -65,9 +74,10 @@ Route::post('/area-academica', [UnifiedLoginController::class, 'login'])
 
 /*
 |--------------------------------------------------------------------------
-| LOGIN SEPARADO (OPCIONAL)
+| LOGIN SEPARADO (BACKUP)
 |--------------------------------------------------------------------------
 */
+
 Route::get('/login/aluno', [AlunoAuthController::class, 'showLogin'])
     ->name('aluno.login');
 
@@ -85,6 +95,7 @@ Route::post('/login/admin', [AdminAuthController::class, 'login'])
 | LOGOUT
 |--------------------------------------------------------------------------
 */
+
 Route::post('/logout', function () {
     session()->flush();
     return redirect('/');
@@ -95,147 +106,199 @@ Route::post('/logout', function () {
 | ÁREA DO ALUNO
 |--------------------------------------------------------------------------
 */
-Route::prefix('aluno')->group(function () {
 
-    Route::get('/dashboard', [AlunoController::class, 'dashboard'])
-        ->name('aluno.dashboard');
+Route::prefix('aluno')
+    ->middleware('web')
+    ->group(function () {
 
-    Route::get('/boletim', [AlunoController::class, 'boletim'])
-        ->name('aluno.boletim');
+        Route::get('/dashboard', [AlunoController::class, 'dashboard'])
+            ->name('aluno.dashboard');
 
-    Route::get('/saeb', [SaebController::class, 'alunoResultados'])
-        ->name('aluno.saeb');
+        Route::get('/boletim', [AlunoController::class, 'boletim'])
+            ->name('aluno.boletim');
 
-    Route::get('/cronograma', [AlunoController::class, 'cronograma'])
-        ->name('aluno.cronograma');
-});
+        Route::get('/saeb', [SaebController::class, 'alunoResultados'])
+            ->name('aluno.saeb');
+
+        Route::get('/cronograma', [AlunoController::class, 'cronograma'])
+            ->name('aluno.cronograma');
+    });
 
 /*
 |--------------------------------------------------------------------------
-| ÁREA ADMIN / GESTOR
+| ÁREA ADMIN / GESTÃO
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->group(function () {
 
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])
-        ->name('admin.dashboard');
+Route::prefix('admin')
+    ->middleware(['web', 'admin'])
+    ->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | NOTÍCIAS (ADMIN)
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/noticias', [AdminNewsController::class, 'index'])
-        ->name('admin.news.index');
+        /* Dashboard */
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])
+            ->name('admin.dashboard');
 
-    Route::get('/noticias/criar', [AdminNewsController::class, 'create'])
-        ->name('admin.news.create');
+        /* Diretor Dashboard */
+        Route::get('/diretor/dashboard', [AdminController::class, 'dashboard'])
+            ->name('admin.diretor.dashboard');
 
-    Route::post('/noticias', [AdminNewsController::class, 'store'])
-        ->name('admin.news.store');
+        /*
+        |--------------------------------------------------------------------------
+        | NOTÍCIAS (ADMIN)
+        |--------------------------------------------------------------------------
+        */
+        Route::middleware('permissao:publicar_noticias')->group(function () {
 
-    Route::get('/noticias/{id}/editar', [AdminNewsController::class, 'edit'])
-        ->name('admin.news.edit');
+            Route::get('/noticias', [AdminNewsController::class, 'index'])
+                ->name('admin.news.index');
 
-    Route::put('/noticias/{id}', [AdminNewsController::class, 'update'])
-        ->name('admin.news.update');
+            Route::get('/noticias/criar', [AdminNewsController::class, 'create'])
+                ->name('admin.news.create');
 
-    Route::delete('/noticias/{id}', [AdminNewsController::class, 'destroy'])
-        ->name('admin.news.destroy');
+            Route::post('/noticias', [AdminNewsController::class, 'store'])
+                ->name('admin.news.store');
 
-Route::post('/noticias/upload-imagem',
-    [AdminNewsController::class, 'uploadImage']
-)->name('admin.news.upload');
-Route::prefix('admin')->group(function () {
+            Route::get('/noticias/{id}/editar', [AdminNewsController::class, 'edit'])
+                ->name('admin.news.edit');
 
-    Route::get('/institucional', [AdminController::class, 'institucionalIndex'])
-        ->name('admin.institucional.index');
+            Route::put('/noticias/{id}', [AdminNewsController::class, 'update'])
+                ->name('admin.news.update');
 
-    Route::get('/institucional/criar', [AdminController::class, 'institucionalCreate'])
-        ->name('admin.institucional.create');
+            Route::delete('/noticias/{id}', [AdminNewsController::class, 'destroy'])
+                ->name('admin.news.destroy');
 
-    Route::post('/institucional', [AdminController::class, 'institucionalStore'])
-        ->name('admin.institucional.store');
+            Route::post('/noticias/upload-imagem', [AdminNewsController::class, 'uploadImage'])
+                ->name('admin.news.upload');
+        });
 
-    Route::get('/institucional/{id}/editar', [AdminController::class, 'institucionalEdit'])
-        ->name('admin.institucional.edit');
+        /*
+        |--------------------------------------------------------------------------
+        | INSTITUCIONAL (HIERARQUIA / EQUIPE)
+        |--------------------------------------------------------------------------
+        */
+        Route::middleware('permissao:gerenciar_usuarios')->group(function () {
 
-    Route::put('/institucional/{id}', [AdminController::class, 'institucionalUpdate'])
-        ->name('admin.institucional.update');
+            Route::get('/institucional', [AdminController::class, 'institucionalIndex'])
+                ->name('admin.institucional.index');
 
-    Route::delete('/institucional/{id}', [AdminController::class, 'institucionalDestroy'])
-        ->name('admin.institucional.destroy');
-});
+            Route::get('/institucional/criar', [AdminController::class, 'institucionalCreate'])
+                ->name('admin.institucional.create');
 
+            Route::post('/institucional', [AdminController::class, 'institucionalStore'])
+                ->name('admin.institucional.store');
 
-    /*
-    |--------------------------------------------------------------------------
-    | CRONOGRAMA
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/cronograma', [AdminController::class, 'cronograma'])
-        ->name('admin.cronograma');
+            Route::get('/institucional/{id}/editar', [AdminController::class, 'institucionalEdit'])
+                ->name('admin.institucional.edit');
 
-    Route::post('/cronograma', [AdminController::class, 'storeCronograma'])
-        ->name('admin.cronograma.store');
+            Route::put('/institucional/{id}', [AdminController::class, 'institucionalUpdate'])
+                ->name('admin.institucional.update');
 
-    Route::get('/cronograma/{id}/edit', [AdminController::class, 'cronogramaEdit'])
-        ->name('admin.cronograma.edit');
+            Route::delete('/institucional/{id}', [AdminController::class, 'institucionalDestroy'])
+                ->name('admin.institucional.destroy');
+        });
 
-    Route::put('/cronograma/{id}', [AdminController::class, 'cronogramaUpdate'])
-        ->name('admin.cronograma.update');
+        /*
+        |--------------------------------------------------------------------------
+        | CRONOGRAMA
+        |--------------------------------------------------------------------------
+        */
+        Route::middleware('permissao:gerenciar_cronograma')->group(function () {
 
-    Route::delete('/cronograma/{id}', [AdminController::class, 'cronogramaDelete'])
-        ->name('admin.cronograma.delete');
+            Route::get('/cronograma', [AdminController::class, 'cronograma'])
+                ->name('admin.cronograma');
 
-    /*
-    |--------------------------------------------------------------------------
-    | BOLETINS
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/boletins', [AdminController::class, 'boletins'])
-        ->name('admin.boletins');
+            Route::post('/cronograma', [AdminController::class, 'storeCronograma'])
+                ->name('admin.cronograma.store');
 
-    Route::post('/boletins', [AdminController::class, 'storeBoletim'])
-        ->name('admin.boletins.store');
+            Route::get('/cronograma/{id}/edit', [AdminController::class, 'cronogramaEdit'])
+                ->name('admin.cronograma.edit');
 
-    /*
-    |--------------------------------------------------------------------------
-    | USUÁRIOS
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/usuarios', [AdminController::class, 'usuarios'])
-        ->name('admin.usuarios');
+            Route::put('/cronograma/{id}', [AdminController::class, 'cronogramaUpdate'])
+                ->name('admin.cronograma.update');
 
-    Route::post('/usuarios', [AdminController::class, 'storeUsuario'])
-        ->name('admin.usuarios.store');
+            Route::delete('/cronograma/{id}', [AdminController::class, 'cronogramaDelete'])
+                ->name('admin.cronograma.delete');
+        });
 
-    Route::get('/usuarios/{tipo}/{id}/edit', [AdminController::class, 'editUsuario'])
-        ->name('admin.usuarios.edit');
+        /*
+        |--------------------------------------------------------------------------
+        | BOLETINS / RELATÓRIOS
+        |--------------------------------------------------------------------------
+        */
+        Route::middleware('permissao:ver_relatorios')->group(function () {
 
-    Route::put('/usuarios/{tipo}/{id}', [AdminController::class, 'updateUsuario'])
-        ->name('admin.usuarios.update');
+            Route::get('/boletins', [AdminController::class, 'boletins'])
+                ->name('admin.boletins');
 
-    Route::delete('/usuarios/{tipo}/{id}', [AdminController::class, 'deleteUsuario'])
-        ->name('admin.usuarios.delete');
+            Route::post('/boletins', [AdminController::class, 'storeBoletim'])
+                ->name('admin.boletins.store');
+        });
 
-    /*
-    |--------------------------------------------------------------------------
-    | SAEB
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/saeb', [SaebController::class, 'index'])
-        ->name('admin.saeb');
+        /*
+        |--------------------------------------------------------------------------
+        | USUÁRIOS
+        |--------------------------------------------------------------------------
+        */
+        Route::middleware('permissao:gerenciar_usuarios')->group(function () {
 
-    Route::post('/saeb/upload', [SaebController::class, 'upload'])
-        ->name('admin.saeb.upload');
+            Route::get('/usuarios', [AdminController::class, 'usuarios'])
+                ->name('admin.usuarios');
 
-    Route::post('/saeb/mapear', [SaebController::class, 'mapearAlunos'])
-        ->name('admin.saeb.mapear');
+            Route::post('/usuarios', [AdminController::class, 'storeUsuario'])
+                ->name('admin.usuarios.store');
 
-    Route::get('/saeb/protocolo', [ProtocolController::class, 'protocolo'])
-        ->name('admin.saeb.protocolo');
+            Route::get('/usuarios/{tipo}/{id}/edit', [AdminController::class, 'editUsuario'])
+                ->name('admin.usuarios.edit');
 
-    Route::post('/saeb/publicar/{id}', [ProtocolController::class, 'publicar'])
-        ->name('admin.saeb.publicar');
-});
+            Route::put('/usuarios/{tipo}/{id}', [AdminController::class, 'updateUsuario'])
+                ->name('admin.usuarios.update');
+
+            Route::delete('/usuarios/{tipo}/{id}', [AdminController::class, 'deleteUsuario'])
+                ->name('admin.usuarios.delete');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | SAEB
+        |--------------------------------------------------------------------------
+        */
+        Route::middleware('permissao:ver_relatorios')->group(function () {
+
+            Route::get('/saeb', [SaebController::class, 'index'])
+                ->name('admin.saeb');
+
+            Route::post('/saeb/upload', [SaebController::class, 'upload'])
+                ->name('admin.saeb.upload');
+
+            Route::post('/saeb/mapear', [SaebController::class, 'mapearAlunos'])
+                ->name('admin.saeb.mapear');
+
+            Route::get('/saeb/protocolo', [ProtocolController::class, 'protocolo'])
+                ->name('admin.saeb.protocolo');
+
+            Route::post('/saeb/publicar/{id}', [ProtocolController::class, 'publicar'])
+                ->name('admin.saeb.publicar');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | PERMISSÕES (DIRETOR)
+        |--------------------------------------------------------------------------
+        */
+        Route::middleware('permissao:gerenciar_usuarios')->group(function () {
+
+            Route::post('/diretor/permissoes/{id}', [AdminDiretorController::class, 'syncPermissoes'])
+                ->name('admin.diretor.permissoes');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | PROJETOS
+        |--------------------------------------------------------------------------
+        */
+        Route::get('/projetos', [AdminController::class, 'projetosIndex'])
+            ->name('admin.projetos');
+
+        Route::get('/professores', [AdminController::class, 'professoresIndex'])
+            ->name('admin.professores');
+    });

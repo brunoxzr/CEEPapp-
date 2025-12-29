@@ -1,5 +1,5 @@
-@include('layouts.portal.header', ['title' => 'Editar Horário'])
-
+@include('layouts.admin_nav', ['title' => 'Gestor — Dashboard'])
+@include('layouts.sidebar')
 <section class="max-w-3xl mx-auto px-4 mt-10">
 
     <div class="bg-white rounded-xl shadow-xl p-6 border-t-4 border-yellow-400">
