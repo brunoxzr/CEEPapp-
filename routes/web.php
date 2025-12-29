@@ -34,6 +34,8 @@ use App\Http\Controllers\AdminDiretorController;
 
 Route::get('/', [PortalController::class, 'index'])
     ->name('home');
+    Route::get('/contato', [PortalController::class, 'contato'])
+    ->name('portal.contato');
 
 /* Institucional */
 Route::get('/institucional', [PortalController::class, 'institucional'])
@@ -129,6 +131,15 @@ Route::prefix('aluno')
 | ÁREA ADMIN / GESTÃO
 |--------------------------------------------------------------------------
 */
+Route::middleware(['admin'])->group(function () {
+
+    Route::get('/professor/dashboard', [AdminController::class, 'dashboardProfessor'])
+        ->name('professor.dashboard');
+
+    Route::get('/professor/cronograma', [AdminController::class, 'cronogramaProfessor'])
+        ->name('professor.cronograma');
+
+});
 
 Route::prefix('admin')
     ->middleware(['web', 'admin'])
@@ -202,22 +213,22 @@ Route::prefix('admin')
         | CRONOGRAMA
         |--------------------------------------------------------------------------
         */
-        Route::middleware('permissao:gerenciar_cronograma')->group(function () {
+Route::middleware(['web','admin','permissao:gerenciar_cronograma'])->group(function () {
 
-            Route::get('/cronograma', [AdminController::class, 'cronograma'])
-                ->name('admin.cronograma');
+Route::get('/admin/cronograma', [AdminController::class, 'cronogramaIndex'])
+    ->name('admin.cronograma.index');
 
-            Route::post('/cronograma', [AdminController::class, 'storeCronograma'])
-                ->name('admin.cronograma.store');
+    // 🔥 SALVAR VIA DRAG
+    Route::post('/admin/cronograma/drag-save', [AdminController::class, 'cronogramaDragSave'])
+        ->name('admin.cronograma.dragSave');
 
-            Route::get('/cronograma/{id}/edit', [AdminController::class, 'cronogramaEdit'])
-                ->name('admin.cronograma.edit');
+Route::delete('/cronograma/drag-delete', [AdminController::class, 'cronogramaDragDelete'])
+    ->name('admin.cronograma.dragDelete');
+    Route::post('/admin/cronograma/salvar',
+  [AdminController::class, 'salvarCronograma']
+)->name('admin.cronograma.salvar');
 
-            Route::put('/cronograma/{id}', [AdminController::class, 'cronogramaUpdate'])
-                ->name('admin.cronograma.update');
 
-            Route::delete('/cronograma/{id}', [AdminController::class, 'cronogramaDelete'])
-                ->name('admin.cronograma.delete');
         });
 
         /*

@@ -76,7 +76,7 @@
                 <option>1º EdF</option>
                 <option>1º Mec</option>
                 <option>1º Eletro</option>
-                <option>1º Enf</option>
+                <option>1º Agro</option>
                 </optgroup>
 
                 <optgroup label="2º Ano">
@@ -84,7 +84,7 @@
                 <option>2º EdF</option>
                 <option>2º Mec</option>
                 <option>2º Eletro</option>
-                <option>2º Enf</option>
+                <option>2º Agro</option>
                 </optgroup>
 
                 <optgroup label="3º Ano">
@@ -92,7 +92,7 @@
                 <option>3º EdF</option>
                 <option>3º Mec</option>
                 <option>3º Eletro</option>
-                <option>3º Enf</option>
+                <option>3º Agro</option>
                 </optgroup>
             </select>
             </label>

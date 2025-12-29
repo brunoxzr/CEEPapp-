@@ -10,15 +10,21 @@ use Illuminate\Support\Carbon;
 
 class AlunoController extends Controller
 {
+    /**
+     * Garante que o usuário é aluno autenticado
+     */
     private function requireAluno()
     {
         if (!session('aluno_id')) {
             abort(403, 'Não autenticado como aluno.');
         }
+
         return Aluno::findOrFail(session('aluno_id'));
     }
 
-    // Dashboard do aluno
+    /**
+     * ================= DASHBOARD =================
+     */
     public function dashboard()
     {
         $aluno = $this->requireAluno();
@@ -28,8 +34,9 @@ class AlunoController extends Controller
             ->take(10)
             ->get();
 
-        $cronograma = Cronograma::where('data', Carbon::today()->toDateString())
-            ->where('turma', $aluno->turma)
+        // 🔹 Cronograma do DIA atual (dashboard)
+        $cronograma = Cronograma::where('turma', $aluno->turma)
+            ->where('dia_semana', Carbon::now()->locale('pt_BR')->dayName)
             ->orderBy('inicio')
             ->get();
 
@@ -39,43 +46,59 @@ class AlunoController extends Controller
             ->take(10)
             ->get();
 
-        return view('aluno.dashboard', compact('aluno', 'boletins', 'cronograma', 'saeb'));
+        return view('aluno.dashboard', compact(
+            'aluno',
+            'boletins',
+            'cronograma',
+            'saeb'
+        ));
     }
 
+    /**
+     * ================= CRONOGRAMA SEMANAL =================
+     */
     public function cronograma()
-{
-    if (!session('aluno_id')) abort(403);
+    {
+        $aluno = $this->requireAluno();
 
-    $aluno = Aluno::findOrFail(session('aluno_id'));
+        $cronograma = Cronograma::where('turma', $aluno->turma)
+            ->orderByRaw("
+                CASE dia_semana
+                    WHEN 'Segunda' THEN 1
+                    WHEN 'Terça'   THEN 2
+                    WHEN 'Quarta'  THEN 3
+                    WHEN 'Quinta'  THEN 4
+                    WHEN 'Sexta'   THEN 5
+                    ELSE 6
+                END
+            ")
+            ->orderBy('inicio')
+            ->get();
 
-    $cronograma = Cronograma::where('turma', $aluno->turma)
-        ->orderByRaw("CASE
-            WHEN dia_semana = 'Segunda' THEN 1
-            WHEN dia_semana = 'Terça' THEN 2
-            WHEN dia_semana = 'Quarta' THEN 3
-            WHEN dia_semana = 'Quinta' THEN 4
-            WHEN dia_semana = 'Sexta' THEN 5
-            ELSE 6 END")
-        ->orderBy('inicio')
-        ->get();
+        return view('aluno.cronograma', compact(
+            'aluno',
+            'cronograma'
+        ));
+    }
 
-    return view('aluno.cronograma', compact('aluno', 'cronograma'));
-}
-
-    // Boletim completo
+    /**
+     * ================= BOLETIM =================
+     */
     public function boletim()
     {
         $aluno = $this->requireAluno();
 
         $boletins = Boletim::where('aluno_id', $aluno->id)
             ->orderBy('disciplina')
-            ->orderBy('ano','desc')
+            ->orderByDesc('ano')
             ->get();
 
         return view('aluno.boletim', compact('aluno', 'boletins'));
     }
 
-    // Resultados SAEB
+    /**
+     * ================= SAEB =================
+     */
     public function saeb()
     {
         $aluno = $this->requireAluno();

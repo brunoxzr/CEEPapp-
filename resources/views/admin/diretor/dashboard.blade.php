@@ -67,7 +67,7 @@
               <p class="font-bold text-slate-900">Usuários</p>
               <p class="text-xs text-slate-500">Alunos e gestores</p>
             </a>
-            <a href="{{ route('admin.cronograma') }}" class="p-4 border rounded-xl hover:bg-slate-50 transition">
+            <a href="{{ route('admin.cronograma.index') }}" class="p-4 border rounded-xl hover:bg-slate-50 transition">
               <p class="font-bold text-slate-900">Cronograma</p>
               <p class="text-xs text-slate-500">Horários e aulas</p>
             </a>

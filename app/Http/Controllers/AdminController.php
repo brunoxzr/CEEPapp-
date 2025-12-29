@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\InstitucionalPessoa;
 use App\Models\Permissao;
 use App\Models\Disciplina;
+use Illuminate\Support\Facades\Log;
 class AdminController extends Controller
 {
     private function requireAdmin()
@@ -125,55 +126,228 @@ return view(
 
 
 }
+// ========================= CRONOGRAMA =========================
 
+/**
+ * ================== VIEW PRINCIPAL (GRADE VISUAL) ==================
+ * USADO PELO DRAG & DROP
+ */
+public function cronogramaIndex(Request $request)
+{
+    $anos = [
+        "1º Ano" => ['1º DS','1º EDF','1º MEC','1º Eletro','1º Agro'],
+        "2º Ano" => ['2º DS','2º EDF','2º MEC','2º Eletro','2º Agro'],
+        "3º Ano" => ['3º DS','3º EDF','3º MEC','3º Eletro','3º Agro'],
+    ];
 
-    // ---------------- Cronograma ----------------
-    public function cronograma()
-    {
-        $this->requireAdmin();
+    $dias = ['Segunda','Terça','Quarta','Quinta','Sexta'];
 
-        $itens = Cronograma::orderByDesc('data')->paginate(20);
+    $aulas = [
+        1 => ['07:20','08:10'],
+        2 => ['08:10','09:00'],
+        3 => ['09:10','09:50'],
+        4 => ['10:10','11:00'],
+        5 => ['11:00','11:40'],
+        6 => ['11:40','12:30'],
+    ];
 
-        return view('admin.cronograma', compact('itens'));
+    $ano = $request->get('ano', '1º Ano');
+    if (!isset($anos[$ano])) $ano = '1º Ano';
+
+    $dia = $request->get('dia', 'Segunda');
+    if (!in_array($dia, $dias)) $dia = 'Segunda';
+
+    $turmas = $anos[$ano];
+
+    // Professores + disciplinas (blocos)
+    $professores = Admin::where('role', 'professor')
+        ->with('disciplinas')
+        ->orderBy('nome')
+        ->get();
+
+    // Slots existentes (DRAG)
+    $itens = Cronograma::where('dia_semana', $dia)
+        ->whereIn('turma', $turmas)
+        ->whereNotNull('aula') // 👈 importante
+        ->get();
+
+    // mapa turma|aula => registro
+    $map = [];
+    foreach ($itens as $i) {
+        $map[$i->turma.'|'.$i->aula] = $i;
     }
 
-    public function storeCronograma(Request $request)
-    {
-        $this->requireAdmin();
+    return view('admin.cronograma.index', compact(
+        'anos','dias','aulas','ano','dia','turmas','professores','map'
+    ));
+}
 
-        $data = $request->validate([
-            'dia_semana'  => 'required|string|max:20',
-            'turma'       => 'required|string|max:50',
-            'disciplina'  => 'required|string|max:150',
-            'professor'   => 'required|string|max:150',
-            'inicio'      => 'required',
-            'fim'         => 'required',
-            'sala'        => 'nullable|string|max:50',
-            'observacoes' => 'nullable|string'
-        ]);
+/**
+ * ================== DRAG SAVE ==================
+ */
+public function cronogramaDragSave(Request $request)
+{
+    $data = $request->validate([
+        'dia_semana' => 'required|string|max:20',
+        'turma'      => 'required|string|max:100',
+        'aula'       => 'required|integer|min:1|max:6',
+        'inicio'     => 'required|date_format:H:i',
+        'fim'        => 'required|date_format:H:i',
+        'disciplina' => 'required|string|max:150',
+        'professor'  => 'required|string|max:150',
+    ]);
 
-        Cronograma::create($data);
-        return back()->with('ok', 'Aula adicionada ao cronograma.');
-    }
-    public function cronogramaEdit($id)
+    Cronograma::updateOrCreate(
+        [
+            'dia_semana' => $data['dia_semana'],
+            'turma'      => $data['turma'],
+            'aula'       => $data['aula'], // 👈 CHAVE DO DRAG
+        ],
+        [
+            'inicio'     => $data['inicio'],
+            'fim'        => $data['fim'],
+            'disciplina' => $data['disciplina'],
+            'professor'  => $data['professor'],
+        ]
+    );
+
+    return response()->json(['ok' => true]);
+}
+
+/**
+ * ================== DRAG DELETE ==================
+ */
+public function cronogramaDragDelete(Request $request)
+{
+    $data = $request->validate([
+        'dia_semana' => 'required|string|max:20',
+        'turma'      => 'required|string|max:100',
+        'aula'       => 'required|integer|min:1|max:6',
+    ]);
+
+    Cronograma::where($data)->delete();
+
+    return response()->json(['ok' => true]);
+}
+
+
+
+
+
+
+/**
+ * ================== VIEW ANTIGA (FORMULÁRIO) ==================
+ * ⚠️ MANTIDA PRA NÃO QUEBRAR NADA
+ */
+public function cronograma(Request $request)
+{
+    $dia = $request->get('dia', 'Segunda');
+    $dias = ['Segunda','Terça','Quarta','Quinta','Sexta'];
+
+    $anos = [
+        "1º Ano" => ['1º DS','1º EDF','1º MEC','1º Eletro','1º Agro'],
+        "2º Ano" => ['2º DS','2º EDF','2º MEC','2º Eletro','2º Agro'],
+        "3º Ano" => ['3º DS','3º EDF','3º MEC','3º Eletro','3º Agro'],
+    ];
+
+    $aulas = [
+        1 => ['inicio' => '07:20', 'fim' => '08:10'],
+        2 => ['inicio' => '08:10', 'fim' => '09:00'],
+        3 => ['inicio' => '09:10', 'fim' => '09:50'],
+        4 => ['inicio' => '10:10', 'fim' => '11:00'],
+        5 => ['inicio' => '11:00', 'fim' => '11:40'],
+        6 => ['inicio' => '11:40', 'fim' => '12:30'],
+    ];
+
+    $professores = Admin::where('role', 'professor')
+        ->with('disciplinas')
+        ->orderBy('nome')
+        ->get();
+
+    $itens = Cronograma::where('dia_semana', $dia)->get();
+
+    return view('admin.cronograma.index', compact(
+        'dia','dias','anos','aulas','itens','professores'
+    ));
+}
+
+
+
+
+
+
+/**
+ * ================== FORM LEGADO (JSON / AJAX) ==================
+ */
+public function salvarCronograma(Request $request)
+{
+    $request->validate([
+        'dia'        => 'required|string',
+        'turma'      => 'required|string',
+        'aula'       => 'required|integer|min:1|max:6',
+        'disciplina' => 'required|string',
+        'professor'  => 'required|string',
+    ]);
+
+    $horarios = [
+        1 => ['07:20','08:10'],
+        2 => ['08:10','09:00'],
+        3 => ['09:10','09:50'],
+        4 => ['10:10','11:00'],
+        5 => ['11:00','11:40'],
+        6 => ['11:40','12:30'],
+    ];
+
+    [$inicio, $fim] = $horarios[$request->aula];
+
+    Cronograma::updateOrCreate(
+        [
+            'dia_semana' => $request->dia,
+            'turma'      => $request->turma,
+            'aula'       => $request->aula,
+        ],
+        [
+            'inicio'     => $inicio,
+            'fim'        => $fim,
+            'disciplina' => $request->disciplina,
+            'professor'  => $request->professor,
+        ]
+    );
+
+    return response()->json(['ok' => true]);
+}
+
+
+
+
+
+/**
+ * ================== CRUD SIMPLES ==================
+ */
+public function cronogramaEdit($id)
 {
     $item = Cronograma::findOrFail($id);
     return view('admin.cronograma_edit', compact('item'));
-}public function cronogramaUpdate(Request $req, $id)
+}
+
+public function cronogramaUpdate(Request $req, $id)
 {
     $item = Cronograma::findOrFail($id);
-
     $item->update($req->all());
 
     return redirect()->route('admin.cronograma')
-                     ->with('ok', 'Horário atualizado com sucesso!');
-}public function cronogramaDelete($id)
+        ->with('ok', 'Horário atualizado com sucesso!');
+}
+
+public function cronogramaDelete($id)
 {
     Cronograma::findOrFail($id)->delete();
 
     return redirect()->route('admin.cronograma')
-                     ->with('ok', 'Horário removido!');
+        ->with('ok', 'Horário removido!');
 }
+
+
 
 
 
@@ -644,7 +818,7 @@ public function disciplinasStore(Request $request)
     Disciplina::create($data);
 
     return redirect()
-        ->route('admin.disciplinas')
+        ->route('admin.disciplinas.index')
         ->with('ok', 'Disciplina criada com sucesso.');
 }
 
@@ -685,6 +859,35 @@ public function disciplinasDelete($id)
     Disciplina::findOrFail($id)->delete();
 
     return back()->with('ok', 'Disciplina removida.');
+}
+public function dashboardProfessor()
+{
+    $admin = Admin::findOrFail(session('admin_id'));
+
+
+    if ($admin->role !== 'professor') {
+        abort(403);
+    }
+
+    $diaHoje = match (now()->dayOfWeek) {
+        1 => 'Segunda',
+        2 => 'Terça',
+        3 => 'Quarta',
+        4 => 'Quinta',
+        5 => 'Sexta',
+        default => null,
+    };
+
+    $aulasHoje = \App\Models\Cronograma::where('professor', $admin->nome)
+        ->where('dia_semana', $diaHoje)
+        ->orderBy('inicio')
+        ->get();
+
+    return view('admin.professor.dashboard', compact(
+        'admin',
+        'aulasHoje',
+        'diaHoje'
+    ));
 }
 
 }

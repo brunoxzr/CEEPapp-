@@ -7,7 +7,7 @@
     <div class="flex items-center justify-between mb-10">
       <h1 class="text-2xl font-black">Professores</h1>
 
-      <a href="{{ route('admin.usuarios') }}"
+      <a href="{{ route('admin.professores.create') }}"
          class="px-5 py-3 bg-red-700 text-white rounded-xl font-bold hover:bg-red-800">
         Criar Professor
       </a>

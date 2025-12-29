@@ -70,7 +70,7 @@
         @endif
 
         @if(adminPode('gerenciar_cronograma'))
-        <a href="{{ route('admin.cronograma') }}"
+        <a href="{{ route('admin.cronograma.index') }}"
            class="block px-4 py-2 rounded hover:bg-red-700">
             Cronograma
         </a>
