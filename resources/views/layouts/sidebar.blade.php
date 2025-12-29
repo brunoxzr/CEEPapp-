@@ -90,6 +90,7 @@
         </a>
         @endif
 
+
         <!-- SÓ DIRETOR -->
         @if(auth()->check() && auth()->user()?->role === 'diretor')
         <a href="{{ route('admin.permissoes.index') }}"
@@ -97,6 +98,25 @@
             Controle de Permissões
         </a>
         @endif
+        <!-- INSTITUCIONAL -->
+        @if(
+            session('admin_role') === 'diretor' ||
+            adminPode('gerenciar_institucional')
+        )
+        <a href="{{ route('admin.institucional.index') }}"
+           class="block px-4 py-2 rounded hover:bg-red-700">
+            Institucional
+        </a>
+        @endif
+
+        <!-- CONTROLE DE PERMISSÕES (SÓ DIRETOR) -->
+        @if(session('admin_role') === 'diretor')
+        <a href="{{ route('admin.permissoes.index') }}"
+           class="block px-4 py-2 rounded bg-red-900 hover:bg-red-800 mt-4">
+            Controle de Permissões
+        </a>
+        @endif
+
     </nav>
 </aside>
 
