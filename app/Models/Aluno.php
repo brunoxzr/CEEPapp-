@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use App\Models\ProjetoContribuicao;
 class Aluno extends Model
 {
     protected $fillable = [
@@ -21,4 +21,23 @@ class Aluno extends Model
     {
         return $this->hasMany(Boletim::class);
     }
+    public function projetos()
+{
+    return $this->belongsToMany(Projeto::class, 'projeto_alunos')
+        ->withPivot('papel','aprovado')
+        ->withTimestamps();
+}
+
+public function perfilTecnico()
+{
+    return $this->hasOne(PerfilTecnicoAluno::class);
+}
+
+public function contribuicoes()
+{
+    return $this->hasMany(ProjetoContribuicao::class);
+}
+
+
+
 }

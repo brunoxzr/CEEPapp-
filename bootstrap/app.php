@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin'      => \App\Http\Middleware\AdminAuthMiddleware::class,
             'diretor'    => \App\Http\Middleware\DiretorOnly::class,
             'permissao'  => \App\Http\Middleware\HasPermissao::class,
+            'professor' => \App\Http\Middleware\ProfessorAuthMiddleware::class,
         ]);
     })
 

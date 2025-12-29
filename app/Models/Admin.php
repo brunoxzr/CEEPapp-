@@ -45,5 +45,10 @@ public function disciplinas()
         'admin_disciplina'
     );
 }
+public function projetos()
+{
+    return $this->hasMany(Projeto::class, 'professor_id');
+}
+
 
 }

@@ -859,13 +859,11 @@ public function disciplinasDelete($id)
     Disciplina::findOrFail($id)->delete();
 
     return back()->with('ok', 'Disciplina removida.');
-}
-public function dashboardProfessor()
+}public function dashboardProfessor()
 {
-    $admin = Admin::findOrFail(session('admin_id'));
+    $admin = Admin::find(session('admin_id'));
 
-
-    if ($admin->role !== 'professor') {
+    if (!$admin || $admin->role !== 'professor') {
         abort(403);
     }
 
@@ -878,15 +876,15 @@ public function dashboardProfessor()
         default => null,
     };
 
-    $aulasHoje = \App\Models\Cronograma::where('professor', $admin->nome)
+    $aulasHoje = Cronograma::where('professor', $admin->nome)
         ->where('dia_semana', $diaHoje)
         ->orderBy('inicio')
         ->get();
 
     return view('admin.professor.dashboard', compact(
         'admin',
-        'aulasHoje',
-        'diaHoje'
+        'diaHoje',
+        'aulasHoje'
     ));
 }
 

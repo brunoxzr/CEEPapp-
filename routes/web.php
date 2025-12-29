@@ -26,6 +26,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminNewsController;
 use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\AdminDiretorController;
+use App\Http\Controllers\ProjetoController;
+use App\Http\Controllers\ProfessorProjetoController;
 /*
 |--------------------------------------------------------------------------
 | ROTAS PÚBLICAS — PORTAL
@@ -34,8 +36,38 @@ use App\Http\Controllers\AdminDiretorController;
 
 Route::get('/', [PortalController::class, 'index'])
     ->name('home');
-    Route::get('/contato', [PortalController::class, 'contato'])
-    ->name('portal.contato');
+
+Route::view('/contato', 'portal.contato')->name('portal.contato');
+
+
+Route::prefix('professor')
+    ->middleware(['web','professor'])
+    ->group(function () {
+
+        Route::get('/dashboard',
+            [AdminController::class, 'dashboardProfessor']
+        )->name('professor.dashboard');
+
+        Route::get('/projetos',
+            [ProfessorProjetoController::class, 'index']
+        )->name('professor.projetos.index');
+
+        Route::get('/projetos/create',
+            [ProfessorProjetoController::class, 'create']
+        )->name('professor.projetos.create');
+
+        Route::post('/projetos',
+            [ProfessorProjetoController::class, 'store']
+        )->name('professor.projetos.store');
+
+        Route::get('/projetos/{id}/edit',
+            [ProfessorProjetoController::class, 'edit']
+        )->name('professor.projetos.edit');
+
+        Route::put('/projetos/{id}',
+            [ProfessorProjetoController::class, 'update']
+        )->name('professor.projetos.update');
+});
 
 /* Institucional */
 Route::get('/institucional', [PortalController::class, 'institucional'])
@@ -43,6 +75,19 @@ Route::get('/institucional', [PortalController::class, 'institucional'])
 
 Route::get('/institucional/{slug}', [PortalController::class, 'institucionalShow'])
     ->name('portal.institucional.show');
+use App\Http\Controllers\ProjetoPublicoController;
+
+/*
+|--------------------------------------------------------------------------
+| PROJETOS TÉCNICOS — PÚBLICO
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/projetos', [ProjetoPublicoController::class, 'index'])
+    ->name('projetos.index');
+
+Route::get('/projetos/{id}', [ProjetoPublicoController::class, 'show'])
+    ->name('projetos.show');
 
 /* Cursos */
 Route::get('/cursos', fn () => view('cursos.index'))
