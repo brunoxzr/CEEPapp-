@@ -75,6 +75,14 @@
             Cronograma
         </a>
         @endif
+        {{-- RESTRIÇÕES DE PROFESSORES (SÓ DIRETOR) --}}
+
+<a href="{{ route('admin.restricoes') }}"
+   class="block px-4 py-2 rounded hover:bg-red-700">
+    Restrições de Professores
+</a>
+
+
 
         @if(adminPode('ver_relatorios'))
         <a href="{{ route('admin.boletins') }}"

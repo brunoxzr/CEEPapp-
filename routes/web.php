@@ -28,6 +28,28 @@ use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\AdminDiretorController;
 use App\Http\Controllers\ProjetoController;
 use App\Http\Controllers\ProfessorProjetoController;
+use App\Http\Controllers\ProfessorRestricaoController;
+
+
+Route::post('/admin/cronograma/gerar', [
+    App\Http\Controllers\AdminController::class,
+    'gerarCronograma'
+])->name('admin.cronograma.gerar');
+
+
+Route::middleware('web')->group(function () {
+
+    Route::get('/admin/restricoes', [ProfessorRestricaoController::class, 'index'])
+        ->name('admin.restricoes');
+
+    Route::post('/admin/restricoes', [ProfessorRestricaoController::class, 'store'])
+        ->name('admin.restricoes.store');
+
+    Route::delete('/admin/restricoes/{id}', [ProfessorRestricaoController::class, 'destroy'])
+        ->name('admin.restricoes.delete');
+
+});
+
 /*
 |--------------------------------------------------------------------------
 | ROTAS PÚBLICAS — PORTAL

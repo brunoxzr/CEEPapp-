@@ -7,15 +7,33 @@ use App\Models\Admin;
 
 class Disciplina extends Model
 {
-    protected $fillable = ['nome', 'codigo'];
+    protected $fillable = [
+        'nome',
+        'codigo',
+        // se depois quiser:
+        // 'carga_horaria_semanal'
+    ];
 
-    public function professores()
+    /**
+     * Professores que podem lecionar essa disciplina
+     * (com carga horária máxima)
+     */
+public function professores()
+{
+    return $this->belongsToMany(
+        Admin::class,
+        'admin_disciplina',
+        'disciplina_id',
+        'admin_id'
+    )->withPivot('carga_horaria_max');
+}
+
+    /**
+     * Turmas que exigem essa disciplina
+     * (quantas aulas por semana)
+     */
+    public function turmas()
     {
-        return $this->belongsToMany(
-            Admin::class,
-            'admin_disciplina',   // tabela pivot
-            'disciplina_id',      // FK desta tabela
-            'admin_id'            // FK do admin
-        );
+        return $this->hasMany(TurmaDisciplina::class, 'disciplina_id');
     }
 }

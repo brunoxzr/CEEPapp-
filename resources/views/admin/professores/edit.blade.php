@@ -40,6 +40,37 @@
         <button class="px-6 py-3 bg-red-700 text-white font-bold rounded-xl hover:bg-red-800 transition">
           Salvar disciplinas
         </button>
+        <h3 class="mt-6 font-black text-lg">Carga horária por disciplina</h3>
+
+<table class="w-full mt-3 border text-sm">
+  <thead class="bg-slate-100">
+    <tr>
+      <th class="border p-2">Disciplina</th>
+      <th class="border p-2 w-40">Máx. aulas/semana</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @foreach($disciplinas as $disc)
+      @php
+        $pivot = $professor->disciplinas->firstWhere('id', $disc->id)?->pivot;
+      @endphp
+      <tr>
+        <td class="border p-2">{{ $disc->nome }}</td>
+        <td class="border p-2 text-center">
+          <input
+            type="number"
+            name="carga[{{ $disc->id }}]"
+            min="0"
+            max="40"
+            value="{{ $pivot->carga_horaria_max ?? '' }}"
+            class="w-20 border rounded px-2 py-1 text-center">
+        </td>
+      </tr>
+    @endforeach
+  </tbody>
+</table>
+
       </div>
     </form>
 
