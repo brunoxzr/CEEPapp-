@@ -112,59 +112,6 @@
         </div>
       </div>
     </div>
-  </main>
-</div>
-
-<!-- Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-// Exemplo de dados fictícios, troque para dados reais do controller se desejar
-const alunosPorTurma = @json($alunosPorTurma ?? ["1A"=>10,"1B"=>8,"2A"=>12]);
-const boletinsPorAno = @json($boletinsPorAno ?? [2023=>40,2024=>55,2025=>30]);
-const noticiasPorMes = @json($noticiasPorMes ?? ["01/2025"=>2,"02/2025"=>3,"03/2025"=>1]);
-
-new Chart(document.getElementById('chartAlunosTurma'), {
-  type: 'bar',
-  data: {
-    labels: Object.keys(alunosPorTurma),
-    datasets: [{
-      label: 'Alunos',
-      data: Object.values(alunosPorTurma),
-      backgroundColor: '#b91c1c',
-    }]
-  },
-  options: {responsive: true, plugins: {legend: {display: false}}}
-});
-
-new Chart(document.getElementById('chartBoletinsAno'), {
-  type: 'line',
-  data: {
-    labels: Object.keys(boletinsPorAno),
-    datasets: [{
-      label: 'Boletins',
-      data: Object.values(boletinsPorAno),
-      borderColor: '#b91c1c',
-      backgroundColor: 'rgba(185,28,28,0.1)',
-      fill: true,
-      tension: 0.3
-    }]
-  },
-  options: {responsive: true, plugins: {legend: {display: false}}}
-});
-
-new Chart(document.getElementById('chartNoticiasMes'), {
-  type: 'bar',
-  data: {
-    labels: Object.keys(noticiasPorMes),
-    datasets: [{
-      label: 'Notícias',
-      data: Object.values(noticiasPorMes),
-      backgroundColor: '#b91c1c',
-    }]
-  },
-  options: {responsive: true, plugins: {legend: {display: false}}}
-});
-</script>
 
     <!-- FEEDBACK -->
     @if(session('success'))
@@ -311,6 +258,60 @@ function togglePerm(id) {
     chev.textContent = '–';
   }
 }
+</script>
+
+  </main>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Exemplo de dados fictícios, troque para dados reais do controller se desejar
+const alunosPorTurma = @json($alunosPorTurma ?? ["1A"=>10,"1B"=>8,"2A"=>12]);
+const boletinsPorAno = @json($boletinsPorAno ?? [2023=>40,2024=>55,2025=>30]);
+const noticiasPorMes = @json($noticiasPorMes ?? ["01/2025"=>2,"02/2025"=>3,"03/2025"=>1]);
+
+new Chart(document.getElementById('chartAlunosTurma'), {
+  type: 'bar',
+  data: {
+    labels: Object.keys(alunosPorTurma),
+    datasets: [{
+      label: 'Alunos',
+      data: Object.values(alunosPorTurma),
+      backgroundColor: '#b91c1c',
+    }]
+  },
+  options: {responsive: true, plugins: {legend: {display: false}}}
+});
+
+new Chart(document.getElementById('chartBoletinsAno'), {
+  type: 'line',
+  data: {
+    labels: Object.keys(boletinsPorAno),
+    datasets: [{
+      label: 'Boletins',
+      data: Object.values(boletinsPorAno),
+      borderColor: '#b91c1c',
+      backgroundColor: 'rgba(185,28,28,0.1)',
+      fill: true,
+      tension: 0.3
+    }]
+  },
+  options: {responsive: true, plugins: {legend: {display: false}}}
+});
+
+new Chart(document.getElementById('chartNoticiasMes'), {
+  type: 'bar',
+  data: {
+    labels: Object.keys(noticiasPorMes),
+    datasets: [{
+      label: 'Notícias',
+      data: Object.values(noticiasPorMes),
+      backgroundColor: '#b91c1c',
+    }]
+  },
+  options: {responsive: true, plugins: {legend: {display: false}}}
+});
 </script>
 
 {{-- <pre>{{ var_dump($permissoes) }}</pre> --}}
