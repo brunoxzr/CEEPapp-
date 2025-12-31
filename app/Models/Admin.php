@@ -142,6 +142,14 @@ public function podeAssumirDisciplina($disciplina): bool
  * Quantas aulas o professor já tem
  * em uma disciplina específica
  */
+// ============================
+// CARGA HORÁRIA (CRONOGRAMA)
+// ============================
+
+/**
+ * Quantas aulas o professor já tem
+ * em uma disciplina (cronograma)
+ */
 public function cargaUsadaDisciplina(string $disciplinaNome): int
 {
     return Cronograma::where('professor', $this->nome)
@@ -150,15 +158,43 @@ public function cargaUsadaDisciplina(string $disciplinaNome): int
 }
 
 /**
- * Retorna dados completos da carga
- * [usada, max, percentual]
+ * Retorna a carga máxima permitida
+ * para uma disciplina (pivot)
  */
-public function cargaInfo($disciplina): array
+public function cargaMaxDisciplina(string $disciplinaNome): ?int
+{
+    $disc = $this->disciplinas
+        ->firstWhere('nome', $disciplinaNome);
+
+    return $disc?->pivot?->carga_horaria_max;
+}
+
+/**
+ * Verifica se o professor ainda pode
+ * assumir mais aulas da disciplina
+ */
+public function podeDarMaisAula(string $disciplinaNome): bool
+{
+    $max = $this->cargaMaxDisciplina($disciplinaNome);
+
+    // sem limite definido → pode
+    if (!$max) {
+        return true;
+    }
+
+    return $this->cargaUsadaDisciplina($disciplinaNome) < $max;
+}
+
+/**
+ * Informações completas da carga
+ * (usado no Blade)
+ */
+public function cargaInfo(Disciplina $disciplina): array
 {
     $usada = $this->cargaUsadaDisciplina($disciplina->nome);
-    $max = $disciplina->pivot->carga_horaria_max;
+    $max   = $disciplina->pivot->carga_horaria_max;
 
-    if ($max === null || $max == 0) {
+    if (!$max) {
         return [
             'usada' => $usada,
             'max' => null,
@@ -172,5 +208,4 @@ public function cargaInfo($disciplina): array
         'percentual' => min(100, round(($usada / $max) * 100)),
     ];
 }
-
 }

@@ -380,9 +380,13 @@ Route::delete('/cronograma/drag-delete', [AdminController::class, 'cronogramaDra
         Route::get('/professores', [AdminController::class, 'professoresIndex'])
             ->name('admin.professores');
 
+Route::prefix('admin')
+    ->middleware(['admin'])
+    ->group(function () {
 
-            Route::middleware(['admin'])->prefix('admin')->group(function () {
-
+    // =============================
+    // PROFESSORES
+    // =============================
     Route::get('/professores',
         [AdminController::class, 'professoresIndex']
     )->name('admin.professores');
@@ -391,7 +395,7 @@ Route::delete('/cronograma/drag-delete', [AdminController::class, 'cronogramaDra
         [AdminController::class, 'createProfessor']
     )->name('admin.professores.create');
 
-    Route::post('/professores/store',
+    Route::post('/professores',
         [AdminController::class, 'storeProfessor']
     )->name('admin.professores.store');
 
@@ -403,8 +407,11 @@ Route::delete('/cronograma/drag-delete', [AdminController::class, 'cronogramaDra
         [AdminController::class, 'salvarProfessor']
     )->name('admin.professores.salvar');
 
-});
+    Route::delete('/professores/{tipo}/{id}',
+        [AdminController::class, 'deleteUsuario']
+    )->name('admin.professores.delete');
 
+});
 
 
 
