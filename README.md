@@ -1,61 +1,106 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📘 CEEPapp — Portal Acadêmico e Administrativo do CEEP Assaí
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="public/assets/imgs/ceepapp-banner.png" alt="CEEPapp Banner" width="80%">
 </p>
 
-## About Laravel
+<p align="center">
+  <img src="https://img.shields.io/badge/Laravel-12-red" />
+  <img src="https://img.shields.io/badge/PHP-8.3-blue" />
+  <img src="https://img.shields.io/badge/PostgreSQL-Database-336791" />
+  <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-brightgreen" />
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🧠 Sobre o Projeto
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+O **CEEPapp** é uma plataforma web desenvolvida para centralizar e modernizar a **gestão acadêmica, administrativa e comunicacional** do **Centro Estadual de Educação Profissional Profª Maria Lydia Cescatto Bomtempo (CEEP Assaí – PR)**.
 
-## Learning Laravel
+Projetado para uso real em ambiente educacional, o sistema possui **controle de permissões**, **painel administrativo**, **gestão de notícias**, **cronogramas acadêmicos** e uma interface moderna, segura e escalável.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🖥️ Demonstração Visual
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+<p align="center">
+  <img src="public/assets/imgs/dashboard.png" width="30%" />
+  <img src="public/assets/imgs/noticias.png" width="30%" />
+  <img src="public/assets/imgs/cronograma.png" width="30%" />
+</p>
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🚀 Funcionalidades Principais
 
-### Premium Partners
+* 🔐 Autenticação e controle de permissões
+* 📰 Gestão completa de notícias institucionais
+* 📅 Cronograma acadêmico interativo
+* 🧑‍💼 Painel administrativo exclusivo
+* 🎨 Interface moderna e responsiva
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## 🛠️ Stack Tecnológica
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Backend**
 
-## Code of Conduct
+* PHP 8.3
+* Laravel 12
+* PostgreSQL
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Frontend**
 
-## Security Vulnerabilities
+* Blade Templates
+* Tailwind CSS
+* JavaScript
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 📂 Estrutura do Projeto
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+app/
+ ├─ Helpers/
+ ├─ Http/
+ │   ├─ Controllers/
+ │   └─ Middleware/
+resources/
+ ├─ views/
+ │   ├─ admin/
+ │   ├─ auth/
+ │   └─ layouts/
+database/
+ ├─ migrations/
+ └─ seeders/
+public/
+ └─ assets/
+```
+
+---
+
+## 🔒 Segurança
+
+* Middleware de autenticação
+* Controle de acesso por cargo
+* Validações de dados no backend
+
+---
+
+## 🎯 Objetivo
+
+Criar uma base digital sólida para instituições educacionais, centralizando informações, processos internos e comunicação institucional, com foco em escalabilidade e segurança.
+
+---
+
+## 👨‍💻 Autor
+
+**Bruno Yudi Kay**
+Desenvolvedor Full-Stack | IA | Sistemas Educacionais
+GitHub: [https://github.com/brunoxzr](https://github.com/brunoxzr)
+
+---
+
+## 📌 Status
+
+🟢 Em desenvolvimento ativo
