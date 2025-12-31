@@ -10,21 +10,10 @@
 {{-- ================= HEADER ================= --}}
 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
-  <div>
-    <p class="text-xs font-bold uppercase tracking-[0.25em] text-slate-500">Cronograma</p>
-    <h1 class="text-2xl md:text-3xl font-black text-red-800 mt-1">
-      Grade por Turma (Arrastar e Soltar)
-    </h1>
-    <p class="text-sm text-slate-600 mt-1">
-      Selecione o <b>Ano</b> e o <b>Dia</b>. Arraste blocos ou gere automaticamente.
-    </p>
-  </div>
-
+<div class="flex gap-3">
+  {{-- GERAR --}}
   <form method="POST" action="{{ route('admin.cronograma.gerar') }}">
     @csrf
-    <input type="hidden" name="ano" value="{{ $ano }}">
-    <input type="hidden" name="dia" value="{{ $dia }}">
-
     <button
       type="submit"
       class="px-4 py-2 rounded-xl font-black
@@ -34,28 +23,28 @@
       Gerar cronograma automático
     </button>
   </form>
+
+  {{-- APAGAR TUDO --}}
+  <form method="POST"
+        action="{{ route('admin.cronograma.apagarTudo') }}"
+        onsubmit="return confirm('⚠️ Isso irá APAGAR TODO o cronograma de todas as turmas. Deseja continuar?')">
+    @csrf
+    @method('DELETE')
+
+    <button
+      type="submit"
+      class="px-4 py-2 rounded-xl font-black
+             bg-red-600 text-white
+             hover:bg-red-700
+             active:scale-95 transition">
+      Apagar tudo
+    </button>
+  </form>
 </div>
 
-{{-- ================= FILTROS ================= --}}
-<div class="bg-white border rounded-2xl p-5 shadow-sm">
-  <div class="flex flex-wrap gap-2">
-    @foreach($anos as $kAno => $_)
-      <a href="{{ route('admin.cronograma.index', ['ano'=>$kAno,'dia'=>$dia]) }}"
-         class="px-3 py-2 rounded-xl font-bold text-sm border
-         {{ $ano === $kAno ? 'bg-red-700 text-white border-red-700' : 'bg-white text-red-800 border-red-200 hover:bg-red-50' }}">
-        {{ $kAno }}
-      </a>
-    @endforeach
 
-    @foreach($dias as $d)
-      <a href="{{ route('admin.cronograma.index', ['ano'=>$ano,'dia'=>$d]) }}"
-         class="px-3 py-2 rounded-xl font-bold text-sm border
-         {{ $dia === $d ? 'bg-yellow-400 text-red-900 border-yellow-400' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50' }}">
-        {{ $d }}
-      </a>
-    @endforeach
-  </div>
 </div>
+
 {{-- ================= BANCO DE BLOCOS ================= --}}
 <div class="grid lg:grid-cols-3 gap-6">
 
@@ -108,69 +97,134 @@
       @endforelse
     </div>
 
-    {{-- ================= GRADE DO CRONOGRAMA ================= --}}
-    <div class="bg-white border rounded-2xl p-4 shadow-sm overflow-x-auto mt-6">
-      <table class="min-w-[980px] w-full border text-sm">
-        <thead>
-          <tr class="bg-slate-100">
-            <th class="border p-2 w-[120px]">Horário</th>
-            @foreach($turmas as $t)
-              <th class="border p-2 text-center font-black text-red-800">
-                {{ $t }}
-              </th>
-            @endforeach
-          </tr>
-        </thead>
+{{-- ================= GRADE DO CRONOGRAMA ================= --}}
+<div class="bg-white border rounded-2xl p-4 shadow-sm overflow-x-auto mt-6">
+  <table class="min-w-[1600px] w-full border text-sm">
 
-        <tbody>
+    {{-- ===== CABEÇALHO ===== --}}
+    <thead>
+      {{-- LINHA 1 — DIAS --}}
+      <tr class="bg-slate-200">
+        <th rowspan="2"
+            class="border p-2 w-[160px] font-black text-left">
+          Turma
+        </th>
+
+        @foreach($dias as $diaNome)
+          <th colspan="{{ count($aulasInfo) }}"
+              class="border p-2 text-center font-black text-red-800">
+            {{ $diaNome }}
+          </th>
+        @endforeach
+      </tr>
+
+      {{-- LINHA 2 — AULAS --}}
+      <tr class="bg-slate-100">
+        @foreach($dias as $_)
           @foreach($aulasInfo as $num => [$ini,$fim])
-            <tr>
-              <td class="border p-2 font-black">
-                {{ $num }}ª Aula
-                <div class="text-xs text-slate-500">{{ $ini }}–{{ $fim }}</div>
-              </td>
-
-              @foreach($turmas as $t)
-                @php
-                  $slot = $map[$t.'|'.$num] ?? null;
-                @endphp
-
-                <td class="border h-24 p-2 align-top"
-                    data-dia="{{ $dia }}"
-                    data-turma="{{ $t }}"
-                    data-aula="{{ $num }}"
-                    data-inicio="{{ $ini }}"
-                    data-fim="{{ $fim }}"
-                    ondragover="allowDrop(event)"
-                    ondrop="dropCell(event)">
-
-                  @if($slot)
-                    <div draggable="true"
-                         ondragstart="dragStart(event)"
-                         data-from-dia="{{ $dia }}"
-                         data-from-turma="{{ $t }}"
-                         data-from-aula="{{ $num }}"
-                         data-disciplina="{{ $slot->disciplina }}"
-                         data-professor="{{ $slot->professor }}"
-                         class="slotBlock bg-red-50 border border-red-200 rounded-xl p-2 cursor-grab">
-
-                      <p class="font-black text-red-800">{{ $slot->disciplina }}</p>
-                      <p class="text-xs text-red-700">{{ $slot->professor }}</p>
-                    </div>
-                  @else
-                    <span class="text-xs text-slate-400 font-semibold">
-                      Solte aqui
-                    </span>
-                  @endif
-
-                </td>
-              @endforeach
-            </tr>
+            <th class="border p-1 text-xs font-semibold text-slate-600">
+              {{ $num }}ª
+            </th>
           @endforeach
-        </tbody>
-      </table>
-    </div>
-  </div>
+        @endforeach
+      </tr>
+    </thead>
+<tbody>
+@php
+  /**
+   * Agrupa turmas por ANO
+   * Ex: "1º Agro" → ano = 1
+   */
+  $turmasPorAno = [];
+
+  foreach ($turmas as $t) {
+    preg_match('/^(\d+)/', $t, $m);
+    $ano = $m[1] ?? 'X';
+    $turmasPorAno[$ano][] = $t;
+  }
+
+  // cores por ano
+  $coresAno = [
+    '1' => 'bg-blue-50',
+    '2' => 'bg-emerald-50',
+    '3' => 'bg-amber-50',
+    '4' => 'bg-violet-50',
+  ];
+@endphp
+
+@foreach($turmasPorAno as $ano => $listaTurmas)
+
+  {{-- LINHA DIVISÓRIA DO ANO --}}
+  <tr>
+    <td colspan="{{ 1 + count($dias)*count($aulasInfo) }}"
+        class="border p-2 font-black text-slate-700 bg-slate-200">
+      {{ $ano }}º Ano
+    </td>
+  </tr>
+
+  {{-- TURMAS DO ANO --}}
+  @foreach($listaTurmas as $t)
+    <tr class="{{ $coresAno[$ano] ?? 'bg-slate-50' }}">
+
+      {{-- COLUNA TURMA --}}
+      <td class="border p-2 font-black">
+        {{ $t }}
+      </td>
+
+      {{-- DIAS × AULAS --}}
+      @foreach($dias as $diaNome)
+        @foreach($aulasInfo as $num => [$ini,$fim])
+
+          @php
+            $slot = $map[$t.'|'.$num.'|'.$diaNome] ?? null;
+          @endphp
+
+          <td class="border h-20 p-1 align-top text-xs"
+              data-dia="{{ $diaNome }}"
+              data-turma="{{ $t }}"
+              data-aula="{{ $num }}"
+              data-inicio="{{ $ini }}"
+              data-fim="{{ $fim }}"
+              ondragover="allowDrop(event)"
+              ondrop="dropCell(event)">
+
+            @if($slot)
+              <div draggable="true"
+                   ondragstart="dragStart(event)"
+                   data-from-dia="{{ $diaNome }}"
+                   data-from-turma="{{ $t }}"
+                   data-from-aula="{{ $num }}"
+                   data-disciplina="{{ $slot->disciplina }}"
+                   data-professor="{{ $slot->professor }}"
+                   class="slotBlock bg-red-100 border border-red-300 rounded p-1 cursor-grab">
+
+                <p class="font-black text-red-800 leading-tight">
+                  {{ $slot->disciplina }}
+                </p>
+                <p class="text-[10px] text-red-700">
+                  {{ $slot->professor }}
+                </p>
+              </div>
+            @else
+              <span class="text-[10px] text-slate-400 font-semibold">
+                Solte
+              </span>
+            @endif
+
+          </td>
+
+        @endforeach
+      @endforeach
+
+    </tr>
+  @endforeach
+
+@endforeach
+</tbody>
+
+
+  </table>
+</div>
 
   {{-- ====== LIXEIRA ====== --}}
   <div class="bg-white border rounded-2xl p-5 shadow-sm">

@@ -435,6 +435,11 @@ Route::middleware('permissao:gerenciar_cronograma')->group(function () {
 
     Route::delete('/disciplinas/{id}', [AdminController::class, 'disciplinasDelete'])
         ->name('admin.disciplinas.delete');
+        Route::delete(
+    '/admin/cronograma/apagar-tudo',
+    [AdminController::class, 'cronogramaApagarTudo']
+)->name('admin.cronograma.apagarTudo');
+
 });
 
 

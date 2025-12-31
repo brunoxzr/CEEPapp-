@@ -8,6 +8,8 @@ use App\Models\Disciplina;
 use App\Models\Projeto;
 use App\Models\ProfessorRestricao;
 use App\Models\Cronograma;
+use App\Models\ProfessorTurma;
+
 
 class Admin extends Model
 {
@@ -61,6 +63,7 @@ public function disciplinas()
         'disciplina_id'
     )->withPivot('carga_horaria_max');
 }
+
 
 
 
@@ -208,4 +211,57 @@ public function cargaInfo(Disciplina $disciplina): array
         'percentual' => min(100, round(($usada / $max) * 100)),
     ];
 }
+// ============================
+// TURMAS QUE O PROFESSOR ATENDE
+// ============================
+
+public function turmas()
+{
+    return $this->hasMany(ProfessorTurma::class, 'admin_id');
+}
+
+
+public function podeDarAulaNaTurma(string $turma): bool
+{
+    return $this->limiteNaTurma($turma) > 0;
+}
+
+public function listaTurmas(): array
+{
+    return $this->turmas()
+        ->pluck('turma')
+        ->toArray();
+}
+public function cargaTotalMaxima(): int
+{
+    return $this->disciplinas->sum(function ($d) {
+        return (int) ($d->pivot->carga_horaria_max ?? 0);
+    });
+}
+
+public function cargaTotalUsada(): int
+{
+    return Cronograma::where('professor', $this->nome)->count();
+}
+
+public function cargaRestante(): int
+{
+    return max(0, $this->cargaTotalMaxima() - $this->cargaTotalUsada());
+}
+
+public function cargaNaTurma(string $turma): int
+{
+    return Cronograma::where('professor', $this->nome)
+        ->where('turma', $turma)
+        ->count();
+}
+
+public function limiteNaTurma(string $turma): int
+{
+    $rel = $this->turmas->firstWhere('turma', $turma);
+    return $rel?->carga_max ?? 0;
+}
+
+
+
 }

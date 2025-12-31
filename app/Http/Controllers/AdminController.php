@@ -152,34 +152,30 @@ public function cronogramaIndex(Request $request)
         6 => ['11:40','12:30'],
     ];
 
-    $ano = $request->get('ano', '1º Ano');
-    if (!isset($anos[$ano])) $ano = '1º Ano';
+    // 🔥 TODAS as turmas
+    $turmas = collect($anos)->flatten()->values()->toArray();
 
     $dia = $request->get('dia', 'Segunda');
-    if (!in_array($dia, $dias)) $dia = 'Segunda';
+    if (!in_array($dia, $dias)) {
+        $dia = 'Segunda';
+    }
 
-    $turmas = $anos[$ano];
-
-    // Professores + disciplinas (blocos)
     $professores = Admin::where('role', 'professor')
         ->with('disciplinas')
         ->orderBy('nome')
         ->get();
 
-    // Slots existentes (DRAG)
-    $itens = Cronograma::where('dia_semana', $dia)
-        ->whereIn('turma', $turmas)
-        ->whereNotNull('aula') // 👈 importante
+    $itens = Cronograma::whereIn('turma', $turmas)
+        ->whereNotNull('aula')
         ->get();
 
-    // mapa turma|aula => registro
     $map = [];
     foreach ($itens as $i) {
-        $map[$i->turma.'|'.$i->aula] = $i;
+        $map[$i->turma.'|'.$i->aula.'|'.$i->dia_semana] = $i;
     }
 
     return view('admin.cronograma.index', compact(
-        'anos','dias','aulas','ano','dia','turmas','professores','map'
+        'anos','dias','aulas','turmas','professores','map'
     ));
 }
 
@@ -751,22 +747,32 @@ public function professoresIndex()
         ->get();
 
     return view('admin.professores.index', compact('professores'));
-}
-public function editarProfessor($id)
+}public function editarProfessor($id)
 {
     $this->requireAdmin();
 
     $professor = Admin::where('role', 'professor')
-        ->with('disciplinas')
+        ->with(['disciplinas', 'turmas'])
         ->findOrFail($id);
 
     $disciplinas = Disciplina::orderBy('nome')->get();
 
+    // 🔥 LISTA OFICIAL DE TURMAS
+    $anos = [
+        "1º Ano" => ['1º DS','1º EDF','1º MEC','1º Eletro','1º Agro'],
+        "2º Ano" => ['2º DS','2º EDF','2º MEC','2º Eletro','2º Agro'],
+        "3º Ano" => ['3º DS','3º EDF','3º MEC','3º Eletro','3º Agro'],
+    ];
+
+    $turmas = collect($anos)->flatten()->values();
+
     return view('admin.professores.edit', compact(
         'professor',
-        'disciplinas'
+        'disciplinas',
+        'turmas'
     ));
 }
+
 
 // ============================
 // SALVAR DISCIPLINAS
@@ -777,44 +783,41 @@ public function salvarProfessor(Request $request, $id)
 
     $professor = Admin::where('role', 'professor')->findOrFail($id);
 
-    // validação forte
+    /* ================= DISCIPLINAS ================= */
     $request->validate([
         'disciplinas' => 'array',
         'carga'       => 'array',
-        'carga.*'     => 'required|integer|min:1'
+        'carga.*'     => 'required|integer|min:1',
     ]);
 
-    $disciplinas = $request->input('disciplinas', []);
-
-    // se não marcou nenhuma, remove todas
-    if (empty($disciplinas)) {
-        $professor->disciplinas()->detach();
-
-        return redirect()
-            ->route('admin.professores')
-            ->with('ok', 'Disciplinas removidas do professor.');
-    }
-
     $sync = [];
-
-    foreach ($disciplinas as $discId) {
-        if (!isset($request->carga[$discId])) {
-            return back()->withErrors([
-                'carga' => 'Informe a carga horária para todas as disciplinas selecionadas.'
-            ]);
-        }
-
+    foreach ($request->input('disciplinas', []) as $discId) {
         $sync[$discId] = [
             'carga_horaria_max' => (int) $request->carga[$discId]
         ];
     }
-
-    // sincroniza corretamente
     $professor->disciplinas()->sync($sync);
+
+    /* ================= TURMAS ================= */
+    /* ================= TURMAS + CARGA ================= */
+    $professor->turmas()->delete();
+
+    if ($request->filled('turmas')) {
+        foreach ($request->turmas as $turma => $dados) {
+
+            if (!isset($dados['ativo'])) continue;
+
+            $professor->turmas()->create([
+                'turma' => $turma,
+                'carga_max' => (int) ($dados['carga'] ?? 0),
+            ]);
+        }
+    }
+
 
     return redirect()
         ->route('admin.professores')
-        ->with('ok', 'Professor atualizado com carga horária.');
+        ->with('ok', 'Professor atualizado com sucesso.');
 }
 
 
@@ -959,21 +962,17 @@ public function disciplinasDelete($id)
         'diaHoje',
         'aulasHoje'
     ));
-}
-
-
-public function gerarCronograma(Request $request)
+}public function gerarCronograma(Request $request)
 {
     $this->requireAdmin();
-
-    $ano = $request->get('ano', '1º Ano');
-    $dia = $request->get('dia', 'Segunda');
 
     $anos = [
         "1º Ano" => ['1º DS','1º EDF','1º MEC','1º Eletro','1º Agro'],
         "2º Ano" => ['2º DS','2º EDF','2º MEC','2º Eletro','2º Agro'],
         "3º Ano" => ['3º DS','3º EDF','3º MEC','3º Eletro','3º Agro'],
     ];
+
+    $dias = ['Segunda','Terça','Quarta','Quinta','Sexta'];
 
     $aulas = [
         1 => ['07:20','08:10'],
@@ -984,75 +983,80 @@ public function gerarCronograma(Request $request)
         6 => ['11:40','12:30'],
     ];
 
-    $turmas = $anos[$ano] ?? [];
+    $turmas = collect($anos)->flatten()->values();
 
-    // professores com disciplinas + restrições
     $professores = Admin::where('role', 'professor')
-        ->with('disciplinas', 'restricoes')
-        ->orderBy('nome')
+        ->with(['disciplinas', 'restricoes', 'turmas'])
         ->get();
 
-    foreach ($turmas as $turma) {
-        foreach ($aulas as $aula => [$inicio, $fim]) {
+    foreach ($dias as $dia) {
+        foreach ($turmas as $turma) {
+            foreach ($aulas as $aula => [$inicio, $fim]) {
 
-            // pula se já existe slot
-            $existe = Cronograma::where([
-                'dia_semana' => $dia,
-                'turma'      => $turma,
-                'aula'       => $aula,
-            ])->exists();
+                // slot já ocupado
+                if (Cronograma::where([
+                    'dia_semana' => $dia,
+                    'turma' => $turma,
+                    'aula' => $aula,
+                ])->exists()) continue;
 
-            if ($existe) {
-                continue;
-            }
+                foreach ($professores->shuffle() as $prof) {
 
-            // tenta achar um professor válido
-            foreach ($professores as $prof) {
+                    // turma não permitida
+                    if (!$prof->podeDarAulaNaTurma($turma)) continue;
 
-                // 1️⃣ respeita restrições de horário
-                if (!$prof->podeDarAula($dia, $aula)) {
-                    continue;
-                }
+                    // restrição horário
+                    if (!$prof->podeDarAula($dia, $aula)) continue;
 
-                foreach ($prof->disciplinas as $disc) {
+                    // carga total
+                    if ($prof->cargaRestante() <= 0) continue;
 
-                    // 2️⃣ respeita carga horária da disciplina
-                    if (!$prof->podeDarMaisAula($disc->nome)) {
-                        continue;
+                    // carga por turma
+                    if ($prof->cargaNaTurma($turma) >= $prof->limiteNaTurma($turma)) continue;
+
+                    foreach ($prof->disciplinas as $disc) {
+
+                        if (!$prof->podeDarMaisAula($disc->nome)) continue;
+
+                        // conflito horário
+                        if (Cronograma::where([
+                            'dia_semana' => $dia,
+                            'aula' => $aula,
+                            'professor' => $prof->nome,
+                        ])->exists()) continue;
+
+                        Cronograma::create([
+                            'dia_semana' => $dia,
+                            'turma' => $turma,
+                            'aula' => $aula,
+                            'inicio' => $inicio,
+                            'fim' => $fim,
+                            'disciplina' => $disc->nome,
+                            'professor' => $prof->nome,
+                        ]);
+
+                        break 2;
                     }
-
-                    // 3️⃣ conflito: mesmo professor no mesmo horário
-                    $conflito = Cronograma::where([
-                        'dia_semana' => $dia,
-                        'aula'       => $aula,
-                        'professor'  => $prof->nome,
-                    ])->exists();
-
-                    if ($conflito) {
-                        continue;
-                    }
-
-                    // 🔥 ACHOU UM SLOT VÁLIDO → SALVA
-                    Cronograma::create([
-                        'dia_semana' => $dia,
-                        'turma'      => $turma,
-                        'aula'       => $aula,
-                        'inicio'     => $inicio,
-                        'fim'        => $fim,
-                        'disciplina' => $disc->nome,
-                        'professor'  => $prof->nome,
-                    ]);
-
-                    // passa para próxima aula
-                    break 2;
                 }
             }
         }
     }
 
+    return back()->with('ok', 'Cronograma semanal gerado com sucesso.');
+}
+
+
+
+
+public function cronogramaApagarTudo()
+{
+    $this->requireAdmin();
+
+    Cronograma::truncate(); // 🔥 apaga tudo mesmo
+
     return redirect()
         ->back()
-        ->with('ok', 'Cronograma automático gerado respeitando carga horária e restrições.');
+        ->with('ok', 'Todo o cronograma foi apagado com sucesso.');
 }
 
 
