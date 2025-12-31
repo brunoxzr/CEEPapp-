@@ -1,8 +1,59 @@
 @include('layouts.header', ['title' => $news->title])
 
+<!-- CSS DO QUILL (APENAS ESTILO, SEM EDITOR) -->
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+
+<style>
+/* =========================
+   AJUSTES DE CONTEÚDO (QUILL)
+   ========================= */
+
+/* texto base */
+.ql-editor {
+    font-size: 1.125rem; /* text-lg */
+    line-height: 1.75rem;
+    padding: 0;
+}
+
+/* imagens padrão */
+.ql-editor img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+/* imagem à direita */
+.ql-align-right img {
+    float: right;
+    margin: 0 0 1rem 1.5rem;
+    max-width: 45%;
+}
+
+/* imagem à esquerda */
+.ql-align-left img {
+    float: left;
+    margin: 0 1.5rem 1rem 0;
+    max-width: 45%;
+}
+
+/* imagem centralizada */
+.ql-align-center img {
+    display: block;
+    margin: 1.5rem auto;
+}
+
+/* limpar float após parágrafos */
+.ql-editor p::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+</style>
+
 <main class="bg-white">
 
-    <!-- HERO / CAPA -->
+    <!-- ================= HERO / CAPA ================= -->
     @if($news->cover_path)
     <section class="relative h-[65vh] min-h-[420px]">
         <img
@@ -10,6 +61,7 @@
             class="absolute inset-0 w-full h-full object-cover"
             alt="{{ $news->title }}"
         >
+
         <div class="absolute inset-0 bg-black/60"></div>
 
         <div class="relative max-w-6xl mx-auto px-6 h-full flex items-end pb-12">
@@ -31,17 +83,12 @@
     </section>
     @endif
 
-    <!-- CONTEÚDO -->
+    <!-- ================= CONTEÚDO ================= -->
     <section class="py-20">
         <div class="max-w-3xl mx-auto px-6">
 
-            <!-- TEXTO -->
-            <article
-                class="prose prose-lg max-w-none prose-slate
-                       prose-img:rounded-lg
-                       prose-img:shadow
-                       prose-img:mx-auto">
-
+            <!-- CONTEÚDO QUILL (IGUAL AO CREATE) -->
+            <article class="ql-editor">
                 {!! $news->content !!}
             </article>
 
@@ -53,7 +100,7 @@
         </div>
     </section>
 
-    <!-- NOTÍCIAS RELACIONADAS -->
+    <!-- ================= NOTÍCIAS RELACIONADAS ================= -->
     @if($recentNews->count())
     <section class="bg-slate-50 py-20 border-t">
         <div class="max-w-6xl mx-auto px-6">
