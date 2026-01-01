@@ -57,27 +57,6 @@
 
     </td>
 </tr>
-<!-- BOTÃO -->
-<tr>
-    <td align="center" style="padding:30px 0">
-
-        <a href="https://ceepapp-production.up.railway.app/area-academica"
-           target="_blank"
-           style="
-               display:inline-block;
-               background:#7f1d1d;
-               color:#ffffff;
-               padding:16px 32px;
-               font-size:16px;
-               font-weight:bold;
-               text-decoration:none;
-               border-radius:8px;
-           ">
-            📚 Acessar Comunicados
-        </a>
-
-    </td>
-</tr>
 
 
                     </td>
