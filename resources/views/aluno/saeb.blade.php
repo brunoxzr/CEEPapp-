@@ -1,4 +1,4 @@
-@include('layouts.header', ['title' => 'Minhas Provas SAEB'])
+@include('layouts.aluno_nav', ['title' => 'Minhas Provas SAEB'])
 
 <section class="max-w-4xl mx-auto px-4 mt-8 bg-white rounded-xl shadow p-6">
   <h2 class="text-xl font-bold mb-4">Meus Resultados SAEB</h2>

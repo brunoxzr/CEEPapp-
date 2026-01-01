@@ -1,5 +1,5 @@
 <?php /** @var \App\Models\Aluno $aluno */ ?>
-@include('layouts.header', ['title' => 'Boletim do Aluno'])
+@include('layouts.aluno_nav', ['title' => 'Boletim do Aluno'])
 
 <section class="max-w-6xl mx-auto px-4 mt-8">
   <!-- Cabeçalho -->
