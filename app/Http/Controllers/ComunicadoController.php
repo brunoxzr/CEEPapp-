@@ -89,14 +89,15 @@ public function store(Request $request)
     $emails = $alunosQuery->pluck('email');
 
 foreach ($emails as $email) {
-    Mail::to($email)->send(new ComunicadoMail($comunicado));
-
+    Mail::to($email)->queue(
+        new ComunicadoMail($comunicado)
+    );
 }
 
+return redirect()
+    ->route('admin.comunicados.index')
+    ->with('ok', 'Comunicado publicado. Os e-mails estão sendo enviados em segundo plano.');
 
-    return redirect()
-        ->route('admin.comunicados.index')
-        ->with('ok', 'Comunicado publicado e enviado por e-mail com sucesso.');
 }
 
     /* ================= ALUNO ================= */
