@@ -7,6 +7,10 @@ use App\Models\Boletim;
 use App\Models\Cronograma;
 use App\Models\SaebResultado;
 use Illuminate\Support\Carbon;
+use App\Models\Comunicado;
+
+// ...
+
 
 class AlunoController extends Controller
 {
@@ -25,34 +29,58 @@ class AlunoController extends Controller
     /**
      * ================= DASHBOARD =================
      */
-    public function dashboard()
-    {
-        $aluno = $this->requireAluno();
+public function dashboard()
+{
+    $aluno = $this->requireAluno();
 
-        $boletins = Boletim::where('aluno_id', $aluno->id)
-            ->orderByDesc('created_at')
-            ->take(10)
-            ->get();
+    // ================= NOTAS =================
+    $boletins = Boletim::where('aluno_id', $aluno->id)
+        ->orderByDesc('created_at')
+        ->take(10)
+        ->get();
 
-        // 🔹 Cronograma do DIA atual (dashboard)
-        $cronograma = Cronograma::where('turma', $aluno->turma)
-            ->where('dia_semana', Carbon::now()->locale('pt_BR')->dayName)
-            ->orderBy('inicio')
-            ->get();
+    // ================= CRONOGRAMA (HOJE) =================
+    $diaHoje = ucfirst(
+        Carbon::now()->locale('pt_BR')->dayName
+    );
 
-        $saeb = SaebResultado::where('aluno_id', $aluno->id)
-            ->orderByDesc('ano')
-            ->orderByDesc('created_at')
-            ->take(10)
-            ->get();
+    $cronograma = Cronograma::where('turma', $aluno->turma)
+        ->where('dia_semana', $diaHoje)
+        ->orderBy('inicio')
+        ->get();
 
-        return view('aluno.dashboard', compact(
-            'aluno',
-            'boletins',
-            'cronograma',
-            'saeb'
-        ));
-    }
+    // ================= SAEB =================
+    $saeb = SaebResultado::where('aluno_id', $aluno->id)
+        ->orderByDesc('ano')
+        ->orderByDesc('created_at')
+        ->take(10)
+        ->get();
+
+    // ================= COMUNICADOS =================
+    $comunicados = Comunicado::where('ativo', true)
+        ->where(function ($q) use ($aluno) {
+            $q->where('publico', 'geral')
+              ->orWhere(function ($q2) use ($aluno) {
+                  $q2->where('publico', 'turma')
+                     ->where('turma', $aluno->turma);
+              });
+        })
+        ->orderByDesc('created_at')
+        ->get();
+
+    $comunicadosCount = $comunicados->count();
+    $ultimosComunicados = $comunicados->take(3);
+
+    // ================= VIEW =================
+    return view('aluno.dashboard', compact(
+        'aluno',
+        'boletins',
+        'cronograma',
+        'saeb',
+        'comunicadosCount',
+        'ultimosComunicados'
+    ));
+}
 
     /**
      * ================= CRONOGRAMA SEMANAL =================

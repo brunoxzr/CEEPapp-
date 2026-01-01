@@ -29,6 +29,31 @@ use App\Http\Controllers\AdminDiretorController;
 use App\Http\Controllers\ProjetoController;
 use App\Http\Controllers\ProfessorProjetoController;
 use App\Http\Controllers\ProfessorRestricaoController;
+use App\Http\Controllers\ComunicadoController;
+
+Route::prefix('admin')
+    ->middleware(['web', 'admin'])
+    ->group(function () {
+
+        Route::get('/comunicados', [ComunicadoController::class, 'indexAdmin'])
+            ->name('admin.comunicados.index');
+
+        Route::get('/comunicados/create', [ComunicadoController::class, 'create'])
+            ->name('admin.comunicados.create');
+
+        Route::post('/comunicados', [ComunicadoController::class, 'store'])
+            ->name('admin.comunicados.store');
+
+        Route::get('/comunicados/{id}/edit', [ComunicadoController::class, 'edit'])
+            ->name('admin.comunicados.edit');
+
+        Route::put('/comunicados/{id}', [ComunicadoController::class, 'update'])
+            ->name('admin.comunicados.update');
+
+        Route::delete('/comunicados/{id}', [ComunicadoController::class, 'destroy'])
+            ->name('admin.comunicados.destroy');
+    });
+
 
 
 Route::post('/admin/cronograma/gerar', [
