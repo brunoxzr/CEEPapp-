@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Aluno;
 use App\Mail\ComunicadoMail;
 use Illuminate\Support\Facades\Mail;
-use app\Jobs\EnviarComunicadoEmail;
+use App\Jobs\EnviarComunicadoEmail;
+
 
 class ComunicadoController extends Controller
 {
