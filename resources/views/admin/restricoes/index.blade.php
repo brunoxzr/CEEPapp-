@@ -1,6 +1,4 @@
 @include('layouts.admin_nav', ['title' => 'Restrições de Professores'])
-@include('layouts.sidebar')
-
 <section class="max-w-5xl mx-auto px-4 mt-8 space-y-6">
 
   <h1 class="text-2xl font-black text-red-800">Restrições de Professores</h1>

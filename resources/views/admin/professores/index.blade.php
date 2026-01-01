@@ -1,5 +1,4 @@
 @include('layouts.admin_nav', ['title' => 'Gestor — Professores'])
-@include('layouts.sidebar')
 
 <main class="bg-slate-50 py-10">
   <div class="max-w-7xl mx-auto px-6">

@@ -1,6 +1,4 @@
 @include('layouts.admin_nav', ['title' => 'Dashboard do Professor'])
-@include('layouts.sidebar')
-
 <section class="max-w-6xl mx-auto px-4 mt-8 space-y-8">
 
   {{-- HEADER --}}

@@ -1,5 +1,4 @@
 @include('layouts.admin_nav', ['title' => 'Cronograma — Grade Visual'])
-@include('layouts.sidebar')
 
 @php
   $aulasInfo = $aulas;

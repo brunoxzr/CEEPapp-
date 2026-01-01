@@ -1,5 +1,5 @@
 @include('layouts.admin_nav', ['title' => 'Editar Professor'])
-@include('layouts.sidebar')
+
 
 <main class="bg-slate-50 py-10">
   <div class="max-w-5xl mx-auto px-6">

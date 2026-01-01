@@ -1,5 +1,4 @@
 @include('layouts.admin_nav', ['title' => 'Gestor — Dashboard'])
-@include('layouts.sidebar')
 <section class="max-w-6xl mx-auto mt-10 bg-white rounded-xl shadow-soft p-6">
   <h1 class="text-2xl font-bold mb-4 text-red-700">Mapear Alunos da Planilha</h1>
 

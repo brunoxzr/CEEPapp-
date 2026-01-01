@@ -1,5 +1,4 @@
 @include('layouts.admin_nav', ['title' => 'Editar Projeto Técnico'])
-@include('layouts.sidebar')
 
 <section class="max-w-4xl mx-auto px-4 mt-8 space-y-6">
 
