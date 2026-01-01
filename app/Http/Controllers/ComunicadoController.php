@@ -90,6 +90,7 @@ public function store(Request $request)
 
 foreach ($emails as $email) {
     Mail::to($email)->send(new ComunicadoMail($comunicado));
+
 }
 
 
