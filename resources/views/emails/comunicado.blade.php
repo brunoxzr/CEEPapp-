@@ -2,55 +2,54 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>{{ $titulo }}</title>
+    <title>{{ $comunicado->titulo }}</title>
 </head>
 
-<body style="
-    margin:0;
-    padding:0;
-    background:#f4f6f8;
-    font-family: Arial, Helvetica, sans-serif;
-">
+<body style="margin:0;padding:0;background:#f4f6f8;font-family:Arial,Helvetica,sans-serif;">
 
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6f8; padding:30px 0;">
+<table width="100%" cellpadding="0" cellspacing="0" style="padding:30px 0;">
     <tr>
         <td align="center">
 
-            <!-- CONTAINER -->
-            <table width="600" cellpadding="0" cellspacing="0" style="
-                background:#ffffff;
-                border-radius:10px;
-                overflow:hidden;
-                box-shadow:0 4px 20px rgba(0,0,0,0.08);
-            ">
+            <table width="600" cellpadding="0" cellspacing="0"
+                   style="background:#ffffff;border-radius:10px;overflow:hidden;">
 
                 <!-- HEADER -->
                 <tr>
-        <td style="background:#7f1d1d;padding:20px;text-align:center">
-            <img src="https://ceepapp-production.up.railway.app/img/logo_ceep.jpeg"
-                 alt="CEEP Assaí"
-                 style="max-height:70px">
-        </td>
+                    <td style="background:#7f1d1d;padding:20px;text-align:center">
+                        <img src="https://ceepapp-production.up.railway.app/img/logo_ceep.jpeg"
+                             alt="CEEP Assaí"
+                             style="max-height:70px">
+                    </td>
                 </tr>
 
                 <!-- CONTEÚDO -->
                 <tr>
-                    <td style="padding:30px; color:#111827;">
+                    <td style="padding:30px;color:#111827">
 
-                        <h2 style="
-                            margin-top:0;
-                            color:#7f1d1d;
-                            font-size:22px;
-                        ">
+                        <h2 style="color:#7f1d1d;margin-top:0">
                             {{ $comunicado->titulo }}
                         </h2>
 
-                        <div style="
-                            font-size:15px;
-                            line-height:1.6;
-                            color:#374151;
-                        ">
-                            {!! nl2br(e($conteudo)) !!}
+                        <div style="font-size:15px;line-height:1.6;color:#374151">
+                            {!! nl2br(e($comunicado->conteudo)) !!}
+                        </div>
+
+                        <!-- BOTÃO -->
+                        <div style="text-align:center;margin-top:35px;">
+                            <a href="https://ceepapp-production.up.railway.app/aluno/comunicados"
+                               style="
+                                   display:inline-block;
+                                   background:#7f1d1d;
+                                   color:#ffffff;
+                                   text-decoration:none;
+                                   padding:14px 28px;
+                                   border-radius:8px;
+                                   font-size:15px;
+                                   font-weight:bold;
+                               ">
+                                📚 Acessar Comunicados no CEEPapp
+                            </a>
                         </div>
 
                     </td>
@@ -67,7 +66,6 @@
                     ">
                         <strong>Centro Estadual de Educação Profissional</strong><br>
                         CEEP Assaí<br><br>
-
                         Este é um comunicado institucional enviado automaticamente.<br>
                         Por favor, não responda este e-mail.
                     </td>

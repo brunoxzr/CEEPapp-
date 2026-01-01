@@ -58,6 +58,7 @@ public function create()
             ->route('admin.comunicados.index')
             ->with('ok', 'Comunicado excluído com sucesso.');
     }
+
 public function store(Request $request)
 {
     $data = $request->validate([
@@ -72,11 +73,10 @@ public function store(Request $request)
     $data['criado_por'] = session('admin_id');
     $data['ativo'] = $request->boolean('ativo', true);
 
+    // 🔥 ISSO é um MODEL, não string
     $comunicado = Comunicado::create($data);
 
-    /* ================= ENVIO DE EMAIL ================= */
-
-    $alunosQuery = Aluno::query()->whereNotNull('email');
+    $alunosQuery = Aluno::whereNotNull('email');
 
     if ($comunicado->publico === 'turma') {
         $alunosQuery->where('turma', $comunicado->turma);
@@ -86,23 +86,17 @@ public function store(Request $request)
         $alunosQuery->where('curso', $comunicado->curso);
     }
 
-    // Coleta apenas os emails
     $emails = $alunosQuery->pluck('email');
 
-    foreach ($emails as $email) {
-        Mail::to($email)->queue(
-            new ComunicadoMail(
-                $comunicado->titulo,
-                $comunicado->conteudo
-            )
-        );
-    }
+foreach ($emails as $email) {
+    Mail::to($email)->send(new ComunicadoMail($comunicado));
+}
+
 
     return redirect()
         ->route('admin.comunicados.index')
         ->with('ok', 'Comunicado publicado e enviado por e-mail com sucesso.');
 }
-
 
     /* ================= ALUNO ================= */
 
