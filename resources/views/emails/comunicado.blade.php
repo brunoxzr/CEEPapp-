@@ -40,7 +40,7 @@
 <tr>
     <td align="center" style="padding:30px 0">
 
-        <a href="https://ceepapp-production.up.railway.app/aluno/comunicados"
+        <a href="https://ceepapp-production.up.railway.app/aluno/dashboard"
            target="_blank"
            style="
                display:inline-block;
@@ -61,7 +61,7 @@
 <tr>
     <td align="center" style="padding:30px 0">
 
-        <a href="https://ceepapp-production.up.railway.app/aluno/comunicados"
+        <a href="https://ceepapp-production.up.railway.app/aluno/dashboard"
            target="_blank"
            style="
                display:inline-block;
