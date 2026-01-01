@@ -35,39 +35,61 @@
                             {!! nl2br(e($comunicado->conteudo)) !!}
                         </div>
 
+                        <!-- BOTÃO (COMPATÍVEL COM GMAIL / OUTLOOK) -->
                         <!-- BOTÃO -->
-                        <div style="text-align:center;margin-top:35px;">
-                            <a href="https://ceepapp-production.up.railway.app/aluno/comunicados"
-                               style="
-                                   display:inline-block;
-                                   background:#7f1d1d;
-                                   color:#ffffff;
-                                   text-decoration:none;
-                                   padding:14px 28px;
-                                   border-radius:8px;
-                                   font-size:15px;
-                                   font-weight:bold;
-                               ">
-                                📚 Acessar Comunicados no CEEPapp
-                            </a>
-                        </div>
+<tr>
+    <td align="center" style="padding:30px 0">
+
+        <a href="https://ceepapp-production.up.railway.app/aluno/comunicados"
+           target="_blank"
+           style="
+               display:inline-block;
+               background:#7f1d1d;
+               color:#ffffff;
+               padding:16px 32px;
+               font-size:16px;
+               font-weight:bold;
+               text-decoration:none;
+               border-radius:8px;
+           ">
+            📚 Acessar Comunicados
+        </a>
+
+    </td>
+</tr>
+<!-- BOTÃO -->
+<tr>
+    <td align="center" style="padding:30px 0">
+
+        <a href="https://ceepapp-production.up.railway.app/aluno/comunicados"
+           target="_blank"
+           style="
+               display:inline-block;
+               background:#7f1d1d;
+               color:#ffffff;
+               padding:16px 32px;
+               font-size:16px;
+               font-weight:bold;
+               text-decoration:none;
+               border-radius:8px;
+           ">
+            📚 Acessar Comunicados
+        </a>
+
+    </td>
+</tr>
+
 
                     </td>
                 </tr>
 
                 <!-- FOOTER -->
                 <tr>
-                    <td style="
-                        background:#f9fafb;
-                        padding:20px;
-                        text-align:center;
-                        font-size:12px;
-                        color:#6b7280;
-                    ">
+                    <td style="background:#f9fafb;padding:20px;text-align:center;
+                               font-size:12px;color:#6b7280">
                         <strong>Centro Estadual de Educação Profissional</strong><br>
                         CEEP Assaí<br><br>
-                        Este é um comunicado institucional enviado automaticamente.<br>
-                        Por favor, não responda este e-mail.
+                        Este é um comunicado institucional enviado automaticamente.
                     </td>
                 </tr>
 
