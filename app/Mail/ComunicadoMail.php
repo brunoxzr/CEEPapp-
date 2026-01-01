@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Models\Comunicado;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -12,11 +11,13 @@ class ComunicadoMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public Comunicado $comunicado;
+    public string $titulo;
+    public string $conteudo;
 
-    public function __construct(Comunicado $comunicado)
+    public function __construct(string $titulo, string $conteudo)
     {
-        $this->comunicado = $comunicado;
+        $this->titulo = $titulo;
+        $this->conteudo = $conteudo;
     }
 
     public function build()
@@ -26,7 +27,7 @@ class ComunicadoMail extends Mailable implements ShouldQueue
                 config('mail.from.address'),
                 config('mail.from.name')
             )
-            ->subject('📢 Comunicado - ' . $this->comunicado->titulo)
+            ->subject('📢 Comunicado - ' . $this->titulo)
             ->view('emails.comunicado');
     }
 }

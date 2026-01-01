@@ -76,7 +76,7 @@ public function store(Request $request)
 
     /* ================= ENVIO DE EMAIL ================= */
 
-    $alunosQuery = Aluno::whereNotNull('email');
+    $alunosQuery = Aluno::query()->whereNotNull('email');
 
     if ($comunicado->publico === 'turma') {
         $alunosQuery->where('turma', $comunicado->turma);
@@ -86,18 +86,23 @@ public function store(Request $request)
         $alunosQuery->where('curso', $comunicado->curso);
     }
 
-    // público geral = todos os alunos
+    // Coleta apenas os emails
     $emails = $alunosQuery->pluck('email');
 
-foreach ($emails as $email) {
-    Mail::to($email)->queue(new ComunicadoMail($comunicado));
-
+    foreach ($emails as $email) {
+        Mail::to($email)->queue(
+            new ComunicadoMail(
+                $comunicado->titulo,
+                $comunicado->conteudo
+            )
+        );
     }
 
     return redirect()
         ->route('admin.comunicados.index')
         ->with('ok', 'Comunicado publicado e enviado por e-mail com sucesso.');
 }
+
 
     /* ================= ALUNO ================= */
 

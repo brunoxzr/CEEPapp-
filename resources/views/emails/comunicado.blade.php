@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>{{ $comunicado->titulo }}</title>
+    <title>{{ $titulo }}</title>
 </head>
 
 <body style="
@@ -50,7 +50,7 @@
                             line-height:1.6;
                             color:#374151;
                         ">
-                            {!! nl2br(e($comunicado->conteudo)) !!}
+                            {!! nl2br(e($conteudo)) !!}
                         </div>
 
                     </td>
