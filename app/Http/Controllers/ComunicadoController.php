@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Comunicado;
 use Illuminate\Http\Request;
+use App\Models\Aluno;
+use App\Mail\ComunicadoMail;
+use Illuminate\Support\Facades\Mail;
 
 class ComunicadoController extends Controller
 {
@@ -20,6 +23,10 @@ public function indexAdmin()
         $comunicado = Comunicado::findOrFail($id);
         return view('admin.comunicados.edit', compact('comunicado'));
     }
+public function create()
+{
+    return view('admin.comunicados.create');
+}
 
     public function update(Request $request, $id)
     {
@@ -51,27 +58,46 @@ public function indexAdmin()
             ->route('admin.comunicados.index')
             ->with('ok', 'Comunicado excluído com sucesso.');
     }
+public function store(Request $request)
+{
+    $data = $request->validate([
+        'titulo'   => 'required|string|max:200',
+        'conteudo' => 'required|string',
+        'publico'  => 'required|in:geral,turma,curso',
+        'turma'    => 'nullable|string|max:50',
+        'curso'    => 'nullable|string|max:50',
+        'ativo'    => 'nullable|boolean',
+    ]);
 
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'titulo'   => 'required|string|max:200',
-            'conteudo' => 'required|string',
-            'publico'  => 'required|in:geral,turma,curso',
-            'turma'    => 'nullable|string|max:50',
-            'curso'    => 'nullable|string|max:50',
-            'ativo'    => 'nullable|boolean',
-        ]);
+    $data['criado_por'] = session('admin_id');
+    $data['ativo'] = $request->boolean('ativo', true);
 
-        $data['criado_por'] = session('admin_id');
-        $data['ativo'] = $request->boolean('ativo', true);
+    $comunicado = Comunicado::create($data);
 
-        Comunicado::create($data);
+    /* ================= ENVIO DE EMAIL ================= */
 
-        return redirect()
-            ->route('admin.comunicados.index')
-            ->with('ok', 'Comunicado publicado com sucesso.');
+    $alunosQuery = Aluno::whereNotNull('email');
+
+    if ($comunicado->publico === 'turma') {
+        $alunosQuery->where('turma', $comunicado->turma);
     }
+
+    if ($comunicado->publico === 'curso') {
+        $alunosQuery->where('curso', $comunicado->curso);
+    }
+
+    // público geral = todos os alunos
+    $emails = $alunosQuery->pluck('email');
+
+foreach ($emails as $email) {
+    Mail::to($email)->queue(new ComunicadoMail($comunicado));
+
+    }
+
+    return redirect()
+        ->route('admin.comunicados.index')
+        ->with('ok', 'Comunicado publicado e enviado por e-mail com sucesso.');
+}
 
     /* ================= ALUNO ================= */
 

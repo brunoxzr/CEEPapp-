@@ -58,6 +58,7 @@ Route::prefix('aluno')->middleware('aluno')->group(function () {
 
 });
 
+
 Route::prefix('admin')
     ->middleware(['web', 'admin'])
     ->group(function () {
