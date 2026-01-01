@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Aluno;
 use App\Mail\ComunicadoMail;
 use Illuminate\Support\Facades\Mail;
+use app\Jobs\EnviarComunicadoEmail;
 
 class ComunicadoController extends Controller
 {
@@ -89,15 +90,15 @@ public function store(Request $request)
     $emails = $alunosQuery->pluck('email');
 
 foreach ($emails as $email) {
-    Mail::to($email)->queue(
-        new ComunicadoMail($comunicado)
+    EnviarComunicadoEmail::dispatch(
+        $email,
+        $comunicado->id
     );
 }
 
 return redirect()
     ->route('admin.comunicados.index')
-    ->with('ok', 'Comunicado publicado. Os e-mails estão sendo enviados em segundo plano.');
-
+    ->with('ok', 'Comunicado publicado. Envio de e-mails em segundo plano.');
 }
 
     /* ================= ALUNO ================= */
