@@ -43,36 +43,58 @@
             </div>
         </section>
         @if($comunicadosCount > 0)
-<section class="bg-white rounded-2xl shadow-lg border-l-8 border-yellow-400 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+<section class="bg-white rounded-2xl shadow-lg border-l-8 border-yellow-400 p-6 flex flex-col md:flex-row justify-between gap-6">
 
     <div class="flex items-start gap-4">
-        <div class="text-3xl">📢</div>
+        <div class="text-3xl">🔔</div>
 
         <div>
             <h2 class="text-xl font-black text-red-800">
-                Você tem {{ $comunicadosCount }} comunicado{{ $comunicadosCount > 1 ? 's' : '' }} novo{{ $comunicadosCount > 1 ? 's' : '' }}
+                Você tem {{ $comunicadosCount }} aviso{{ $comunicadosCount > 1 ? 's' : '' }} importante{{ $comunicadosCount > 1 ? 's' : '' }}
             </h2>
 
-            <ul class="mt-2 text-sm text-slate-700 list-disc ml-5 space-y-1">
+            <ul class="mt-3 text-sm text-slate-700 space-y-2">
+
+                {{-- COMUNICADOS --}}
                 @foreach($ultimosComunicados as $c)
                     <li>
-                        <span class="font-semibold">{{ $c->titulo }}</span>
+                        📢 <span class="font-semibold">{{ $c->titulo }}</span>
                         <span class="text-xs text-slate-500">
                             — {{ $c->created_at->format('d/m') }}
                         </span>
                     </li>
                 @endforeach
+
+                {{-- EVENTOS --}}
+                @foreach($eventosProximos as $e)
+                    <li>
+                        📅 <span class="font-semibold">{{ $e->titulo }}</span>
+                        <span class="text-xs text-slate-500">
+                            — {{ $e->data->format('d/m') }}
+                            @if($e->hora_inicio) {{ $e->hora_inicio }} @endif
+                        </span>
+                    </li>
+                @endforeach
+
             </ul>
         </div>
     </div>
 
-    <a href="{{ route('aluno.comunicados.index') }}"
-       class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-yellow-400 text-red-900 font-black hover:bg-yellow-300 transition shadow">
-        Ver comunicados →
-    </a>
+    <div class="flex flex-col gap-2">
+        <a href="{{ route('aluno.comunicados.index') }}"
+           class="px-5 py-2 rounded-lg bg-yellow-400 text-red-900 font-black hover:bg-yellow-300 shadow text-center">
+            Ver comunicados
+        </a>
+
+        <a href="{{ route('aluno.calendario.index') }}"
+           class="px-5 py-2 rounded-lg bg-red-700 text-white font-bold hover:bg-red-800 shadow text-center">
+            Ver calendário
+        </a>
+    </div>
 
 </section>
 @endif
+
 
 
         <!-- ================= KPIs ================= -->

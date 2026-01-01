@@ -77,26 +77,36 @@ public function indexAdmin()
 
 public function indexAluno()
 {
-    // 🔐 pega aluno pela session (igual o resto do sistema)
     $aluno = \App\Models\Aluno::findOrFail(session('aluno_id'));
 
+    /* ================= COMUNICADOS ================= */
     $comunicados = \App\Models\Comunicado::where('ativo', true)
         ->where(function ($q) use ($aluno) {
-
-            // público geral
             $q->where('publico', 'geral')
-
-            // público por turma
-            ->orWhere(function ($q) use ($aluno) {
-                $q->where('publico', 'turma')
-                  ->where('turma', $aluno->turma);
-            });
-
+              ->orWhere(function ($q) use ($aluno) {
+                  $q->where('publico', 'turma')
+                    ->where('turma', $aluno->turma);
+              });
         })
         ->orderByDesc('created_at')
         ->get();
 
-    return view('aluno.comunicados.index', compact('comunicados', 'aluno'));
+    /* ================= EVENTOS (10 DIAS) ================= */
+    $eventosProximos = \App\Models\CalendarioInstitucional::where('ativo', true)
+        ->whereIn('publico', ['alunos', 'todos'])
+        ->whereBetween('data', [
+            now()->startOfDay(),
+            now()->addDays(10)->endOfDay()
+        ])
+        ->orderBy('data')
+        ->orderBy('hora_inicio')
+        ->get();
+
+    return view('aluno.comunicados.index', compact(
+        'aluno',
+        'comunicados',
+        'eventosProximos'
+    ));
 }
 
 }

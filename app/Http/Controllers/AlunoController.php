@@ -8,6 +8,7 @@ use App\Models\Cronograma;
 use App\Models\SaebResultado;
 use Illuminate\Support\Carbon;
 use App\Models\Comunicado;
+use App\Models\CalendarioInstitucional;
 
 // ...
 
@@ -33,52 +34,49 @@ public function dashboard()
 {
     $aluno = $this->requireAluno();
 
-    // ================= NOTAS =================
     $boletins = Boletim::where('aluno_id', $aluno->id)
         ->orderByDesc('created_at')
         ->take(10)
         ->get();
 
-    // ================= CRONOGRAMA (HOJE) =================
-    $diaHoje = ucfirst(
-        Carbon::now()->locale('pt_BR')->dayName
-    );
-
     $cronograma = Cronograma::where('turma', $aluno->turma)
-        ->where('dia_semana', $diaHoje)
+        ->where('dia_semana', now()->locale('pt_BR')->dayName)
         ->orderBy('inicio')
         ->get();
 
-    // ================= SAEB =================
-    $saeb = SaebResultado::where('aluno_id', $aluno->id)
-        ->orderByDesc('ano')
-        ->orderByDesc('created_at')
-        ->take(10)
-        ->get();
-
-    // ================= COMUNICADOS =================
-    $comunicados = Comunicado::where('ativo', true)
+    /* ================= COMUNICADOS ================= */
+    $ultimosComunicados = Comunicado::where('ativo', true)
         ->where(function ($q) use ($aluno) {
             $q->where('publico', 'geral')
-              ->orWhere(function ($q2) use ($aluno) {
-                  $q2->where('publico', 'turma')
-                     ->where('turma', $aluno->turma);
+              ->orWhere(function ($q) use ($aluno) {
+                  $q->where('publico', 'turma')
+                    ->where('turma', $aluno->turma);
               });
         })
         ->orderByDesc('created_at')
+        ->take(3)
         ->get();
 
-    $comunicadosCount = $comunicados->count();
-    $ultimosComunicados = $comunicados->take(3);
+    /* ================= EVENTOS (10 DIAS) ================= */
+    $eventosProximos = CalendarioInstitucional::where('ativo', true)
+        ->whereIn('publico', ['alunos', 'todos'])
+        ->whereBetween('data', [
+            now()->startOfDay(),
+            now()->addDays(10)->endOfDay()
+        ])
+        ->orderBy('data')
+        ->orderBy('hora_inicio')
+        ->get();
 
-    // ================= VIEW =================
+    $comunicadosCount = $ultimosComunicados->count() + $eventosProximos->count();
+
     return view('aluno.dashboard', compact(
         'aluno',
         'boletins',
         'cronograma',
-        'saeb',
-        'comunicadosCount',
-        'ultimosComunicados'
+        'ultimosComunicados',
+        'eventosProximos',
+        'comunicadosCount'
     ));
 }
 

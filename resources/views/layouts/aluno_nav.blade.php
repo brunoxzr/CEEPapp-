@@ -85,6 +85,9 @@
                 <a href="{{ route('aluno.cronograma') }}" class="hover:text-red-800">
                     Cronograma
                 </a>
+                                <a href="{{ route('aluno.calendario.index') }}" class="hover:text-red-800">
+                    Calendario
+                </a>
 
                 <form action="{{ route('logout') }}" method="POST" class="ml-4">
                     @csrf
@@ -132,6 +135,7 @@
                 <a href="{{ route('aluno.boletim') }}">Boletim</a>
                 <a href="{{ route('aluno.saeb') }}">SAEB</a>
                 <a href="{{ route('aluno.cronograma') }}">Cronograma</a>
+                                <a href="{{ route('aluno.calendario.index') }}">calendario</a>
 
                 <div class="border-t pt-4 mt-4">
                     <form action="{{ route('logout') }}" method="POST">

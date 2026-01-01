@@ -1,4 +1,12 @@
 @include('layouts.header', ['title' => 'Notícias — CEEP Assaí'])
+@push('preload-images')
+    @if($news->count())
+        @php $featured = $news->first(); @endphp
+        @if($featured->cover_path)
+            <link rel="preload" as="image" href="{{ asset('storage/'.$featured->cover_path) }}">
+        @endif
+    @endif
+@endpush
 
 <main class="bg-white text-slate-800">
 

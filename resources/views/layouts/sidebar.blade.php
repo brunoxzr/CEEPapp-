@@ -85,6 +85,10 @@
    class="block px-4 py-2 rounded hover:bg-red-700">
     Comunicados
 </a>
+<a href="{{ route('admin.calendario.index') }}"
+   class="block px-4 py-2 rounded hover:bg-red-700">
+    Calendario
+</a>
 
 
 

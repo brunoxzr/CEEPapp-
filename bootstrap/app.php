@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'diretor'    => \App\Http\Middleware\DiretorOnly::class,
             'permissao'  => \App\Http\Middleware\HasPermissao::class,
             'professor' => \App\Http\Middleware\ProfessorAuthMiddleware::class,
+            'aluno' => \App\Http\Middleware\AlunoAuthMiddleware::class,
         ]);
     })
 

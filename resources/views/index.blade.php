@@ -1,4 +1,13 @@
 @include('layouts.header', ['title' => 'CEEP Assaí — Portal Institucional'])
+@push('preload-images')
+    {{-- HERO --}}
+    <link rel="preload" as="image" href="/img/frenteCeep.jpg">
+
+    {{-- NOTÍCIA EM DESTAQUE --}}
+    @if($featured && $featured->cover_path)
+        <link rel="preload" as="image" href="{{ asset('storage/'.$featured->cover_path) }}">
+    @endif
+@endpush
 
 <main class="bg-white text-slate-800">
 

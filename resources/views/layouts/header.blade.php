@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? 'CEEP Assaí — Portal Institucional' }}</title>
+    {{-- ================= PRELOAD GLOBAL ================= --}}
+<link rel="preload" as="image" href="/img/frenteCeep.jpg">
+
+@stack('preload-images')
 
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="color-scheme" content="light">

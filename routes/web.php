@@ -30,6 +30,33 @@ use App\Http\Controllers\ProjetoController;
 use App\Http\Controllers\ProfessorProjetoController;
 use App\Http\Controllers\ProfessorRestricaoController;
 use App\Http\Controllers\ComunicadoController;
+use App\Http\Controllers\CalendarioController;
+// ADMIN
+Route::prefix('admin')->middleware('admin')->group(function () {
+    Route::get('/calendario', [CalendarioController::class, 'indexAdmin'])->name('admin.calendario.index');
+    Route::get('/calendario/create', [CalendarioController::class, 'create'])->name('admin.calendario.create');
+    Route::post('/calendario', [CalendarioController::class, 'store'])->name('admin.calendario.store');
+    Route::get('/calendario/{id}/edit', [CalendarioController::class, 'edit'])->name('admin.calendario.edit');
+    Route::put('/calendario/{id}', [CalendarioController::class, 'update'])->name('admin.calendario.update');
+    Route::delete('/calendario/{id}', [CalendarioController::class, 'destroy'])->name('admin.calendario.destroy');
+});
+
+// ALUNO
+Route::prefix('aluno')->middleware('aluno')->group(function () {
+    Route::get('/calendario', [CalendarioController::class, 'indexAluno'])->name('aluno.calendario.index');
+});
+
+
+Route::prefix('aluno')->middleware('aluno')->group(function () {
+
+    Route::get('/calendario', [CalendarioController::class, 'indexAluno'])
+        ->name('aluno.calendario.index');
+
+    // 🔔 COMUNICADOS DO ALUNO (ESSA É A QUE FALTA)
+    Route::get('/comunicados', [ComunicadoController::class, 'indexAluno'])
+        ->name('aluno.comunicados.index');
+
+});
 
 Route::prefix('admin')
     ->middleware(['web', 'admin'])
