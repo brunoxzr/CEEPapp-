@@ -271,50 +271,6 @@
     @endforeach
 
 </div>
-<div class="g1-feed space-y-12">
-
-    @foreach($search ? $news : $news->skip(1) as $item)
-        <article class="g1-item">
-            <a href="{{ route('portal.news.show', $item->slug) }}"
-               class="flex flex-col md:flex-row gap-6 group">
-
-                {{-- IMAGEM --}}
-                <div class="g1-thumb">
-                    @if($item->cover_path)
-                        <img
-                            src="{{ asset('storage/'.$item->cover_path) }}"
-                            alt="{{ $item->title }}">
-                    @else
-                        <div class="g1-thumb-fallback">
-                            CEEP Assaí
-                        </div>
-                    @endif
-                </div>
-
-                {{-- TEXTO --}}
-                <div class="g1-content">
-                    <span class="g1-chapeu">Notícia</span>
-
-                    <h2 class="g1-title">
-                        {{ $item->title }}
-                    </h2>
-
-                    @if($item->excerpt)
-                        <p class="g1-excerpt">
-                            {{ $item->excerpt }}
-                        </p>
-                    @endif
-
-                    <div class="g1-meta">
-                        {{ $item->published_at?->diffForHumans() }} • CEEP Assaí
-                    </div>
-                </div>
-
-            </a>
-        </article>
-    @endforeach
-
-</div>
 
 
         <!-- PAGINAÇÃO -->
