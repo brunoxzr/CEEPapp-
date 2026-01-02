@@ -6,9 +6,9 @@
             Cursos Técnicos do CEEP Assaí
         </h1>
         <p class="mt-4 max-w-3xl text-slate-700 leading-relaxed">
-            O Centro Estadual de Educação Profissional de Assaí oferta cursos técnicos
-            integrados ao Ensino Médio, voltados à formação profissional,
-            científica e cidadã, conforme as diretrizes da educação pública estadual.
+            O CEEP Assaí oferece cursos técnicos integrados ao Ensino Médio.
+            Os alunos concluem o ensino médio e a formação técnica ao mesmo tempo,
+            preparando-se para o mercado de trabalho.
         </p>
     </div>
 </section>
@@ -26,9 +26,9 @@
                     Técnico em Desenvolvimento de Sistemas
                 </h2>
                 <p class="mt-4 text-slate-700 leading-relaxed">
-                    Formação voltada à área de tecnologia da informação, preparando
-                    o estudante para o desenvolvimento de sistemas computacionais
-                    e soluções digitais.
+                    Curso de tecnologia da informação que prepara o aluno para
+                    desenvolver sistemas, aplicativos e sites. Trabalha com
+                    programação, banco de dados e desenvolvimento web.
                 </p>
                 <a href="/cursos/desenvolvimento-de-sistemas"
                    class="inline-block mt-6 text-red-700 font-semibold">
@@ -44,9 +44,9 @@
                     Técnico em Enfermagem
                 </h2>
                 <p class="mt-4 text-slate-700 leading-relaxed">
-                    Curso da área da saúde que forma profissionais capacitados
-                    para atuar na assistência e no cuidado ao paciente,
-                    com ética e responsabilidade social.
+                    Curso da área da saúde que forma profissionais para trabalhar
+                    em hospitais, clínicas e unidades de saúde. O aluno aprende
+                    técnicas de enfermagem e cuidados com pacientes.
                 </p>
                 <a href="/cursos/enfermagem"
                    class="inline-block mt-6 text-red-700 font-semibold">
@@ -68,8 +68,9 @@
                     Técnico em Mecânica Industrial
                 </h2>
                 <p class="mt-4 text-slate-700 leading-relaxed">
-                    Formação técnica voltada à indústria, com foco em
-                    processos mecânicos, manutenção e operação de sistemas industriais.
+                    Curso voltado para a indústria, ensinando manutenção de máquinas,
+                    processos de fabricação e operação de equipamentos industriais.
+                    Trabalha com usinagem, solda e automação.
                 </p>
                 <a href="/cursos/mecanica-industrial"
                    class="inline-block mt-6 text-red-700 font-semibold">
@@ -85,8 +86,9 @@
                     Técnico em Eletrotécnica
                 </h2>
                 <p class="mt-4 text-slate-700 leading-relaxed">
-                    Curso voltado à formação de profissionais para atuar
-                    em instalações elétricas, sistemas de energia e automação.
+                    Curso que prepara profissionais para trabalhar com instalações
+                    elétricas, sistemas de energia, automação e manutenção elétrica
+                    em residências, indústrias e comércios.
                 </p>
                 <a href="/cursos/eletrotecnica"
                    class="inline-block mt-6 text-red-700 font-semibold">
@@ -108,8 +110,9 @@
                     Técnico em Edificações
                 </h2>
                 <p class="mt-4 text-slate-700 leading-relaxed">
-                    Formação para atuação no planejamento, execução e
-                    controle de obras civis, com base técnica e normativa.
+                    Curso que prepara profissionais para trabalhar na construção
+                    civil, desde o planejamento até a execução de obras. O aluno
+                    aprende sobre projetos, materiais e técnicas construtivas.
                 </p>
                 <a href="/cursos/edificacoes"
                    class="inline-block mt-6 text-red-700 font-semibold">
@@ -125,8 +128,9 @@
                     Técnico em Agropecuária
                 </h2>
                 <p class="mt-4 text-slate-700 leading-relaxed">
-                    Curso voltado à produção agrícola e pecuária,
-                    com foco em práticas sustentáveis e desenvolvimento rural.
+                    Curso que prepara profissionais para trabalhar na produção
+                    agrícola e pecuária. O aluno aprende sobre cultivo, criação
+                    de animais, manejo de solo e gestão rural.
                 </p>
                 <a href="/cursos/agropecuaria"
                    class="inline-block mt-6 text-red-700 font-semibold">

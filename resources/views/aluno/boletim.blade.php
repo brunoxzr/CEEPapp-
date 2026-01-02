@@ -20,15 +20,18 @@
 
       <button id="btnExport"
         class="px-5 py-2 rounded-lg bg-white text-red-700 font-semibold hover:bg-red-100 transition flex items-center gap-2 shadow-sm">
-        📁 Exportar CSV
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        Exportar CSV
       </button>
     </div>
   </div>
 
   <!-- Card principal -->
   <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 animate-slide-in">
-    <h3 class="text-2xl font-bold text-red-700 mb-4 flex items-center gap-2">
-      📘 Histórico de Notas
+    <h3 class="text-2xl font-bold text-red-700 mb-4">
+      Histórico de Notas
     </h3>
 
     <!-- Tabela -->

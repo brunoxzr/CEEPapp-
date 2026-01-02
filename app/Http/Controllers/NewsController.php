@@ -11,15 +11,19 @@ class NewsController extends Controller
     {
         $search = $request->query('q');
 
-        $news = News::query()
+        $query = News::query()
             ->whereNotNull('published_at')
-            ->when($search, function ($query) use ($search) {
-                $query->where('title', 'ILIKE', "%{$search}%")
-                    ->orWhere('excerpt', 'ILIKE', "%{$search}%");
-            })
-            ->orderBy('published_at', 'desc')
-            ->paginate(9)
-            ->withQueryString();
+            ->orderBy('published_at', 'desc');
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('excerpt', 'like', "%{$search}%")
+                  ->orWhere('content', 'like', "%{$search}%");
+            });
+        }
+
+        $news = $query->paginate(12)->withQueryString();
 
         return view('news.index', compact('news', 'search'));
     }

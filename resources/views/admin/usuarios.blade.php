@@ -1,21 +1,27 @@
-@include('layouts.admin_nav', ['title' => 'Gestor — Dashboard'])
-    <section class="max-w-6xl mx-auto px-4 mt-8 grid md:grid-cols-2 gap-6">
+@include('layouts.admin_nav', ['title' => 'Gerenciar Usuários'])
+<main class="max-w-7xl mx-auto px-6 py-10">
+  <div class="mb-8">
+    <h1 class="text-3xl font-black text-red-800 mb-2">Gerenciar Usuários</h1>
+    <p class="text-slate-600">Crie e gerencie contas de alunos e gestores do sistema.</p>
+  </div>
+
+  <section class="grid md:grid-cols-2 gap-8">
 
     <!-- Criar usuário -->
-    <div class="bg-white rounded-xl shadow-xl p-6 border-t-4 border-yellow-400">
-        <h2 class="text-xl font-black text-red-800">Criar Usuário</h2>
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 border-t-4 border-yellow-400">
+        <h2 class="text-xl font-black text-red-800 mb-6">Criar Usuário</h2>
 
         @if(session('ok'))
-        <div class="mt-3 p-2 text-sm bg-green-50 border border-green-200 text-green-700 rounded">
+        <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-700 rounded-lg text-green-800">
             {{ session('ok') }}
         </div>
         @endif
 
         @if($errors->any())
-        <div class="mt-3 p-2 text-sm bg-red-100 border border-red-200 text-red-700 rounded">
-            <ul class="list-disc pl-5">
+        <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-700 rounded-lg">
+            <ul class="list-disc pl-5 text-red-800 space-y-1">
             @foreach($errors->all() as $e)
-                <li>{{ $e }}</li>
+                <li class="text-sm">{{ $e }}</li>
             @endforeach
             </ul>
         </div>
@@ -107,77 +113,80 @@
     </div>
 
     <!-- Lista de usuários -->
-    <div class="bg-white rounded-xl shadow-xl p-6 border-t-4 border-red-700">
-        <h2 class="text-xl font-black text-red-800 mb-3">Usuários Existentes</h2>
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 border-t-4 border-red-700">
+        <h2 class="text-xl font-black text-red-800 mb-6">Usuários Existentes</h2>
 
         <!-- Gestores -->
-        <h3 class="font-semibold text-red-700 mb-2">Gestores</h3>
-        <table class="min-w-full text-sm mb-6">
-        <thead>
-            <tr class="bg-red-50 text-red-700 border-b border-red-200">
-            <th class="py-2 px-3 text-left">Nome</th>
-            <th class="py-2 px-3 text-left">E-mail</th>
-            <th class="py-2 px-3 text-center">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($admins as $a)
-            <tr class="border-b border-red-100 hover:bg-red-50/40">
-            <td class="py-2 px-3">{{ $a->nome }}</td>
-            <td class="py-2 px-3">{{ $a->email }}</td>
-            <td class="py-2 px-3 text-center space-x-2">
-                <a href="{{ route('admin.usuarios.edit', ['id' => $a->id, 'tipo'=>'admin']) }}"
-                class="text-yellow-600 font-semibold hover:underline">Editar</a>
-
-                <form action="{{ route('admin.usuarios.delete', ['id'=>$a->id, 'tipo'=>'admin']) }}"
-                    method="POST" class="inline">
-                @csrf @method('DELETE')
-                <button type="submit" class="text-red-700 font-semibold hover:underline">Excluir</button>
-                </form>
-            </td>
-            </tr>
-            @endforeach
-        </tbody>
-        </table>
+        <h3 class="font-bold text-red-800 mb-4 text-lg">Gestores</h3>
+        <div class="overflow-x-auto rounded-lg border border-slate-200 mb-8">
+          <table class="min-w-full text-sm">
+            <thead class="bg-red-50 text-red-800">
+              <tr>
+                <th class="py-3 px-4 text-left font-semibold">Nome</th>
+                <th class="py-3 px-4 text-left font-semibold">E-mail</th>
+                <th class="py-3 px-4 text-center font-semibold">Ações</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              @foreach($admins as $a)
+              <tr class="hover:bg-red-50/40 transition">
+                <td class="py-3 px-4 font-medium text-slate-800">{{ $a->nome }}</td>
+                <td class="py-3 px-4 text-slate-700">{{ $a->email }}</td>
+                <td class="py-3 px-4 text-center space-x-3">
+                  <a href="{{ route('admin.usuarios.edit', ['id' => $a->id, 'tipo'=>'admin']) }}"
+                    class="text-yellow-600 font-semibold hover:text-yellow-700 hover:underline">Editar</a>
+                  <form action="{{ route('admin.usuarios.delete', ['id'=>$a->id, 'tipo'=>'admin']) }}"
+                      method="POST" class="inline">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="text-red-700 font-semibold hover:text-red-800 hover:underline">Excluir</button>
+                  </form>
+                </td>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
 
         <!-- Alunos -->
-        <h3 class="font-semibold text-red-700 mb-2">Alunos</h3>
-        <table class="min-w-full text-sm">
-        <thead>
-            <tr class="bg-red-50 text-red-700 border-b border-red-200">
-            <th class="py-2 px-3 text-left">Nome</th>
-            <th class="py-2 px-3 text-left">E-mail</th>
-            <th class="py-2 px-3 text-left">Escola</th>
-            <th class="py-2 px-3 text-left">Turma</th>
-            <th class="py-2 px-3 text-center">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($alunos as $al)
-            <tr class="border-b border-red-100 hover:bg-red-50/40">
-            <td class="py-2 px-3">{{ $al->nome }}</td>
-            <td class="py-2 px-3">{{ $al->email }}</td>
-            <td class="py-2 px-3">{{ $al->escola }}</td>
-            <td class="py-2 px-3">{{ $al->turma }}</td>
-            <td class="py-2 px-3 text-center space-x-2">
-                <a href="{{ route('admin.usuarios.edit', ['id' => $al->id, 'tipo'=>'aluno']) }}"
-                class="text-yellow-600 font-semibold hover:underline">Editar</a>
-
-                <form action="{{ route('admin.usuarios.delete', ['id'=>$al->id, 'tipo'=>'aluno']) }}"
-                    method="POST" class="inline">
-                @csrf @method('DELETE')
-                <button type="submit" class="text-red-700 font-semibold hover:underline">Excluir</button>
-                </form>
-            </td>
-            </tr>
-            @endforeach
-        </tbody>
-        </table>
+        <h3 class="font-bold text-red-800 mb-4 text-lg">Alunos</h3>
+        <div class="overflow-x-auto rounded-lg border border-slate-200">
+          <table class="min-w-full text-sm">
+            <thead class="bg-red-50 text-red-800">
+              <tr>
+                <th class="py-3 px-4 text-left font-semibold">Nome</th>
+                <th class="py-3 px-4 text-left font-semibold">E-mail</th>
+                <th class="py-3 px-4 text-left font-semibold">Escola</th>
+                <th class="py-3 px-4 text-left font-semibold">Turma</th>
+                <th class="py-3 px-4 text-center font-semibold">Ações</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              @foreach($alunos as $al)
+              <tr class="hover:bg-red-50/40 transition">
+                <td class="py-3 px-4 font-medium text-slate-800">{{ $al->nome }}</td>
+                <td class="py-3 px-4 text-slate-700">{{ $al->email }}</td>
+                <td class="py-3 px-4 text-slate-700">{{ $al->escola }}</td>
+                <td class="py-3 px-4 text-slate-700">{{ $al->turma }}</td>
+                <td class="py-3 px-4 text-center space-x-3">
+                  <a href="{{ route('admin.usuarios.edit', ['id' => $al->id, 'tipo'=>'aluno']) }}"
+                    class="text-yellow-600 font-semibold hover:text-yellow-700 hover:underline">Editar</a>
+                  <form action="{{ route('admin.usuarios.delete', ['id'=>$al->id, 'tipo'=>'aluno']) }}"
+                      method="POST" class="inline">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="text-red-700 font-semibold hover:text-red-800 hover:underline">Excluir</button>
+                  </form>
+                </td>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
 
     </div>
-    </section>
+  </section>
+</main>
 
-    @include('layouts.footer')
+@include('layouts.footer')
 
     <script>
     const tipo = document.querySelector('select[name="tipo"]');

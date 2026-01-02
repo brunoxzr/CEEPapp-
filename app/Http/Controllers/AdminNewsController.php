@@ -39,12 +39,18 @@ public function index()
             'author'  => 'nullable|string|max:255',
             'content' => 'required',
             'cover'   => 'nullable|image|max:4096',
+            'hero'    => 'nullable|image|max:4096',
         ]);
 
         $coverPath = null;
+        $heroPath = null;
 
         if ($request->hasFile('cover')) {
             $coverPath = $request->file('cover')->store('news/covers', 'public');
+        }
+
+        if ($request->hasFile('hero')) {
+            $heroPath = $request->file('hero')->store('news/heroes', 'public');
         }
 
         News::create([
@@ -53,6 +59,7 @@ public function index()
             'author'       => $request->author ?? 'CEEP Assaí',
             'content'      => $request->content, // HTML DO QUILL
             'cover_path'   => $coverPath,
+            'hero_path'    => $heroPath,
             'published_at' => now(),
         ]);
 
@@ -83,6 +90,7 @@ public function index()
             'author'  => 'nullable|string|max:255',
             'content' => 'required',
             'cover'   => 'nullable|image|max:4096',
+            'hero'    => 'nullable|image|max:4096',
         ]);
 
         if ($request->hasFile('cover')) {
@@ -90,6 +98,13 @@ public function index()
                 Storage::disk('public')->delete($news->cover_path);
             }
             $news->cover_path = $request->file('cover')->store('news/covers', 'public');
+        }
+
+        if ($request->hasFile('hero')) {
+            if ($news->hero_path) {
+                Storage::disk('public')->delete($news->hero_path);
+            }
+            $news->hero_path = $request->file('hero')->store('news/heroes', 'public');
         }
 
         $news->update([
@@ -113,6 +128,10 @@ public function index()
 
         if ($news->cover_path) {
             Storage::disk('public')->delete($news->cover_path);
+        }
+
+        if ($news->hero_path) {
+            Storage::disk('public')->delete($news->hero_path);
         }
 
         $news->delete();

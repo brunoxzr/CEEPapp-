@@ -17,6 +17,8 @@ class News extends Model
         'excerpt',
         'content',
         'cover_path',
+        'hero_path',
+        'author',
         'is_active',
         'published_at',
     ];

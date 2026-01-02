@@ -12,9 +12,14 @@
     {{-- ================= CABEÇALHO ================= --}}
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6">
 
-        <h1 class="text-3xl font-black text-red-800">
-            📅 {{ Carbon::create($ano, $mes)->translatedFormat('F Y') }}
-        </h1>
+        <div>
+            <h1 class="text-3xl font-black text-red-800">
+                Calendário Institucional
+            </h1>
+            <p class="text-slate-600 mt-1">
+                {{ Carbon::create($ano, $mes)->translatedFormat('F Y') }}
+            </p>
+        </div>
 
         {{-- FILTRO --}}
         <form method="GET" class="flex gap-2 flex-wrap">

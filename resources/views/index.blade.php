@@ -28,8 +28,8 @@
             </h1>
 
             <p class="mt-6 text-lg text-red-100 max-w-xl">
-                Formação técnica pública de excelência, conectando educação,
-                tecnologia e desenvolvimento profissional no norte do Paraná.
+                Educação técnica pública que prepara profissionais para o mercado de trabalho,
+                com laboratórios modernos e projetos práticos em Assaí e região.
             </p>
 
             <div class="mt-10 flex flex-wrap gap-4">
@@ -68,15 +68,15 @@
 
             <p class="text-slate-700 text-lg leading-relaxed mb-5">
                 Inaugurado em 27 de junho de 2014, o Centro Estadual de Educação
-                Profissional Professora Maria Lydia Cescatto Bomtempo foi criado
-                para fortalecer a educação técnica e profissional em Assaí e
-                região.
+                Profissional Professora Maria Lydia Cescatto Bomtempo oferece
+                cursos técnicos integrados e subsequentes para estudantes de Assaí
+                e região.
             </p>
 
             <p class="text-slate-600 leading-relaxed">
-                Integrante da rede pública estadual de ensino do Paraná, o CEEP
-                atua com foco em qualidade, organização acadêmica e inserção
-                profissional.
+                Faz parte da rede estadual de ensino do Paraná e trabalha com
+                projetos práticos, estágios e parcerias com empresas locais para
+                melhorar a formação dos alunos.
             </p>
         </div>
 
@@ -135,7 +135,8 @@
                     </h3>
 
                     <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-                        Formação técnica com base científica e prática profissional.
+                        Curso técnico com aulas teóricas e práticas em laboratórios
+                        equipados.
                     </p>
 
                     <span class="inline-block mt-6 text-sm font-semibold text-red-700">
@@ -283,17 +284,20 @@
 
     </div>
 </section>
-@endif<!-- ================= DESENVOLVEDORES (DESTAQUE ESPECIAL) ================= -->
+@endif
+
+<!-- ================= DESENVOLVEDORES (DESTAQUE ESPECIAL) ================= -->
 @if($desenvolvedores->count())
-<div>
+<section class="py-28 bg-white border-t">
+    <div class="max-w-6xl mx-auto px-6">
 
     <h3 class="text-center text-xl font-black text-slate-900 mb-6">
         Desenvolvimento de Sistemas
     </h3>
 
     <p class="text-center text-slate-600 max-w-xl mx-auto mb-16">
-        Responsável pelo desenvolvimento, manutenção e inovação
-        dos sistemas digitais institucionais do CEEP Assaí.
+        Alunos do curso de Desenvolvimento de Sistemas que trabalham
+        nos sistemas e portais do CEEP.
     </p>
 
     @if($desenvolvedores->count() === 1)
@@ -336,9 +340,8 @@
 
                 <!-- COMPLEMENTO ACADÊMICO -->
                 <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-                    Estudante de <strong>Desenvolvimento de Sistemas</strong>,
-                    com atuação no desenvolvimento de soluções digitais,
-                    portais institucionais e sistemas educacionais.
+                    Aluno do curso técnico em <strong>Desenvolvimento de Sistemas</strong>,
+                    participa do desenvolvimento dos sistemas e portais do CEEP Assaí.
                 </p>
 
             </a>
@@ -375,7 +378,8 @@
         </div>
     @endif
 
-</div>
+    </div>
+</section>
 @endif
 
 <!-- ================= CONTATO ================= -->
@@ -387,12 +391,31 @@
                 Contato
             </h2>
 
-            <p class="text-slate-700 leading-relaxed">
-                Rua Edgar Bardal, s/n<br>
-                Assaí – PR • CEP 86220-000<br>
-                Telefone: (43) 3262-2063
-            </p>
-        </div>
+            <div class="space-y-4 text-slate-700">
+                <div>
+                    <p class="font-semibold mb-1">Endereço</p>
+                    <p class="leading-relaxed">
+                        Rua Edgar Bardal, s/n<br>
+                        Assaí – PR • CEP 86220-000
+                    </p>
+                </div>
+
+                <div>
+                    <p class="font-semibold mb-1">Telefone</p>
+                    <p class="leading-relaxed">
+                        <a href="tel:+554332622063" class="text-red-700 hover:underline">
+                            (43) 3262-2063
+                        </a>
+                    </p>
+                </div>
+
+                <div>
+                    <p class="font-semibold mb-1">Atendimento</p>
+                    <p class="leading-relaxed text-sm">
+                        Segunda a sexta-feira, horário comercial
+                    </p>
+                </div>
+            </div>
 
         <iframe
             class="w-full h-80 border rounded-xl"

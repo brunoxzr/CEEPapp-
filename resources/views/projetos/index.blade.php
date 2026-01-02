@@ -1,10 +1,16 @@
 @include('layouts.header', ['title' => 'Projetos Técnicos'])
 
-<section class="max-w-7xl mx-auto px-4 mt-10">
+<main class="bg-slate-50">
+<section class="max-w-7xl mx-auto px-6 py-16">
 
-    <h1 class="text-3xl font-black text-red-800 mb-6">
-        🚀 Projetos Técnicos do CEEP
-    </h1>
+    <div class="mb-10">
+        <h1 class="text-3xl md:text-4xl font-black text-red-800 mb-4">
+            Projetos Técnicos
+        </h1>
+        <p class="text-slate-700 leading-relaxed max-w-3xl">
+            Conheça os projetos desenvolvidos pelos alunos do CEEP Assaí em cada curso técnico.
+        </p>
+    </div>
 
 
 
@@ -40,10 +46,13 @@
                 </div>
             </a>
         @empty
-            <p class="text-slate-500">Nenhum projeto publicado ainda.</p>
+            <div class="col-span-full text-center py-16">
+                <p class="text-slate-500 text-lg">Nenhum projeto publicado ainda.</p>
+            </div>
         @endforelse
     </div>
 
 </section>
+</main>
 
 @include('layouts.footer')

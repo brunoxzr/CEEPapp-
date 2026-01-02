@@ -1,6 +1,7 @@
 @include('layouts.header', ['title' => $projeto->titulo])
 
-<section class="max-w-5xl mx-auto px-4 mt-10">
+<main class="bg-slate-50">
+<section class="max-w-5xl mx-auto px-6 py-16">
 
     <a href="{{ route('projetos.index') }}"
        class="text-sm font-bold text-red-700 hover:underline">
@@ -25,20 +26,20 @@
         {!! nl2br(e($projeto->descricao)) !!}
     </div>
 
-    {{-- CONTRIBUIÇÕES (vai ganhar poder no passo 3) --}}
-    <div class="mt-10">
-        <h2 class="text-xl font-black text-red-800 mb-4">
-            👥 Alunos que participaram
+    {{-- CONTRIBUIÇÕES --}}
+    <div class="mt-10 border-t pt-10">
+        <h2 class="text-xl font-black text-red-800 mb-6">
+            Alunos que participaram
         </h2>
 
         @if($projeto->contribuicoes->isEmpty())
-            <p class="text-slate-500">Contribuições em breve.</p>
+            <p class="text-slate-500">Nenhuma contribuição registrada ainda.</p>
         @else
             <div class="grid sm:grid-cols-2 gap-4">
                 @foreach($projeto->contribuicoes as $c)
-                    <div class="border rounded-xl p-4 bg-white shadow">
-                        <p class="font-black">{{ $c->aluno->nome }}</p>
-                        <p class="text-sm text-slate-600">{{ $c->descricao }}</p>
+                    <div class="border rounded-xl p-5 bg-white shadow-sm hover:shadow transition">
+                        <p class="font-bold text-slate-900">{{ $c->aluno->nome }}</p>
+                        <p class="text-sm text-slate-600 mt-2 leading-relaxed">{{ $c->descricao }}</p>
                     </div>
                 @endforeach
             </div>
@@ -46,5 +47,6 @@
     </div>
 
 </section>
+</main>
 
 @include('layouts.footer')

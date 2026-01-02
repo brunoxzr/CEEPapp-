@@ -26,74 +26,105 @@
 
                     <div class="mt-4 flex flex-wrap gap-4 text-sm font-semibold">
                         <span class="bg-white/10 px-4 py-2 rounded-lg">
-                            🎓 Turma: {{ $aluno->turma ?? '—' }}
+                            Turma: {{ $aluno->turma ?? '—' }}
                         </span>
                         <span class="bg-white/10 px-4 py-2 rounded-lg">
-                            🏫 CEEP Assaí
+                            CEEP Assaí
                         </span>
                     </div>
                 </div>
 
                 <div class="flex items-center justify-center">
                     <div
-                        class="w-28 h-28 rounded-full border-4 border-yellow-400 bg-white/10 flex items-center justify-center text-4xl shadow-inner">
-                        📘
+                        class="w-28 h-28 rounded-full border-4 border-yellow-400 bg-white/10 flex items-center justify-center shadow-inner">
+                        <svg class="w-12 h-12 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
                     </div>
                 </div>
             </div>
         </section>
+        <!-- ================= COMUNICADOS E AVISOS ================= -->
         @if($comunicadosCount > 0)
-<section class="bg-white rounded-2xl shadow-lg border-l-8 border-yellow-400 p-6 flex flex-col md:flex-row justify-between gap-6">
+        <section class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl shadow-xl border-2 border-yellow-300 overflow-hidden">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-14 h-14 rounded-full bg-yellow-400 flex items-center justify-center shadow-lg">
+                            <svg class="w-7 h-7 text-yellow-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-black text-red-800">
+                                Avisos Importantes
+                            </h2>
+                            <p class="text-sm text-slate-600 mt-0.5">
+                                {{ $comunicadosCount }} novo{{ $comunicadosCount > 1 ? 's' : '' }} aviso{{ $comunicadosCount > 1 ? 's' : '' }}
+                            </p>
+                        </div>
+                    </div>
+                    <a href="{{ route('aluno.comunicados.index') }}"
+                       class="px-4 py-2 bg-red-700 text-white font-bold rounded-lg hover:bg-red-800 transition shadow-md text-sm">
+                        Ver todos
+                    </a>
+                </div>
 
-    <div class="flex items-start gap-4">
-        <div class="text-3xl">🔔</div>
+                <div class="grid md:grid-cols-2 gap-4 mb-6">
+                    {{-- COMUNICADOS --}}
+                    @foreach($ultimosComunicados->take(2) as $c)
+                        <div class="bg-white rounded-xl p-5 border-l-4 {{ $c->publico === 'geral' ? 'border-red-700' : 'border-yellow-500' }} shadow-sm hover:shadow-md transition">
+                            <div class="flex items-start justify-between gap-3 mb-2">
+                                <h3 class="font-bold text-slate-900 leading-tight">
+                                    {{ $c->titulo }}
+                                </h3>
+                                <span class="text-xs px-2 py-1 rounded-full font-semibold flex-shrink-0
+                                    {{ $c->publico === 'geral' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                    {{ $c->publico === 'geral' ? 'Geral' : 'Turma' }}
+                                </span>
+                            </div>
+                            <p class="text-xs text-slate-500 mb-2">
+                                {{ $c->created_at->format('d/m/Y') }}
+                            </p>
+                            <p class="text-sm text-slate-700 line-clamp-2 leading-relaxed">
+                                {{ Str::limit($c->conteudo, 100) }}
+                            </p>
+                        </div>
+                    @endforeach
+                </div>
 
-        <div>
-            <h2 class="text-xl font-black text-red-800">
-                Você tem {{ $comunicadosCount }} aviso{{ $comunicadosCount > 1 ? 's' : '' }} importante{{ $comunicadosCount > 1 ? 's' : '' }}
-            </h2>
+                {{-- EVENTOS PRÓXIMOS --}}
+                @if($eventosProximos->count() > 0)
+                <div class="bg-white/80 rounded-xl p-4 border border-yellow-200">
+                    <h4 class="font-bold text-red-800 mb-3 text-sm uppercase tracking-wide">Próximos Eventos</h4>
+                    <div class="space-y-2">
+                        @foreach($eventosProximos->take(3) as $e)
+                            <div class="flex items-center gap-3 text-sm">
+                                <div class="w-2 h-2 rounded-full bg-yellow-500 flex-shrink-0"></div>
+                                <span class="font-semibold text-slate-800">{{ $e->titulo }}</span>
+                                <span class="text-xs text-slate-500 ml-auto">
+                                    {{ $e->data->format('d/m') }}
+                                    @if($e->hora_inicio) • {{ $e->hora_inicio }} @endif
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
 
-            <ul class="mt-3 text-sm text-slate-700 space-y-2">
-
-                {{-- COMUNICADOS --}}
-                @foreach($ultimosComunicados as $c)
-                    <li>
-                        📢 <span class="font-semibold">{{ $c->titulo }}</span>
-                        <span class="text-xs text-slate-500">
-                            — {{ $c->created_at->format('d/m') }}
-                        </span>
-                    </li>
-                @endforeach
-
-                {{-- EVENTOS --}}
-                @foreach($eventosProximos as $e)
-                    <li>
-                        📅 <span class="font-semibold">{{ $e->titulo }}</span>
-                        <span class="text-xs text-slate-500">
-                            — {{ $e->data->format('d/m') }}
-                            @if($e->hora_inicio) {{ $e->hora_inicio }} @endif
-                        </span>
-                    </li>
-                @endforeach
-
-            </ul>
-        </div>
-    </div>
-
-    <div class="flex flex-col gap-2">
-        <a href="{{ route('aluno.comunicados.index') }}"
-           class="px-5 py-2 rounded-lg bg-yellow-400 text-red-900 font-black hover:bg-yellow-300 shadow text-center">
-            Ver comunicados
-        </a>
-
-        <a href="{{ route('aluno.calendario.index') }}"
-           class="px-5 py-2 rounded-lg bg-red-700 text-white font-bold hover:bg-red-800 shadow text-center">
-            Ver calendário
-        </a>
-    </div>
-
-</section>
-@endif
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <a href="{{ route('aluno.comunicados.index') }}"
+                       class="flex-1 md:flex-none px-6 py-3 bg-yellow-400 text-red-900 font-black rounded-lg hover:bg-yellow-300 transition shadow-md text-center">
+                        Ver todos os comunicados
+                    </a>
+                    <a href="{{ route('aluno.calendario.index') }}"
+                       class="flex-1 md:flex-none px-6 py-3 bg-white text-red-700 font-bold rounded-lg hover:bg-red-50 transition border-2 border-red-200 text-center">
+                        Ver calendário
+                    </a>
+                </div>
+            </div>
+        </section>
+        @endif
 
 
 
@@ -138,7 +169,7 @@
 
                 <div class="p-6 border-b bg-slate-50">
                     <h2 class="text-xl font-black text-red-800">
-                        📊 Últimas notas
+                        Últimas notas
                     </h2>
                 </div>
 
@@ -185,7 +216,7 @@
             <aside class="bg-white rounded-2xl shadow border border-slate-200 p-6">
 
                 <h3 class="text-lg font-black text-red-800 mb-4">
-                    🕒 Aulas de hoje
+                    Aulas de hoje
                 </h3>
 
                 <ul class="space-y-3 text-sm">
@@ -221,21 +252,21 @@
         <section class="grid md:grid-cols-3 gap-6">
 
             <div class="bg-white rounded-xl shadow p-6 border-l-4 border-red-700">
-                <h4 class="font-bold text-red-800 mb-1">📌 Dica rápida</h4>
+                <h4 class="font-bold text-red-800 mb-1">Informações</h4>
                 <p class="text-sm text-slate-600">
                     Mantenha seus dados atualizados para não perder comunicados importantes.
                 </p>
             </div>
 
             <div class="bg-white rounded-xl shadow p-6 border-l-4 border-yellow-400">
-                <h4 class="font-bold text-red-800 mb-1">📊 SAEB</h4>
+                <h4 class="font-bold text-red-800 mb-1">SAEB</h4>
                 <p class="text-sm text-slate-600">
                     Resultados aparecerão automaticamente quando publicados.
                 </p>
             </div>
 
             <div class="bg-white rounded-xl shadow p-6 border-l-4 border-red-700">
-                <h4 class="font-bold text-red-800 mb-1">⚡ Atalhos</h4>
+                <h4 class="font-bold text-red-800 mb-1">Atalhos</h4>
                 <ul class="text-sm text-slate-700 list-disc ml-5 space-y-1">
                     <li><a class="text-red-700 hover:underline" href="{{ route('aluno.boletim') }}">Boletim</a></li>
                     <li><a class="text-red-700 hover:underline" href="{{ route('aluno.cronograma') }}">Cronograma</a></li>

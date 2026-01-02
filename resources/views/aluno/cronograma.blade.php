@@ -20,11 +20,13 @@
 <main class="max-w-7xl mx-auto px-6 py-10 space-y-12">
 
     <!-- ================= TÍTULO ================= -->
-    <header class="flex items-center gap-3">
-        <span class="text-4xl">📅</span>
-        <h1 class="text-3xl font-black text-red-800">
-            Seu cronograma
+    <header>
+        <h1 class="text-3xl font-black text-red-800 mb-2">
+            Cronograma de Aulas
         </h1>
+        <p class="text-slate-600">
+            Acompanhe suas aulas da semana
+        </p>
     </header>
 
     <!-- ================= HOJE (PRIORIDADE MÁXIMA) ================= -->
@@ -54,7 +56,7 @@
                 @if($aulasHoje->isEmpty())
                     <div class="bg-white/10 border border-white/20 rounded-xl p-6 text-center">
                         <p class="text-white/90">
-                            🎉 Nenhuma aula hoje. Aproveite!
+                            Nenhuma aula programada para hoje.
                         </p>
                     </div>
                 @else
@@ -91,8 +93,8 @@
     <!-- ================= SEMANA ================= -->
     <section class="space-y-6">
 
-        <h3 class="text-xl font-black text-red-800 flex items-center gap-2">
-            <span>🗓️</span> Resto da semana
+        <h3 class="text-xl font-black text-red-800">
+            Resto da semana
         </h3>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -110,9 +112,12 @@
                            p-6 transition">
 
                     <h4
-                        class="text-lg font-black mb-4 flex items-center gap-2
+                        class="text-lg font-black mb-4
                                {{ $isHoje ? 'text-yellow-500' : 'text-red-700' }}">
-                        {{ $isHoje ? '⭐ ' : '' }}{{ $dia }}
+                        {{ $dia }}
+                        @if($isHoje)
+                            <span class="text-xs font-normal text-slate-500 ml-2">(Hoje)</span>
+                        @endif
                     </h4>
 
                     @if($aulasDia->isEmpty())

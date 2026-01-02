@@ -13,7 +13,8 @@
       <p class="text-xs font-black uppercase tracking-[0.25em] text-yellow-300">CEEP Assaí</p>
       <h1 class="text-4xl md:text-5xl font-black mt-4">Estrutura Institucional</h1>
       <p class="text-red-100 max-w-2xl mx-auto mt-5">
-        Veja a hierarquia em formato de <span class="font-black text-white">pirâmide (degraus)</span> e clique em “Ver mais” para abrir o perfil.
+        Conheça a equipe do CEEP Assaí organizada por níveis hierárquicos.
+        Clique em "Ver mais" para conhecer melhor cada membro.
       </p>
     </div>
   </section>

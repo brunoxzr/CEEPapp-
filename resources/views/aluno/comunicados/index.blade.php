@@ -2,14 +2,19 @@
 
 <main class="max-w-6xl mx-auto px-4 mt-10">
 
-    <h1 class="text-3xl font-black text-red-800 mb-6 flex items-center gap-2">
-        📢 Comunicados
-    </h1>
+    <div class="mb-8">
+        <h1 class="text-3xl font-black text-red-800 mb-2">
+            Comunicados
+        </h1>
+        <p class="text-slate-600">
+            Acompanhe os avisos e comunicados da escola e da sua turma.
+        </p>
+    </div>
 @if($eventosProximos->count())
     <section class="mb-10 bg-yellow-50 border-l-8 border-yellow-400 p-6 rounded-2xl shadow">
 
-        <h2 class="text-xl font-black text-red-800 mb-4 flex items-center gap-2">
-            📅 Eventos próximos
+        <h2 class="text-xl font-black text-red-800 mb-4">
+            Eventos próximos
         </h2>
 
         <ul class="space-y-3 text-sm">
