@@ -221,27 +221,42 @@
 
         <!-- LISTA ABAIXO -->
         @if($list->count())
-        <div class="mt-20 border-t pt-12 grid md:grid-cols-2 gap-x-10 gap-y-6">
+<div class="mt-20 border-t pt-14 grid md:grid-cols-2 gap-x-12 gap-y-10">
+    @foreach($list as $item)
+        <a href="{{ route('portal.news.show', $item->slug) }}"
+           class="group flex gap-5 items-start">
 
-            @foreach($list as $item)
-                <a href="{{ route('portal.news.show', $item->slug) }}"
-                   class="flex justify-between items-start gap-4 hover:text-red-700 transition">
-
-                    <div>
-                        <h5 class="font-semibold leading-snug">
-                            {{ $item->title }}
-                        </h5>
-
-                        <p class="text-xs text-slate-500 mt-1">
-                            {{ $item->published_at?->format('d/m/Y') }}
-                        </p>
+            {{-- THUMB --}}
+            <div class="w-28 aspect-[16/9] overflow-hidden rounded-lg bg-slate-200 flex-shrink-0">
+                @if($item->cover_path)
+                    <img
+                        src="{{ asset('storage/'.$item->cover_path) }}"
+                        alt="{{ $item->title }}"
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                @else
+                    <div class="w-full h-full bg-gradient-to-br from-red-800 to-red-900 flex items-center justify-center">
+                        <span class="text-white text-xs font-bold tracking-widest uppercase">
+                            CEEP
+                        </span>
                     </div>
+                @endif
+            </div>
 
-                    <span class="text-slate-400 text-xl">›</span>
-                </a>
-            @endforeach
+            {{-- TEXTO --}}
+            <div class="flex-1">
+                <p class="text-xs text-slate-500 mb-1">
+                    {{ $item->published_at?->format('d/m/Y') }}
+                </p>
 
-        </div>
+                <h5 class="font-bold leading-snug text-slate-900 group-hover:text-red-700 transition line-clamp-2">
+                    {{ $item->title }}
+                </h5>
+            </div>
+
+        </a>
+    @endforeach
+</div>
+
         @endif
 
     </div>
