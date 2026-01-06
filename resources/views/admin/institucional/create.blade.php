@@ -26,7 +26,7 @@
           <input type="text" name="nome" id="nome"
                  value="{{ old('nome') }}"
                  class="w-full border rounded-xl px-4 py-3 focus:ring-red-500 focus:border-red-500"
-                 placeholder="Ex: Maria Carolina" required>
+                 placeholder="Ex: Bruno Kay" required>
           <p class="text-xs text-slate-500 mt-1">Exemplo: “Nome Sobrenome”.</p>
         </div>
 
