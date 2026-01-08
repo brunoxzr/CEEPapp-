@@ -37,6 +37,15 @@ public function contribuicoes()
 {
     return $this->hasMany(ProjetoContribuicao::class);
 }
+public function leituras()
+{
+    return $this->hasMany(ComunicadoLeitura::class, 'aluno_id');
+}
+public function comunicadosLidos()
+{
+    return $this->hasMany(ComunicadoLeitura::class);
+}
+
 
 
 

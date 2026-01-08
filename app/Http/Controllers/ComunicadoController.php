@@ -8,17 +8,52 @@ use App\Models\Aluno;
 use App\Mail\ComunicadoMail;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\EnviarComunicadoEmail;
-
+use App\Models\ComunicadoLeitura;
 
 class ComunicadoController extends Controller
 {
     /* ================= ADMIN ================= */
 
+
+
 public function indexAdmin()
-    {
-        $comunicados = Comunicado::orderByDesc('created_at')->get();
-        return view('admin.comunicados.index', compact('comunicados'));
+{
+    $comunicados = Comunicado::with(['leituras'])->orderByDesc('created_at')->get();
+
+    // Pré-calcular stats por comunicado
+    $stats = [];
+
+    foreach ($comunicados as $c) {
+
+        // Define público alvo
+        $alunosQuery = Aluno::query();
+
+        if ($c->publico === 'turma' && $c->turma) {
+            $alunosQuery->where('turma', $c->turma);
+        }
+
+        if ($c->publico === 'curso' && $c->curso) {
+            $alunosQuery->where('curso', $c->curso);
+        }
+
+        $totalAlunos = $alunosQuery->count();
+
+        $lidos = $c->leituras
+            ->whereIn('aluno_id', $alunosQuery->pluck('id'))
+            ->count();
+
+        $stats[$c->id] = [
+            'total' => $totalAlunos,
+            'lidos' => $lidos,
+            'percentual' => $totalAlunos > 0
+                ? round(($lidos / $totalAlunos) * 100)
+                : 0
+        ];
     }
+
+    return view('admin.comunicados.index', compact('comunicados', 'stats'));
+}
+
 
     public function edit($id)
     {
@@ -118,7 +153,12 @@ public function indexAluno()
               });
         })
         ->orderByDesc('created_at')
-        ->get();
+        ->with(['leituras' => function ($q) {
+    $q->where('aluno_id', session('aluno_id'));
+}])
+->get();
+
+
 
     /* ================= EVENTOS (10 DIAS) ================= */
     $eventosProximos = \App\Models\CalendarioInstitucional::where('ativo', true)
@@ -137,6 +177,69 @@ public function indexAluno()
         'eventosProximos'
     ));
 }
+
+public function marcarLido(Comunicado $comunicado)
+{
+    $alunoId = session('aluno_id');
+
+    if (!$alunoId) {
+        abort(403, 'Aluno não autenticado.');
+    }
+
+    ComunicadoLeitura::updateOrCreate(
+        [
+            'comunicado_id' => $comunicado->id,
+            'aluno_id' => $alunoId,
+        ],
+        [
+            'lido_em' => now(),
+        ]
+    );
+
+    return back();
+}
+
+
+public function marcarNaoLido(Comunicado $comunicado)
+{
+    $alunoId = session('aluno_id');
+
+    if (!$alunoId) {
+        abort(403, 'Aluno não autenticado.');
+    }
+
+    ComunicadoLeitura::where([
+        'comunicado_id' => $comunicado->id,
+        'aluno_id' => $alunoId,
+    ])->delete();
+
+    return back();
+}
+public function verLeituraTurma(Comunicado $comunicado)
+{
+    $alunosQuery = Aluno::query();
+
+    if ($comunicado->publico === 'turma' && $comunicado->turma) {
+        $alunosQuery->where('turma', $comunicado->turma);
+    }
+
+    if ($comunicado->publico === 'curso' && $comunicado->curso) {
+        $alunosQuery->where('curso', $comunicado->curso);
+    }
+
+    $alunos = $alunosQuery
+        ->with(['leituras' => function ($q) use ($comunicado) {
+            $q->where('comunicado_id', $comunicado->id);
+        }])
+        ->orderBy('nome')
+        ->get();
+
+    return view('admin.comunicados.turma', compact(
+        'comunicado',
+        'alunos'
+    ));
+}
+
 
 }
 

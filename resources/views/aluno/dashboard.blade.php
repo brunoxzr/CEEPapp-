@@ -73,7 +73,21 @@
                 <div class="grid md:grid-cols-2 gap-4 mb-6">
                     {{-- COMUNICADOS --}}
                     @foreach($ultimosComunicados->take(2) as $c)
+                    @php
+    $lido = $c->leituras->isNotEmpty();
+@endphp
+
                         <div class="bg-white rounded-xl p-5 border-l-4 {{ $c->publico === 'geral' ? 'border-red-700' : 'border-yellow-500' }} shadow-sm hover:shadow-md transition">
+                            @if(!$lido)
+    <span class="text-xs px-2 py-1 rounded-full font-black bg-yellow-400 text-red-900">
+        Novo
+    </span>
+@else
+    <span class="text-xs px-2 py-1 rounded-full font-semibold bg-green-100 text-green-800">
+        Lido
+    </span>
+@endif
+
                             <div class="flex items-start justify-between gap-3 mb-2">
                                 <h3 class="font-bold text-slate-900 leading-tight">
                                     {{ $c->titulo }}

@@ -44,18 +44,41 @@ public function dashboard()
         ->orderBy('inicio')
         ->get();
 
-    /* ================= COMUNICADOS ================= */
-    $ultimosComunicados = Comunicado::where('ativo', true)
-        ->where(function ($q) use ($aluno) {
-            $q->where('publico', 'geral')
-              ->orWhere(function ($q) use ($aluno) {
-                  $q->where('publico', 'turma')
-                    ->where('turma', $aluno->turma);
-              });
-        })
-        ->orderByDesc('created_at')
-        ->take(3)
-        ->get();
+/* ================= COMUNICADOS ================= */
+$ultimosComunicados = Comunicado::where('ativo', true)
+    ->where(function ($q) use ($aluno) {
+        $q->where('publico', 'geral')
+          ->orWhere(function ($q) use ($aluno) {
+              $q->where('publico', 'turma')
+                ->where('turma', $aluno->turma);
+          });
+    })
+    ->with(['leituras' => function ($q) use ($aluno) {
+        $q->where('aluno_id', $aluno->id);
+    }])
+    ->orderByDesc('created_at')
+    ->take(3)
+    ->get();
+
+/* ================= COMUNICADOS NÃO LIDOS ================= */
+$ultimosComunicados = Comunicado::where('ativo', true)
+    ->where(function ($q) use ($aluno) {
+        $q->where('publico', 'geral')
+          ->orWhere(function ($q) use ($aluno) {
+              $q->where('publico', 'turma')
+                ->where('turma', $aluno->turma);
+          });
+    })
+    ->whereDoesntHave('leituras', function ($q) use ($aluno) {
+        $q->where('aluno_id', $aluno->id);
+    })
+    ->orderByDesc('created_at')
+    ->take(2) // no dashboard só os mais recentes
+    ->get();
+
+/* ================= CONTADOR (SÓ NÃO LIDOS) ================= */
+$comunicadosCount = $ultimosComunicados->count();
+
 
     /* ================= EVENTOS (10 DIAS) ================= */
     $eventosProximos = CalendarioInstitucional::where('ativo', true)

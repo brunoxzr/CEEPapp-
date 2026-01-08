@@ -95,13 +95,32 @@ Route::post('/logout', function () {
 Route::prefix('aluno')
     ->middleware(['web', 'aluno'])
     ->group(function () {
-        Route::get('/dashboard', [AlunoController::class, 'dashboard'])->name('aluno.dashboard');
-        Route::get('/boletim', [AlunoController::class, 'boletim'])->name('aluno.boletim');
-        Route::get('/saeb', [SaebController::class, 'alunoResultados'])->name('aluno.saeb');
-        Route::get('/cronograma', [AlunoController::class, 'cronograma'])->name('aluno.cronograma');
-        Route::get('/calendario', [CalendarioController::class, 'indexAluno'])->name('aluno.calendario.index');
-        Route::get('/comunicados', [ComunicadoController::class, 'indexAluno'])->name('aluno.comunicados.index');
+
+        Route::get('/dashboard', [AlunoController::class, 'dashboard'])
+            ->name('aluno.dashboard');
+
+        Route::get('/boletim', [AlunoController::class, 'boletim'])
+            ->name('aluno.boletim');
+
+        Route::get('/saeb', [SaebController::class, 'alunoResultados'])
+            ->name('aluno.saeb');
+
+        Route::get('/cronograma', [AlunoController::class, 'cronograma'])
+            ->name('aluno.cronograma');
+
+        Route::get('/calendario', [CalendarioController::class, 'indexAluno'])
+            ->name('aluno.calendario.index');
+
+        Route::get('/comunicados', [ComunicadoController::class, 'indexAluno'])
+            ->name('aluno.comunicados.index');
+
+        Route::post('/comunicados/{comunicado}/lido', [ComunicadoController::class, 'marcarLido'])
+            ->name('aluno.comunicados.lido');
+
+        Route::delete('/comunicados/{comunicado}/lido', [ComunicadoController::class, 'marcarNaoLido'])
+            ->name('aluno.comunicados.naoLido');
     });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -219,6 +238,11 @@ Route::prefix('admin')
         Route::get('/comunicados/{id}/edit', [ComunicadoController::class, 'edit'])->name('admin.comunicados.edit');
         Route::put('/comunicados/{id}', [ComunicadoController::class, 'update'])->name('admin.comunicados.update');
         Route::delete('/comunicados/{id}', [ComunicadoController::class, 'destroy'])->name('admin.comunicados.destroy');
+        Route::get('/admin/comunicados/{comunicado}/turma',
+    [ComunicadoController::class, 'verLeituraTurma']
+)->name('admin.comunicados.turma');
+
+
 
         /*
         |----------------------------------------------------------------------

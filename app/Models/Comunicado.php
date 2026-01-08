@@ -27,4 +27,9 @@ class Comunicado extends Model
     {
         return $this->belongsTo(Admin::class, 'criado_por');
     }
+    public function leituras()
+{
+    return $this->hasMany(ComunicadoLeitura::class);
+}
+
 }
