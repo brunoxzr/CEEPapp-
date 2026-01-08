@@ -57,97 +57,6 @@
     </div>
 </section>
 
-<!-- ================= INSTITUCIONAL ================= -->
-<section id="institucional" class="py-28 bg-white">
-    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-24 items-start">
-
-        <div>
-            <h2 class="text-3xl font-black text-red-800 mb-8">
-                Institucional
-            </h2>
-
-            <p class="text-slate-700 text-lg leading-relaxed mb-5">
-                Inaugurado em 27 de junho de 2014, o Centro Estadual de Educação
-                Profissional Professora Maria Lydia Cescatto Bomtempo oferece
-                cursos técnicos integrados e subsequentes para estudantes de Assaí
-                e região.
-            </p>
-
-            <p class="text-slate-600 leading-relaxed">
-                Faz parte da rede estadual de ensino do Paraná e trabalha com
-                projetos práticos, estágios e parcerias com empresas locais para
-                melhorar a formação dos alunos.
-            </p>
-        </div>
-
-        <div class="grid grid-cols-2 gap-6">
-            <div class="border-l-4 border-red-700 pl-5">
-                <strong>Ano de Inauguração</strong>
-                <span class="block text-slate-600">2014</span>
-            </div>
-
-            <div class="border-l-4 border-red-700 pl-5">
-                <strong>Investimento</strong>
-                <span class="block text-slate-600">R$ 8,46 milhões</span>
-            </div>
-
-            <div class="border-l-4 border-red-700 pl-5">
-                <strong>Estrutura</strong>
-                <span class="block text-slate-600">12 salas • 9 laboratórios</span>
-            </div>
-
-            <div class="border-l-4 border-red-700 pl-5">
-                <strong>Modalidades</strong>
-                <span class="block text-slate-600">Integrado e Subsequente</span>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-<!-- ================= CURSOS ================= -->
-<section id="cursos" class="py-28 bg-slate-50 border-t">
-    <div class="max-w-7xl mx-auto px-6">
-
-        <h2 class="text-3xl font-black text-slate-900 mb-16 text-center">
-            Cursos Ofertados
-        </h2>
-
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
-
-            @php
-                $cursos = [
-                    ['nome'=>'Agropecuária','slug'=>'agropecuaria'],
-                    ['nome'=>'Desenvolvimento de Sistemas','slug'=>'desenvolvimento-de-sistemas'],
-                    ['nome'=>'Edificações','slug'=>'edificacoes'],
-                    ['nome'=>'Eletrotécnica','slug'=>'eletrotecnica'],
-                    ['nome'=>'Enfermagem','slug'=>'enfermagem'],
-                    ['nome'=>'Mecânica Industrial','slug'=>'mecanica-industrial'],
-                ];
-            @endphp
-
-            @foreach($cursos as $curso)
-                <a href="{{ url('/cursos/'.$curso['slug']) }}"
-                   class="group bg-white border rounded-xl p-8 hover:shadow-xl transition">
-
-                    <h3 class="text-lg font-bold text-slate-900 group-hover:text-red-700">
-                        {{ $curso['nome'] }}
-                    </h3>
-
-                    <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-                        Curso técnico com aulas teóricas e práticas em laboratórios
-                        equipados.
-                    </p>
-
-                    <span class="inline-block mt-6 text-sm font-semibold text-red-700">
-                        Ver curso →
-                    </span>
-                </a>
-            @endforeach
-
-        </div>
-    </div>
-</section>
 <!-- ================= NOTÍCIAS (G1 STYLE) ================= -->
 <section id="noticias" class="py-28 bg-white border-t">
     <div class="max-w-7xl mx-auto px-6">
@@ -259,6 +168,97 @@
 
         @endif
 
+    </div>
+</section>
+<!-- ================= INSTITUCIONAL ================= -->
+<section id="institucional" class="py-28 bg-white">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-24 items-start">
+
+        <div>
+            <h2 class="text-3xl font-black text-red-800 mb-8">
+                Institucional
+            </h2>
+
+            <p class="text-slate-700 text-lg leading-relaxed mb-5">
+                Inaugurado em 27 de junho de 2014, o Centro Estadual de Educação
+                Profissional Professora Maria Lydia Cescatto Bomtempo oferece
+                cursos técnicos integrados e subsequentes para estudantes de Assaí
+                e região.
+            </p>
+
+            <p class="text-slate-600 leading-relaxed">
+                Faz parte da rede estadual de ensino do Paraná e trabalha com
+                projetos práticos, estágios e parcerias com empresas locais para
+                melhorar a formação dos alunos.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6">
+            <div class="border-l-4 border-red-700 pl-5">
+                <strong>Ano de Inauguração</strong>
+                <span class="block text-slate-600">2014</span>
+            </div>
+
+            <div class="border-l-4 border-red-700 pl-5">
+                <strong>Investimento</strong>
+                <span class="block text-slate-600">R$ 8,46 milhões</span>
+            </div>
+
+            <div class="border-l-4 border-red-700 pl-5">
+                <strong>Estrutura</strong>
+                <span class="block text-slate-600">12 salas • 9 laboratórios</span>
+            </div>
+
+            <div class="border-l-4 border-red-700 pl-5">
+                <strong>Modalidades</strong>
+                <span class="block text-slate-600">Integrado e Subsequente</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ================= CURSOS ================= -->
+<section id="cursos" class="py-28 bg-slate-50 border-t">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <h2 class="text-3xl font-black text-slate-900 mb-16 text-center">
+            Cursos Ofertados
+        </h2>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+
+            @php
+                $cursos = [
+                    ['nome'=>'Agropecuária','slug'=>'agropecuaria'],
+                    ['nome'=>'Desenvolvimento de Sistemas','slug'=>'desenvolvimento-de-sistemas'],
+                    ['nome'=>'Edificações','slug'=>'edificacoes'],
+                    ['nome'=>'Eletrotécnica','slug'=>'eletrotecnica'],
+                    ['nome'=>'Enfermagem','slug'=>'enfermagem'],
+                    ['nome'=>'Mecânica Industrial','slug'=>'mecanica-industrial'],
+                ];
+            @endphp
+
+            @foreach($cursos as $curso)
+                <a href="{{ url('/cursos/'.$curso['slug']) }}"
+                   class="group bg-white border rounded-xl p-8 hover:shadow-xl transition">
+
+                    <h3 class="text-lg font-bold text-slate-900 group-hover:text-red-700">
+                        {{ $curso['nome'] }}
+                    </h3>
+
+                    <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+                        Curso técnico com aulas teóricas e práticas em laboratórios
+                        equipados.
+                    </p>
+
+                    <span class="inline-block mt-6 text-sm font-semibold text-red-700">
+                        Ver curso →
+                    </span>
+                </a>
+            @endforeach
+
+        </div>
     </div>
 </section>
 <!-- ================= DIREÇÃO ================= -->
@@ -397,50 +397,137 @@
 </section>
 @endif
 
-<!-- ================= CONTATO ================= -->
-<section id="contato" class="py-28 bg-slate-50 border-t">
-    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
+  <!-- HERO -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-red-800 via-red-700 to-red-900 text-white">
+    <div class="max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-12 items-center">
 
-        <div>
-            <h2 class="text-2xl font-black text-red-800 mb-6">
-                Contato
-            </h2>
+      <div>
+        <p class="uppercase tracking-[0.3em] text-xs font-bold text-yellow-300 mb-4">
+          Fale com o CEEP
+        </p>
 
-            <div class="space-y-4 text-slate-700">
-                <div>
-                    <p class="font-semibold mb-1">Endereço</p>
-                    <p class="leading-relaxed">
-                        Rua Edgar Bardal, s/n<br>
-                        Assaí – PR • CEP 86220-000
-                    </p>
-                </div>
+        <h1 class="text-4xl md:text-5xl font-black leading-tight mb-6">
+          Estamos aqui pra te<br>
+          <span class="text-yellow-300">atender de verdade</span>
+        </h1>
 
-                <div>
-                    <p class="font-semibold mb-1">Telefone</p>
-                    <p class="leading-relaxed">
-                        <a href="tel:+554332622063" class="text-red-700 hover:underline">
-                            (43) 3262-2063
-                        </a>
-                    </p>
-                </div>
+        <p class="text-white/90 text-lg leading-relaxed max-w-xl">
+          Dúvidas sobre cursos, matrícula, documentos ou projetos?
+          A secretaria do CEEP Assaí está pronta para te orientar.
+          Atendimento humano, direto e sem enrolação.
+        </p>
 
-                <div>
-                    <p class="font-semibold mb-1">Atendimento</p>
-                    <p class="leading-relaxed text-sm">
-                        Segunda a sexta-feira, horário comercial
-                    </p>
-                </div>
-            </div>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="#localizacao"
+             class="px-6 py-3 rounded-xl bg-yellow-400 text-red-900 font-black hover:bg-yellow-300 transition shadow-lg">
+            📍 Onde estamos
+          </a>
 
-        <iframe
-            class="w-full h-80 border rounded-xl"
-            loading="lazy"
-            src="https://www.google.com/maps?q=Centro+Estadual+de+Educação+Profissional+Assaí&output=embed">
-        </iframe>
+          <a href="tel:+554332622063"
+             class="px-6 py-3 rounded-xl bg-white/10 border border-white/30 font-semibold hover:bg-white/20 transition">
+            📞 Ligar para a secretaria
+          </a>
+        </div>
+      </div>
+
+      <!-- BLOCO VISUAL -->
+      <div class="hidden md:block">
+        <div class="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl">
+          <p class="text-lg font-black text-yellow-300 mb-4">
+            Atendimento Presencial
+          </p>
+
+          <ul class="space-y-3 text-white/90 text-sm">
+            <li>✔ Matrículas e transferências</li>
+            <li>✔ Informações sobre cursos técnicos</li>
+            <li>✔ Documentação escolar</li>
+            <li>✔ Projetos, estágios e atividades</li>
+          </ul>
+        </div>
+      </div>
 
     </div>
-</section>
+  </section>
 
+  <!-- CONTATO DIRETO -->
+  <section class="py-24 bg-white border-t">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
+
+      <!-- INFO -->
+      <div>
+        <h2 class="text-3xl font-black text-red-800 mb-6">
+          📌 Secretaria do CEEP Assaí
+        </h2>
+
+        <p class="text-slate-700 text-lg leading-relaxed mb-8">
+          Se preferir, venha até nós ou entre em contato por telefone.
+          Nossa equipe está pronta para ajudar.
+        </p>
+
+        <div class="space-y-5 text-slate-800">
+
+          <div class="flex items-start gap-4">
+            <span class="text-2xl">📍</span>
+            <div>
+              <p class="font-bold">Endereço</p>
+              <p class="text-slate-600">
+                Rua Edgar Bardal, s/n<br>
+                Assaí – PR • CEP 86220-000
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <span class="text-2xl">📞</span>
+            <div>
+              <p class="font-bold">Telefone da Secretaria</p>
+              <p class="text-slate-600">(43) 3262-2063</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <span class="text-2xl">🕘</span>
+            <div>
+              <p class="font-bold">Horário de Atendimento</p>
+              <p class="text-slate-600">
+                Segunda a sexta-feira<br>
+                Horário comercial
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MAPA -->
+      <div id="localizacao" class="w-full h-[420px] rounded-3xl overflow-hidden border shadow-lg">
+        <iframe
+          class="w-full h-full"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Centro+Estadual+de+Educação+Profissional+Assaí&output=embed">
+        </iframe>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="py-20 bg-slate-100 border-t">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h3 class="text-2xl md:text-3xl font-black text-red-800 mb-4">
+        O CEEP Assaí está de portas abertas
+      </h3>
+      <p class="text-slate-600 text-lg mb-8">
+        Educação técnica, projetos reais e pessoas que fazem acontecer.
+      </p>
+
+      <a href="{{ route('home') }}"
+         class="inline-flex items-center gap-2 px-7 py-3 rounded-xl bg-red-700 text-white font-bold hover:bg-red-800 transition shadow">
+        ← Voltar ao portal
+      </a>
+    </div>
+  </section>
 </main>
 
 @include('layouts.footer')
