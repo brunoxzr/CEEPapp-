@@ -88,6 +88,9 @@
                                 <a href="{{ route('aluno.calendario.index') }}" class="hover:text-red-800">
                     Calendario
                 </a>
+<a href="{{ route('aluno.perfil') }}" class="hover:text-red-800 transition">
+    Perfil
+</a>
 
                 <form action="{{ route('logout') }}" method="POST" class="ml-4">
                     @csrf

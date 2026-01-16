@@ -45,6 +45,10 @@ public function comunicadosLidos()
 {
     return $this->hasMany(ComunicadoLeitura::class);
 }
+public function perfil()
+{
+    return $this->hasOne(AlunoPerfil::class);
+}
 
 
 

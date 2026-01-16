@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProjetoPublicoController;
+use App\Http\Controllers\HubRHController;
 
 // Auth
 use App\Http\Controllers\Auth\AlunoAuthController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\UnifiedLoginController;
 
 // Aluno
+use App\Http\Controllers\AlunoPerfilController;
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\SaebController;
 
@@ -31,6 +33,10 @@ use App\Http\Controllers\ProfessorProjetoController;
 use App\Http\Controllers\ProfessorRestricaoController;
 use App\Http\Controllers\ComunicadoController;
 use App\Http\Controllers\CalendarioController;
+use App\Http\Controllers\AlunoPublicController;
+
+Route::get('/perfil/{slug}', [AlunoPublicController::class, 'show'])
+    ->name('aluno.public');
 
 /*
 |--------------------------------------------------------------------------
@@ -119,7 +125,28 @@ Route::prefix('aluno')
 
         Route::delete('/comunicados/{comunicado}/lido', [ComunicadoController::class, 'marcarNaoLido'])
             ->name('aluno.comunicados.naoLido');
+
+
     });
+// PERFIL DO ALUNO
+Route::middleware('auth:aluno')->group(function () {
+    Route::get('/aluno/perfil', [AlunoPerfilController::class, 'edit']);
+    Route::post('/aluno/perfil', [AlunoPerfilController::class, 'update']);
+});
+Route::middleware(['web', 'aluno'])->prefix('aluno')->name('aluno.')->group(function () {
+
+    Route::get('/dashboard', [AlunoController::class, 'dashboard'])
+        ->name('dashboard');
+
+    Route::get('/perfil', [AlunoPerfilController::class, 'edit'])
+        ->name('perfil');
+
+    Route::post('/perfil', [AlunoPerfilController::class, 'update'])
+        ->name('perfil.update');
+
+});
+// HUB DE RH
+Route::get('/hub-rh', [HubRHController::class, 'index']);
 
 
 /*

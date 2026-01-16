@@ -90,6 +90,9 @@
                 <a href="{{ url('/contato') }}" class="hover:text-red-800 transition">
                     Contato
                 </a>
+                                <a href="{{ url('/hub-rh') }}" class="hover:text-red-800 transition">
+                    Hub de RH
+                </a>
 
                 <!-- ÁREA ACADÊMICA -->
                 <div class="pl-6 border-l border-slate-200">
@@ -150,6 +153,7 @@
                 <a href="{{ url('/institucional') }}" class="hover:text-red-800">Institucional</a>
                 <a href="{{ url(path: '/projetos') }}" class="hover:text-red-800">Projetos</a>
                 <a href="{{ url('/contato') }}" class="hover:text-red-800">Contato</a>
+                <a href="{{ url('/hub-rh') }}" class="hover:text-red-800">Hub de RH</a>
 
                 <div class="border-t pt-4 mt-4">
                     @if(session('aluno_id'))
