@@ -10,7 +10,6 @@
         <!-- ================= HEADER ================= -->
         <div class="mb-12">
             <div class="flex items-center gap-3">
-                <!-- SVG PERFIL -->
                 <svg class="w-8 h-8 text-red-800" fill="none" stroke="currentColor" stroke-width="2"
                      viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -34,8 +33,6 @@
         @if(!empty($aluno?->slug))
             <div class="mb-10 p-6 rounded-2xl bg-gradient-to-r from-green-100 to-emerald-100
                         border border-green-300 shadow flex gap-4">
-
-                <!-- SVG LINK -->
                 <svg class="w-6 h-6 text-green-700 mt-1" fill="none" stroke="currentColor" stroke-width="2"
                      viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -82,20 +79,24 @@
                 </h2>
 
                 <div class="flex items-center gap-8">
+
+                    <!-- PREVIEW -->
                     <div class="w-36 h-36 rounded-full overflow-hidden
-                                border-4 border-red-700/30 bg-slate-200">
-                        @if(!empty($perfil?->foto))
-                            <img src="{{ asset('storage/'.$perfil->foto) }}"
-                                 class="w-full h-full object-cover">
-                        @else
-                            <div class="w-full h-full flex items-center justify-center text-slate-500 text-sm">
-                                Sem foto
-                            </div>
-                        @endif
+                                border-4 border-red-700/30 bg-slate-200
+                                flex items-center justify-center">
+
+                        <img id="fotoPreview"
+                             src="{{ !empty($perfil?->foto) ? asset('storage/'.$perfil->foto) : '' }}"
+                             class="w-full h-full object-cover {{ empty($perfil?->foto) ? 'hidden' : '' }}">
+
+                        <span id="fotoPlaceholder"
+                              class="text-slate-500 text-sm {{ !empty($perfil?->foto) ? 'hidden' : '' }}">
+                            Sem foto
+                        </span>
                     </div>
 
                     <div>
-                        <input type="file" name="foto"
+                        <input type="file" name="foto" id="fotoInput" accept="image/*"
                                class="block text-sm
                                       file:mr-4 file:py-2 file:px-5
                                       file:rounded-full file:border-0
@@ -233,5 +234,24 @@
         </form>
     </div>
 </main>
+
+<!-- ================= JS PREVIEW ================= -->
+<script>
+document.getElementById('fotoInput')?.addEventListener('change', function (e) {
+    const file = e.target.files[0]
+    if (!file) return
+
+    const preview = document.getElementById('fotoPreview')
+    const placeholder = document.getElementById('fotoPlaceholder')
+
+    const reader = new FileReader()
+    reader.onload = () => {
+        preview.src = reader.result
+        preview.classList.remove('hidden')
+        placeholder.classList.add('hidden')
+    }
+    reader.readAsDataURL(file)
+})
+</script>
 
 @include('layouts.footer')
