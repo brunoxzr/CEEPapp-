@@ -56,15 +56,30 @@
 <div class="w-full lg:w-1/3 flex items-center justify-center bg-white px-8">
 
     <div class="w-full max-w-md">
+<!-- Logo / Cabeçalho -->
+<div class="mb-10 text-center">
 
-        <!-- Logo / Cabeçalho -->
-        <div class="mb-10 text-center">
-            <img src="/img/logo_ceep.jpeg" class="mx-auto w-24 mb-5" alt="CEEP Assaí">
-            <h2 class="text-2xl font-black text-red-800">Área Acadêmica</h2>
-            <p class="text-sm text-slate-500 mt-1">
-                Acesso institucional
-            </p>
-        </div>
+    <!-- Logos -->
+    <div class="flex justify-center items-center gap-6 mb-6">
+        <img src="/img/logo_ceep.jpeg"
+             alt="CEEP Assaí"
+             class="w-28 h-28 object-contain">
+
+        <img src="/img/logo_parana.png"
+             alt="Paraná"
+             class="w-28 h-28 object-contain">
+    </div>
+
+    <!-- Título -->
+    <h2 class="text-2xl font-black text-red-800">
+        Área Acadêmica
+    </h2>
+
+    <p class="text-sm text-slate-500 mt-1">
+        Acesso institucional
+    </p>
+</div>
+
 
         <!-- Erros -->
         @if($errors->any())
