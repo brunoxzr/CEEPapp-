@@ -43,6 +43,12 @@ Route::get('/perfil/{slug}', [AlunoPublicController::class, 'show'])
 | ROTAS PÚBLICAS — PORTAL
 |--------------------------------------------------------------------------
 */
+Route::prefix('legal')->group(function () {
+    Route::view('/privacidade', 'legal.privacidade')->name('legal.privacidade');
+    Route::view('/termos', 'legal.termos')->name('legal.termos');
+    Route::view('/acessibilidade', 'legal.acessibilidade')->name('legal.acessibilidade');
+});
+
 
 Route::get('/', [PortalController::class, 'index'])->name('home');
 Route::view('/contato', 'portal.contato')->name('portal.contato');

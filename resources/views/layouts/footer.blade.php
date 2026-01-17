@@ -99,11 +99,23 @@
             Todos os direitos reservados.
         </div>
 
-        <div class="flex flex-wrap gap-6">
-            <span>Política de Privacidade</span>
-            <span>Termos de Uso</span>
-            <span>Acessibilidade</span>
-        </div>
+<div class="flex flex-wrap gap-6 text-sm text-slate-400">
+    <a href="{{ route('legal.privacidade') }}"
+       class="hover:text-red-700 hover:underline transition">
+        Política de Privacidade
+    </a>
+
+    <a href="{{ route('legal.termos') }}"
+       class="hover:text-red-700 hover:underline transition">
+        Termos de Uso
+    </a>
+
+    <a href="{{ route('legal.acessibilidade') }}"
+       class="hover:text-red-700 hover:underline transition">
+        Acessibilidade
+    </a>
+</div>
+
     </div>
 
 </footer>

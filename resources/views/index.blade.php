@@ -8,6 +8,127 @@
         <link rel="preload" as="image" href="{{ asset('storage/'.$featured->cover_path) }}">
     @endif
 @endpush
+<!-- =========================
+     CEEPapp • COOKIE CONSENT (BLOCKING MODAL)
+     Cole antes de </body>
+========================== -->
+<div id="ceep-cookie-overlay" class="fixed inset-0 z-[9999] hidden">
+  <!-- backdrop -->
+  <div class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm"></div>
+
+  <!-- modal -->
+  <div class="relative min-h-screen flex items-center justify-center px-6 py-10">
+    <div class="w-full max-w-2xl rounded-3xl bg-white shadow-2xl border border-red-700/20 overflow-hidden">
+
+      <!-- header -->
+      <div class="bg-gradient-to-r from-red-800 to-red-900 text-white px-8 py-7">
+        <div class="flex items-center gap-4">
+          <!-- SVG cookie (CC0 - SVGRepo) -->
+          <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20">
+            <img
+              src="https://www.svgrepo.com/show/156649/cookies.svg"
+              alt="Ícone de cookie"
+              class="w-8 h-8"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="flex-1">
+            <h2 class="text-xl md:text-2xl font-black leading-tight">
+              Cookies e Privacidade
+            </h2>
+            <p class="text-white/80 text-sm mt-1">
+              Pra continuar no portal, você precisa aceitar os cookies essenciais.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- body -->
+      <div class="px-8 py-8">
+        <p class="text-slate-700 leading-relaxed">
+          O CEEPapp utiliza <strong>cookies essenciais</strong> para:
+        </p>
+
+        <ul class="mt-4 space-y-2 text-slate-600">
+          <li class="flex gap-2"><span class="mt-1">•</span><span>manter sua sessão e segurança;</span></li>
+          <li class="flex gap-2"><span class="mt-1">•</span><span>garantir funcionamento correto do portal;</span></li>
+          <li class="flex gap-2"><span class="mt-1">•</span><span>evitar falhas em login e navegação.</span></li>
+        </ul>
+
+        <div class="mt-6 rounded-2xl border bg-slate-50 p-5">
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Ao clicar em <strong>Aceitar e continuar</strong>, você confirma que leu e concorda com nossa
+            <a class="text-red-700 font-bold hover:underline" href="{{ route('legal.privacidade') }}">
+              Política de Privacidade
+            </a>
+            e nossos
+            <a class="text-red-700 font-bold hover:underline" href="{{ route('legal.termos') }}">
+              Termos de Uso
+            </a>.
+          </p>
+        </div>
+
+        <!-- actions -->
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-end">
+          <a href="{{ route('legal.privacidade') }}"
+             class="px-6 py-3 rounded-xl border font-bold text-slate-700 hover:bg-slate-50 transition text-center">
+            Ler Política
+          </a>
+
+          <button id="ceep-cookie-accept"
+                  class="px-6 py-3 rounded-xl bg-yellow-400 text-red-900 font-black hover:bg-yellow-300 transition shadow">
+            Aceitar e continuar
+          </button>
+        </div>
+
+        <p class="mt-6 text-xs text-slate-400">
+          Este portal utiliza apenas cookies essenciais. (LGPD)
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const KEY = 'ceep_cookies_accepted_v1';
+    const overlay = document.getElementById('ceep-cookie-overlay');
+    const btn = document.getElementById('ceep-cookie-accept');
+
+    function lockScroll(lock) {
+      document.documentElement.style.overflow = lock ? 'hidden' : '';
+      document.body.style.overflow = lock ? 'hidden' : '';
+    }
+
+    function show() {
+      overlay.classList.remove('hidden');
+      lockScroll(true);
+    }
+
+    function hide() {
+      overlay.classList.add('hidden');
+      lockScroll(false);
+    }
+
+    // Se já aceitou, não mostra
+    if (!localStorage.getItem(KEY)) {
+      show();
+    }
+
+    btn?.addEventListener('click', function () {
+      localStorage.setItem(KEY, '1');
+      hide();
+    });
+
+    // Segurança extra: impede fechar clicando fora
+    overlay.addEventListener('click', function (e) {
+      // não faz nada (bloqueia)
+      // mantém o usuário dentro do modal até aceitar
+    });
+  })();
+</script>
 
 <main class="bg-white text-slate-800">
 
