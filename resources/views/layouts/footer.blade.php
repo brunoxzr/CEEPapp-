@@ -82,7 +82,7 @@
                 <li>Centro Estadual de Educação Profissional</li>
                 <li class="pt-2 text-red-200">
                     Suporte Técnico:<br>
-                    <span class="font-medium">suporte@ceep.edu.br</span>
+                    <span class="font-medium">bruno.kay2304@gmail.com</span>
                 </li>
             </ul>
         </div>
