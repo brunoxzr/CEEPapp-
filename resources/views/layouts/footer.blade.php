@@ -77,13 +77,29 @@
                 Institucional
             </h3>
             <ul class="space-y-2 text-sm">
-                <li>Governo do Estado do Paraná</li>
-                <li>Secretaria da Educação</li>
-                <li>Centro Estadual de Educação Profissional</li>
-                <li class="pt-2 text-red-200">
-                    Suporte Técnico:<br>
-                    <span class="font-medium">bruno.kay2304@gmail.com</span>
-                </li>
+<li>
+    <a href="https://www.parana.pr.gov.br" target="_blank" class="hover:text-yellow-300 transition">
+        Governo do Estado do Paraná
+    </a>
+</li>
+
+<li>
+    <a href="https://www.educacao.pr.gov.br" target="_blank" class="hover:text-yellow-300 transition">
+        Secretaria da Educação
+    </a>
+</li>
+
+<li>
+    <a href="{{ url('/') }}" class="hover:text-yellow-300 transition">
+        Centro Estadual de Educação Profissional
+    </a>
+</li>
+
+<li class="pt-2 text-red-200">
+    Suporte Técnico:<br>
+    <span class="font-medium">bruno.kay2304@gmail.com</span>
+</li>
+
             </ul>
         </div>
     </div>
