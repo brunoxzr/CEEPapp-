@@ -31,7 +31,7 @@
                     class="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-600">
                 <option value="">Todos os cursos</option>
                 @foreach([
-                    'Agropecuária',
+                    'Agronegócio',
                     'Desenvolvimento de Sistemas',
                     'Edificações',
                     'EletroEletrônica',

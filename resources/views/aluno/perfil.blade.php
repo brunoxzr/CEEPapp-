@@ -183,7 +183,7 @@
                                        bg-slate-50 px-4 py-3
                                        focus:border-red-600 focus:ring-2 focus:ring-red-200">
                             @foreach([
-                                'Agropecuária',
+                                'Agronegócio',
                                 'Desenvolvimento de Sistemas',
                                 'Edificações',
                                 'EletroEletrônica',

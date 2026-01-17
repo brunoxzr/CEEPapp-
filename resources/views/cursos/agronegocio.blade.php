@@ -30,7 +30,7 @@
             </span>
 
             <h1 class="mt-4 text-4xl md:text-5xl font-extrabold text-white leading-tight">
-                Agropecuária
+                Agronegócio
             </h1>
 
             <p class="mt-8 text-lg text-emerald-100 leading-relaxed">

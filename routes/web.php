@@ -66,7 +66,7 @@ Route::view('/cursos/enfermagem', 'cursos.enfermagem');
 Route::view('/cursos/mecanica-industrial', 'cursos.mecanica');
 Route::view('/cursos/eletrotecnica', 'cursos.eletrotecnica');
 Route::view('/cursos/edificacoes', 'cursos.edificacoes');
-Route::view('/cursos/agropecuaria', 'cursos.agropecuaria');
+Route::view('/cursos/agronegocio', 'cursos.agronegocio');
 
 // Notícias
 Route::get('/noticias', [NewsController::class, 'index'])->name('portal.news.index');

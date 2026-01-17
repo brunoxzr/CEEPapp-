@@ -351,7 +351,7 @@
 
             @php
                 $cursos = [
-                    ['nome'=>'Agropecuária','slug'=>'agropecuaria'],
+                    ['nome'=>'Agronegócio','slug'=>'agronegocio'],
                     ['nome'=>'Desenvolvimento de Sistemas','slug'=>'desenvolvimento-de-sistemas'],
                     ['nome'=>'Edificações','slug'=>'edificacoes'],
                     ['nome'=>'Eletrotécnica','slug'=>'eletrotecnica'],
