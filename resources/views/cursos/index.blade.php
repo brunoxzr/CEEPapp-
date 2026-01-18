@@ -125,14 +125,14 @@
         <article class="grid md:grid-cols-2 gap-10 items-center">
             <div>
                 <h2 class="text-2xl font-semibold text-slate-900">
-                    Técnico em Agropecuária
+                    Técnico em Agronegócio
                 </h2>
                 <p class="mt-4 text-slate-700 leading-relaxed">
                     Curso que prepara profissionais para trabalhar na produção
                     agrícola e pecuária. O aluno aprende sobre cultivo, criação
                     de animais, manejo de solo e gestão rural.
                 </p>
-                <a href="/cursos/agropecuaria"
+                <a href="/cursos/agronegocio"
                    class="inline-block mt-6 text-red-700 font-semibold">
                     Conhecer o curso →
                 </a>
@@ -140,6 +140,70 @@
             <img src="/img/cursos/agropecuaria.jpg"
                  class="w-full h-72 object-cover rounded"
                  alt="Área agrícola educacional">
+        </article>
+        <!-- ADMINISTRAÇÃO -->
+        <article class="grid md:grid-cols-2 gap-10 items-center">
+            <img src="/img/cursos/administracao.jpg"
+                 class="w-full h-72 object-cover rounded"
+                 alt="Sala de administração">
+            <div>
+                <h2 class="text-2xl font-semibold text-slate-900">
+                    Técnico em Administração
+                </h2>
+                <p class="mt-4 text-slate-700 leading-relaxed">
+                    Curso que prepara o aluno para atuar na gestão de empresas,
+                    organizações públicas e privadas. Trabalha com administração,
+                    finanças, recursos humanos, marketing e processos organizacionais.
+                </p>
+                <a href="/cursos/administracao"
+                   class="inline-block mt-6 text-red-700 font-semibold">
+                    Conhecer o curso →
+                </a>
+            </div>
+        </article>
+
+        <!-- INTELIGÊNCIA ARTIFICIAL E DADOS -->
+        <article class="grid md:grid-cols-2 gap-10 items-center">
+            <div>
+                <h2 class="text-2xl font-semibold text-slate-900">
+                    Técnico em Inteligência Artificial e Ciência de Dados
+                </h2>
+                <p class="mt-4 text-slate-700 leading-relaxed">
+                    Curso voltado para tecnologias emergentes, preparando o aluno
+                    para trabalhar com análise de dados, inteligência artificial,
+                    machine learning e automação de processos. Desenvolve raciocínio
+                    lógico, programação e uso de dados para tomada de decisões.
+                </p>
+                <a href="/cursos/inteligencia-artificial-dados"
+                   class="inline-block mt-6 text-red-700 font-semibold">
+                    Conhecer o curso →
+                </a>
+            </div>
+            <img src="/img/cursos/inteligencia-artificial.jpg"
+                 class="w-full h-72 object-cover rounded"
+                 alt="Laboratório de inteligência artificial">
+        </article>
+
+        <!-- SEGURANÇA DO TRABALHO -->
+        <article class="grid md:grid-cols-2 gap-10 items-center">
+            <img src="/img/cursos/seguranca-do-trabalho.jpg"
+                 class="w-full h-72 object-cover rounded"
+                 alt="Treinamento de segurança do trabalho">
+            <div>
+                <h2 class="text-2xl font-semibold text-slate-900">
+                    Técnico em Segurança do Trabalho
+                </h2>
+                <p class="mt-4 text-slate-700 leading-relaxed">
+                    Curso que forma profissionais responsáveis pela prevenção
+                    de acidentes e promoção da saúde no ambiente de trabalho.
+                    O aluno aprende normas de segurança, legislação, análise
+                    de riscos e uso de equipamentos de proteção.
+                </p>
+                <a href="/cursos/seguranca-do-trabalho"
+                   class="inline-block mt-6 text-red-700 font-semibold">
+                    Conhecer o curso →
+                </a>
+            </div>
         </article>
 
     </div>

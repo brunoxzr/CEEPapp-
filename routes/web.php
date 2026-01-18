@@ -61,12 +61,64 @@ Route::get('/institucional/{slug}', [PortalController::class, 'institucionalShow
 
 // Cursos
 Route::get('/cursos', fn () => view('cursos.index'))->name('portal.courses');
-Route::view('/cursos/desenvolvimento-de-sistemas', 'cursos.desenvolvimento');
-Route::view('/cursos/enfermagem', 'cursos.enfermagem');
-Route::view('/cursos/mecanica-industrial', 'cursos.mecanica');
-Route::view('/cursos/eletrotecnica', 'cursos.eletrotecnica');
-Route::view('/cursos/edificacoes', 'cursos.edificacoes');
-Route::view('/cursos/agronegocio', 'cursos.agronegocio');
+
+Route::prefix('cursos')->group(function () {
+
+    // Desenvolvimento de Sistemas
+    Route::view(
+        '/desenvolvimento-de-sistemas',
+        'cursos.desenvolvimento'
+    )->name('cursos.desenvolvimento');
+
+    // Enfermagem
+    Route::view(
+        '/enfermagem',
+        'cursos.enfermagem'
+    )->name('cursos.enfermagem');
+
+    // Mecânica Industrial
+    Route::view(
+        '/mecanica-industrial',
+        'cursos.mecanica-industrial'
+    )->name('cursos.mecanica-industrial');
+
+    // Eletrotécnica
+    Route::view(
+        '/eletrotecnica',
+        'cursos.eletrotecnica'
+    )->name('cursos.eletrotecnica');
+
+    // Edificações
+    Route::view(
+        '/edificacoes',
+        'cursos.edificacoes'
+    )->name('cursos.edificacoes');
+
+    // Agropecuária
+    Route::view(
+        '/agronegocio',
+        'cursos.agronegocio'
+    )->name('cursos.agronegocio');
+
+    // Administração
+    Route::view(
+        '/administracao',
+        'cursos.administracao'
+    )->name('cursos.administracao');
+
+    // Inteligência Artificial e Ciência de Dados
+    Route::view(
+        '/inteligencia-artificial-dados',
+        'cursos.inteligencia-artificial-dados'
+    )->name('cursos.ia-dados');
+
+    // Segurança do Trabalho
+    Route::view(
+        '/seguranca-do-trabalho',
+        'cursos.seguranca-do-trabalho'
+    )->name('cursos.seguranca');
+
+});
 
 // Notícias
 Route::get('/noticias', [NewsController::class, 'index'])->name('portal.news.index');
