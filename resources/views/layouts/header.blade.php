@@ -170,10 +170,6 @@
                     Notícias
                 </a>
 
-                <a href="{{ url('/cursos') }}" class="hover:text-red-800 transition">
-                    Cursos
-                </a>
-
                 <a href="{{ url('/institucional') }}" class="hover:text-red-800 transition">
                     Institucional
                 </a>
@@ -242,7 +238,6 @@
 
             <nav class="flex flex-col gap-4 text-sm font-semibold text-slate-700">
                 <a href="{{ url('/noticias') }}" class="hover:text-red-800">Notícias</a>
-                <a href="{{ url('/cursos') }}" class="hover:text-red-800">Cursos</a>
                 <a href="{{ url('/institucional') }}" class="hover:text-red-800">Institucional</a>
                 <a href="{{ url(path: '/projetos') }}" class="hover:text-red-800">Projetos</a>
                 <a href="{{ url('/contato') }}" class="hover:text-red-800">Contato</a>

@@ -95,7 +95,24 @@
         <p class="text-sm text-slate-500">Nenhum professor com disciplinas.</p>
       @endforelse
     </div>
+  {{-- ====== LIXEIRA ====== --}}
+  <div class="bg-white border rounded-2xl p-5 shadow-sm">
+    <h2 class="text-lg font-black text-slate-900">Remover</h2>
 
+    <div id="trash"
+         ondragover="allowDrop(event)"
+         ondrop="dropTrash(event)"
+         class="mt-4 h-40 rounded-2xl border-2 border-dashed border-red-300
+                flex items-center justify-center text-red-700 font-black bg-red-50/40">
+      LIXEIRA
+    </div>
+
+    <div id="toast"
+         class="hidden mt-4 p-3 rounded-xl bg-emerald-50 border border-emerald-200
+                text-emerald-800 text-sm font-semibold">
+      Salvo.
+    </div>
+  </div>
 {{-- ================= GRADE DO CRONOGRAMA ================= --}}
 <div class="bg-white border rounded-2xl p-4 shadow-sm overflow-x-auto mt-6">
   <table class="min-w-[1600px] w-full border text-sm">
@@ -225,65 +242,98 @@
   </table>
 </div>
 
-  {{-- ====== LIXEIRA ====== --}}
-  <div class="bg-white border rounded-2xl p-5 shadow-sm">
-    <h2 class="text-lg font-black text-slate-900">Remover</h2>
 
-    <div id="trash"
-         ondragover="allowDrop(event)"
-         ondrop="dropTrash(event)"
-         class="mt-4 h-40 rounded-2xl border-2 border-dashed border-red-300
-                flex items-center justify-center text-red-700 font-black bg-red-50/40">
-      LIXEIRA
-    </div>
-
-    <div id="toast"
-         class="hidden mt-4 p-3 rounded-xl bg-emerald-50 border border-emerald-200
-                text-emerald-800 text-sm font-semibold">
-      Salvo.
-    </div>
-  </div>
-
-</div><script>
+</div>
+<script>
 /* =========================================================
-   UTIL – HORÁRIO EM MINUTOS (REGRA DE OURO)
+   CONFIG
+========================================================= */
+const ROUTES = {
+  save: "{{ route('admin.cronograma.dragSave') }}",
+  delete: "{{ route('admin.cronograma.dragDelete') }}"
+};
+
+/* =========================================================
+   UTIL – HORÁRIO EM MINUTOS
 ========================================================= */
 function timeToMinutes(t) {
   if (!t) return null;
-  t = String(t).trim();
-  const [h, m] = t.split(':').map(Number);
+  const [h, m] = String(t).trim().split(':').map(Number);
   if (isNaN(h) || isNaN(m)) return null;
   return h * 60 + m;
 }
 
 /* =========================================================
-   TOAST
+   TOAST (STATUS REAL)
 ========================================================= */
 const toast = document.getElementById('toast');
 
-function showToast(msg = 'Salvo.') {
+function showToast(msg, type = 'ok') {
   if (!toast) return;
+
   toast.textContent = msg;
   toast.classList.remove('hidden');
+
+  toast.className =
+    'mt-4 p-3 rounded-xl border text-sm font-semibold ' +
+    (type === 'ok'
+      ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+      : type === 'warn'
+      ? 'bg-amber-50 border-amber-200 text-amber-800'
+      : 'bg-red-50 border-red-200 text-red-800');
+
   clearTimeout(window.__toastTimer);
   window.__toastTimer = setTimeout(() => {
     toast.classList.add('hidden');
-  }, 1600);
+  }, 2200);
 }
 
 /* =========================================================
-   DRAG BASICS
+   API (RESPEITA ERRO DO BACKEND)
+========================================================= */
+async function apiRequest(url, method, body) {
+  const res = await fetch(url, {
+    method,
+    headers: {
+      "X-CSRF-TOKEN": "{{ csrf_token() }}",
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+
+  let json = {};
+  try { json = await res.json(); } catch {}
+
+  if (!res.ok) {
+    throw new Error(json.message || 'Erro inesperado.');
+  }
+
+  return json;
+}
+
+const apiSave   = body => apiRequest(ROUTES.save,   'POST', body);
+const apiDelete = body => apiRequest(ROUTES.delete, 'DELETE', body);
+
+/* =========================================================
+   DRAG & DROP – BÁSICO
 ========================================================= */
 function allowDrop(ev) {
   ev.preventDefault();
 }
+window.allowDrop = allowDrop;
 
 function dragStart(ev) {
   const el = ev.currentTarget;
 
+  if (!el.dataset.disciplina || !el.dataset.professor) {
+    showToast('Bloco inválido.', 'error');
+    return;
+  }
+
   const payload = {
-    disciplina: el.dataset.disciplina || '',
-    professor: el.dataset.professor || '',
+    disciplina: el.dataset.disciplina,
+    professor: el.dataset.professor,
     from: {
       dia: el.dataset.fromDia || null,
       turma: el.dataset.fromTurma || null,
@@ -292,48 +342,12 @@ function dragStart(ev) {
   };
 
   ev.dataTransfer.setData('application/json', JSON.stringify(payload));
-  ev.dataTransfer.setData('text/plain', JSON.stringify(payload));
   ev.dataTransfer.effectAllowed = 'move';
 }
-
-window.allowDrop = allowDrop;
 window.dragStart = dragStart;
 
 /* =========================================================
-   API
-========================================================= */
-async function apiSave(body) {
-  const res = await fetch("{{ route('admin.cronograma.dragSave') }}", {
-    method: "POST",
-    headers: {
-      "X-CSRF-TOKEN": "{{ csrf_token() }}",
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    },
-    body: JSON.stringify(body)
-  });
-
-  if (!res.ok) throw new Error('Erro ao salvar');
-  return res.json();
-}
-
-async function apiDelete(body) {
-  const res = await fetch("{{ route('admin.cronograma.dragDelete') }}", {
-    method: "DELETE",
-    headers: {
-      "X-CSRF-TOKEN": "{{ csrf_token() }}",
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    },
-    body: JSON.stringify(body)
-  });
-
-  if (!res.ok) throw new Error('Erro ao remover');
-  return res.json();
-}
-
-/* =========================================================
-   UTIL DOM
+   DOM HELPERS
 ========================================================= */
 function findCell(dia, turma, aula) {
   return document.querySelector(
@@ -343,59 +357,55 @@ function findCell(dia, turma, aula) {
 
 function renderEmptyCell(cell) {
   if (!cell) return;
-  cell.innerHTML = `<span class="text-xs text-slate-400 font-semibold">Solte aqui</span>`;
   cell.dataset.slot = '0';
   cell.dataset.professor = '';
   cell.dataset.disciplina = '';
+  cell.innerHTML = `<span class="text-[10px] text-slate-400 font-semibold">Solte aqui</span>`;
 }
 
-function renderSlotInCell(cell, dia, turma, aula, disciplina, professor) {
+function renderSlot(cell, data) {
   cell.dataset.slot = '1';
-  cell.dataset.professor = professor;
-  cell.dataset.disciplina = disciplina;
+  cell.dataset.professor = data.professor;
+  cell.dataset.disciplina = data.disciplina;
 
   cell.innerHTML = `
     <div draggable="true"
          ondragstart="dragStart(event)"
-         data-from-dia="${dia}"
-         data-from-turma="${turma}"
-         data-from-aula="${aula}"
-         data-disciplina="${disciplina}"
-         data-professor="${professor}"
+         data-from-dia="${data.dia}"
+         data-from-turma="${data.turma}"
+         data-from-aula="${data.aula}"
+         data-disciplina="${data.disciplina}"
+         data-professor="${data.professor}"
          class="slotBlock cursor-grab border rounded-xl p-2 bg-red-50 border-red-200">
-      <p class="font-black text-red-800">${disciplina}</p>
-      <p class="text-xs text-red-700">${professor}</p>
+      <p class="font-black text-red-800">${data.disciplina}</p>
+      <p class="text-xs text-red-700">${data.professor}</p>
       <button type="button"
               class="mt-1 text-xs px-2 py-0.5 rounded bg-black/80 text-white"
-              onclick="removeSlot('${dia}','${turma}',${aula},this)">✕</button>
+              onclick="removeSlot('${data.dia}','${data.turma}',${data.aula},this)">✕</button>
     </div>
   `;
 }
 
+function pulse(cell, ok = true) {
+  const cls = ok ? 'ring-emerald-500' : 'ring-red-500';
+  cell.classList.add('ring-2', cls);
+  setTimeout(() => cell.classList.remove('ring-2', cls), 1200);
+}
+
 /* =========================================================
-   BLOQUEIO REAL DE CONFLITO (REGRA FINAL)
-   MESMO DIA + MESMO HORÁRIO (MINUTOS) + MESMO PROFESSOR
-========================================================= */function hasRealConflict(dia, inicio, professor) {
+   CONFLITO LOCAL (UX)
+========================================================= */
+function hasConflict(dia, inicio, professor) {
   const iniMin = timeToMinutes(inicio);
-  const prof = professor.trim().toLowerCase();
+  professor = professor.toLowerCase();
 
-  let conflict = false;
-
-  document.querySelectorAll('td[data-slot="1"]').forEach(td => {
-    if (td.dataset.dia !== dia) return;
-
-    const p = (td.dataset.professor || '').trim().toLowerCase();
-    if (p !== prof) return;
-
-    const iniTd = timeToMinutes(td.dataset.inicio);
-
-    // 🔥 REGRA FINAL: MESMO INÍCIO = CONFLITO
-    if (iniTd === iniMin) {
-      conflict = true;
-    }
+  return [...document.querySelectorAll('td[data-slot="1"]')].some(td => {
+    return (
+      td.dataset.dia === dia &&
+      td.dataset.professor?.toLowerCase() === professor &&
+      timeToMinutes(td.dataset.inicio) === iniMin
+    );
   });
-
-  return conflict;
 }
 
 /* =========================================================
@@ -403,19 +413,18 @@ function renderSlotInCell(cell, dia, turma, aula, disciplina, professor) {
 ========================================================= */
 async function dropCell(ev) {
   ev.preventDefault();
-
   const cell = ev.currentTarget;
-  const raw =
-    ev.dataTransfer.getData('application/json') ||
-    ev.dataTransfer.getData('text/plain');
-
-  if (!raw) return;
-
-  let data;
-  try { data = JSON.parse(raw); } catch { return; }
 
   if (cell.dataset.slot === '1') {
-    showToast('Essa célula já está ocupada.');
+    showToast('Célula já ocupada.', 'warn');
+    pulse(cell, false);
+    return;
+  }
+
+  let data;
+  try {
+    data = JSON.parse(ev.dataTransfer.getData('application/json'));
+  } catch {
     return;
   }
 
@@ -425,64 +434,49 @@ async function dropCell(ev) {
   const inicio = cell.dataset.inicio;
   const fim    = cell.dataset.fim;
 
-if (hasRealConflict(dia, inicio, data.professor)) {
-
-    showToast('❌ Conflito: professor já está em outra turma neste horário.');
-    cell.classList.add('ring-2','ring-red-500');
-    setTimeout(() => cell.classList.remove('ring-2','ring-red-500'), 1500);
+  if (hasConflict(dia, inicio, data.professor)) {
+    showToast('Conflito: professor já está em outra turma.', 'error');
+    pulse(cell, false);
     return;
   }
 
   try {
-    await apiSave({
-      dia_semana: dia,
-      turma,
-      aula,
-      inicio,
-      fim,
-      disciplina: data.disciplina,
-      professor: data.professor
-    });
+    await apiSave({ dia_semana: dia, turma, aula, inicio, fim, ...data });
 
-    if (data.from?.dia && data.from?.turma && data.from?.aula) {
+    if (data.from?.dia) {
       await apiDelete({
         dia_semana: data.from.dia,
         turma: data.from.turma,
-        aula: parseInt(data.from.aula, 10)
+        aula: parseInt(data.from.aula)
       });
-
-      renderEmptyCell(
-        findCell(data.from.dia, data.from.turma, data.from.aula)
-      );
+      renderEmptyCell(findCell(data.from.dia, data.from.turma, data.from.aula));
     }
 
-    renderSlotInCell(cell, dia, turma, aula, data.disciplina, data.professor);
-    showToast('Salvo.');
+    renderSlot(cell, { dia, turma, aula, ...data });
+    showToast('Salvo com sucesso.');
+    pulse(cell, true);
+
   } catch (e) {
-    console.error(e);
-    showToast('Erro ao salvar.');
+    showToast(e.message, 'error');
+    pulse(cell, false);
   }
 }
-
 window.dropCell = dropCell;
-
 /* =========================================================
-   LIXEIRA
+   LIXEIRA (DROP)
 ========================================================= */
 async function dropTrash(ev) {
   ev.preventDefault();
 
-  const raw =
-    ev.dataTransfer.getData('application/json') ||
-    ev.dataTransfer.getData('text/plain');
-
-  if (!raw) return;
-
   let data;
-  try { data = JSON.parse(raw); } catch { return; }
+  try {
+    data = JSON.parse(ev.dataTransfer.getData('application/json'));
+  } catch {
+    return;
+  }
 
-  if (!data.from?.dia) {
-    showToast('Arraste da grade.');
+  if (!data?.from?.dia || !data?.from?.turma || !data?.from?.aula) {
+    showToast('Arraste um bloco que já esteja na grade.', 'warn');
     return;
   }
 
@@ -493,48 +487,88 @@ async function dropTrash(ev) {
       aula: parseInt(data.from.aula, 10)
     });
 
-    renderEmptyCell(
-      findCell(data.from.dia, data.from.turma, data.from.aula)
-    );
+    const fromCell = findCell(data.from.dia, data.from.turma, data.from.aula);
+    renderEmptyCell(fromCell);
 
-    showToast('Removido.');
+    showToast('Removido.', 'ok');
+    if (fromCell) pulse(fromCell, true);
   } catch (e) {
-    console.error(e);
-    showToast('Erro ao remover.');
+    showToast(e.message || 'Erro ao remover.', 'error');
   }
 }
-
 window.dropTrash = dropTrash;
 
 /* =========================================================
-   BOTÃO X
+   BOTÃO X (REMOVER)
 ========================================================= */
 async function removeSlot(dia, turma, aula, btn) {
   try {
-    await apiDelete({ dia_semana: dia, turma, aula });
-    renderEmptyCell(btn.closest('td'));
-    showToast('Removido.');
+    await apiDelete({
+      dia_semana: dia,
+      turma: turma,
+      aula: parseInt(aula, 10)
+    });
+
+    const td = btn?.closest('td');
+    renderEmptyCell(td);
+
+    showToast('Removido.', 'ok');
+    if (td) pulse(td, true);
   } catch (e) {
-    console.error(e);
-    showToast('Erro ao remover.');
+    showToast(e.message || 'Erro ao remover.', 'error');
   }
 }
-
 window.removeSlot = removeSlot;
 
 /* =========================================================
-   BOOTSTRAP
+   BOOTSTRAP (SYNC DATASETS + PLACEHOLDER)
 ========================================================= */
-window.addEventListener('load', () => {
+function bootstrapSlots() {
   document.querySelectorAll('td[data-dia][data-inicio]').forEach(td => {
     const block = td.querySelector('.slotBlock');
+
     if (block) {
       td.dataset.slot = '1';
       td.dataset.professor = block.dataset.professor || '';
       td.dataset.disciplina = block.dataset.disciplina || '';
     } else {
-      td.dataset.slot = '0';
+      renderEmptyCell(td);
     }
   });
+}
+
+/* =========================================================
+   (OPCIONAL) HOOK PARA AULAS SEGUIDAS / RESTRIÇÕES
+   - Deixe o backend bloquear e retornar 422 com message
+   - Aqui a gente só melhora UX: marcar células do professor
+========================================================= */
+function getSlotsOfProfessorOnDay(professor, dia) {
+  professor = professor.toLowerCase();
+  return [...document.querySelectorAll('td[data-slot="1"]')].filter(td => {
+    return td.dataset.dia === dia && (td.dataset.professor || '').toLowerCase() === professor;
+  });
+}
+
+function countConsecutiveAulas(aulasNums) {
+  // recebe array de ints (ex: [1,2,3,5]) e retorna maior sequência (3)
+  aulasNums.sort((a,b)=>a-b);
+  let best = 1, cur = 1;
+
+  for (let i = 1; i < aulasNums.length; i++) {
+    if (aulasNums[i] === aulasNums[i-1] + 1) {
+      cur++;
+      best = Math.max(best, cur);
+    } else {
+      cur = 1;
+    }
+  }
+  return aulasNums.length ? best : 0;
+}
+
+/* =========================================================
+   START
+========================================================= */
+window.addEventListener('load', () => {
+  bootstrapSlots();
 });
 </script>

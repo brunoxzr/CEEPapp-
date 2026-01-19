@@ -338,54 +338,6 @@
 
     </div>
 </section>
-<!-- ================= CURSOS ================= -->
-<section id="cursos" class="py-28 bg-slate-50 border-t">
-    <div class="max-w-7xl mx-auto px-6">
-
-        <h2 class="text-3xl font-black text-slate-900 mb-16 text-center">
-            Cursos Ofertados
-        </h2>
-
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
-
-            @php
-                $cursos = [
-                    ['nome' => 'Agronegócio', 'slug' => 'agronegocio'],
-                    ['nome' => 'Administração', 'slug' => 'administracao'],
-                    ['nome' => 'Desenvolvimento de Sistemas', 'slug' => 'desenvolvimento-de-sistemas'],
-                    ['nome' => 'Inteligência Artificial e Ciência de Dados', 'slug' => 'inteligencia-artificial-dados'],
-                    ['nome' => 'Edificações', 'slug' => 'edificacoes'],
-                    ['nome' => 'Eletrotécnica', 'slug' => 'eletrotecnica'],
-                    ['nome' => 'Enfermagem', 'slug' => 'enfermagem'],
-                    ['nome' => 'Mecânica Industrial', 'slug' => 'mecanica-industrial'],
-                    ['nome' => 'Segurança do Trabalho', 'slug' => 'seguranca-do-trabalho'],
-                ];
-            @endphp
-
-            @foreach($cursos as $curso)
-                <a href="{{ url('/cursos/'.$curso['slug']) }}"
-                   class="group bg-white border rounded-xl p-8
-                          hover:shadow-xl hover:-translate-y-1 transition-all">
-
-                    <h3 class="text-lg font-bold text-slate-900 group-hover:text-red-700">
-                        {{ $curso['nome'] }}
-                    </h3>
-
-                    <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-                        Curso técnico integrado ao Ensino Médio, com aulas
-                        teóricas e práticas em ambientes pedagógicos especializados.
-                    </p>
-
-                    <span class="inline-block mt-6 text-sm font-semibold text-red-700">
-                        Ver curso →
-                    </span>
-                </a>
-            @endforeach
-
-        </div>
-    </div>
-</section>
-
 <!-- ================= DIREÇÃO ================= -->
 @if($direcao->count())
 <section class="py-28 bg-slate-50 border-t">

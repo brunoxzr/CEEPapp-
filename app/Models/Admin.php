@@ -9,6 +9,8 @@ use App\Models\Projeto;
 use App\Models\ProfessorRestricao;
 use App\Models\Cronograma;
 use App\Models\ProfessorTurma;
+use App\Models\ProfessorTurmaDisciplina;
+use App\Models\ProfessorSeqRule;
 
 
 class Admin extends Model
@@ -260,6 +262,84 @@ public function limiteNaTurma(string $turma): int
 {
     $rel = $this->turmas->firstWhere('turma', $turma);
     return $rel?->carga_max ?? 0;
+}
+
+// ============================
+// DISCIPLINAS POR TURMA
+// ============================
+public function turmaDisciplinas()
+{
+    return $this->hasMany(
+        ProfessorTurmaDisciplina::class,
+        'admin_id'
+    );
+}
+
+/**
+ * Quantas aulas por semana
+ * o professor pode dar dessa disciplina nessa turma
+ */
+public function aulasPermitidas(string $turma, int $disciplinaId): int
+{
+    return (int) optional(
+        $this->turmaDisciplinas
+            ->where('turma', $turma)
+            ->firstWhere('disciplina_id', $disciplinaId)
+    )->aulas_semana ?? 0;
+}
+
+/**
+ * Quantas aulas dessa disciplina
+ * já foram usadas nessa turma
+ */
+public function aulasUsadasNaTurma(string $turma, int $disciplinaId): int
+{
+    $disc = Disciplina::find($disciplinaId);
+
+    if (!$disc) return 0;
+
+    return Cronograma::where([
+        'professor'  => $this->nome,
+        'turma'      => $turma,
+        'disciplina' => $disc->nome,
+    ])->count();
+}
+
+// ============================
+// REGRAS DE SEQUÊNCIA
+// ============================
+public function seqRules()
+{
+    return $this->hasMany(
+        ProfessorSeqRule::class,
+        'admin_id'
+    );
+}
+
+
+/**
+ * Retorna o máximo de aulas seguidas permitido
+ * considerando disciplina + turma + dia
+ */
+public function maxAulasSeguidas(
+    string $turma,
+    string $diaSemana,
+    int $disciplinaId
+): int {
+    $regra = $this->seqRules
+        ->where('disciplina_id', $disciplinaId)
+        ->filter(function ($r) use ($turma, $diaSemana) {
+            if ($r->turma && $r->turma !== $turma) return false;
+            if ($r->dia_semana && $r->dia_semana !== $diaSemana) return false;
+            return true;
+        })
+        // prioridade: mais específica primeiro
+        ->sortByDesc(function ($r) {
+            return ($r->turma ? 2 : 0) + ($r->dia_semana ? 1 : 0);
+        })
+        ->first();
+
+    return (int) ($regra->max_seguidas ?? 1);
 }
 
 

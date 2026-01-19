@@ -124,6 +124,147 @@
           ⚠️ O gerador respeita exatamente essa carga por turma.
         </p>
       </div>
+{{-- ================= DISTRIBUIÇÃO POR TURMA (DISCIPLINAS + AULAS/SEMANA) ================= --}}
+<div>
+  <h3 class="font-black text-lg mb-3">
+    Disciplinas por turma <span class="text-sm text-slate-500">(o que o professor realmente leciona)</span>
+  </h3>
+
+  <p class="text-sm text-slate-500 mb-5">
+    Aqui você define quais matérias ele dá em cada turma e quantas aulas por semana.
+    É ISSO que o gerador usa pra distribuir.
+  </p>
+
+  <div class="space-y-4">
+    @foreach($professor->turmas as $rel)
+      @php $turma = $rel->turma; @endphp
+
+      <div class="border rounded-2xl p-4 bg-slate-50">
+        <div class="flex items-center justify-between">
+          <h4 class="font-black text-slate-900">{{ $turma }}</h4>
+          <span class="text-xs text-slate-500">Máx nesta turma: {{ $rel->carga_max ?? '—' }}</span>
+        </div>
+
+        <div class="mt-3 grid md:grid-cols-2 gap-3">
+          @foreach($professor->disciplinas as $disc)
+            @php
+              // você vai preencher isso vindo do banco depois
+              $key = $turma.'|'.$disc->id;
+              $valor = $vinculos[$key] ?? null; // ex: aulas_semana
+            @endphp
+
+            <div class="border rounded-xl p-3 bg-white flex items-center justify-between gap-3">
+              <div class="min-w-0">
+                <p class="font-semibold text-slate-800 truncate">{{ $disc->nome }}</p>
+                <p class="text-xs text-slate-500">Aulas/semana nesta turma</p>
+              </div>
+
+              <input type="number"
+                     min="0"
+                     max="10"
+                     name="turma_disc[{{ $turma }}][{{ $disc->id }}]"
+                     value="{{ $valor ?? 0 }}"
+                     class="w-20 border rounded-lg px-2 py-1 text-center">
+            </div>
+          @endforeach
+        </div>
+
+        <p class="mt-2 text-xs text-slate-500">
+          Dica: coloque 0 nas matérias que ele NÃO dá nessa turma.
+        </p>
+      </div>
+    @endforeach
+  </div>
+</div>
+<div>
+  <h3 class="font-black text-lg mb-3">Aulas seguidas (regras)</h3>
+
+  <div id="seqWrap" class="space-y-3">
+    @foreach($professor->seqRules as $i => $rule)
+      <div class="grid grid-cols-4 gap-3">
+        <select name="seq_rules[{{ $i }}][disciplina_id]" class="border rounded-xl p-2" required>
+          @foreach($professor->disciplinas as $d)
+            <option value="{{ $d->id }}"
+              {{ $rule->disciplina_id == $d->id ? 'selected' : '' }}>
+              {{ $d->nome }}
+            </option>
+          @endforeach
+        </select>
+
+        <select name="seq_rules[{{ $i }}][turma]" class="border rounded-xl p-2">
+          <option value="">Todas turmas</option>
+          @foreach($professor->turmas as $t)
+            <option value="{{ $t->turma }}"
+              {{ $rule->turma === $t->turma ? 'selected' : '' }}>
+              {{ $t->turma }}
+            </option>
+          @endforeach
+        </select>
+
+        <select name="seq_rules[{{ $i }}][dia]" class="border rounded-xl p-2">
+          <option value="">Todos dias</option>
+          @foreach(['Segunda','Terça','Quarta','Quinta','Sexta'] as $d)
+            <option value="{{ $d }}"
+              {{ $rule->dia_semana === $d ? 'selected' : '' }}>
+              {{ $d }}
+            </option>
+          @endforeach
+        </select>
+
+        <input type="number"
+               min="1"
+               max="6"
+               name="seq_rules[{{ $i }}][max]"
+               value="{{ $rule->max_seguidas }}"
+               class="border rounded-xl p-2">
+      </div>
+    @endforeach
+  </div>
+
+  <button type="button"
+          class="mt-3 px-4 py-2 rounded-xl bg-slate-900 text-white font-bold"
+          onclick="addSeqRule()">
+    + Adicionar regra
+  </button>
+</div>
+
+<script>
+let seqIndex = 1;
+function addSeqRule(){
+  const wrap = document.getElementById('seqWrap');
+  const html = `
+    <div class="grid grid-cols-4 gap-3">
+      <select name="seq_rules[${seqIndex}][disciplina_id]" class="border rounded-xl p-2" required>
+        <option value="">Disciplina</option>
+        @foreach($professor->disciplinas as $d)
+          <option value="{{ $d->id }}">{{ $d->nome }}</option>
+        @endforeach
+      </select>
+
+      <select name="seq_rules[${seqIndex}][turma]" class="border rounded-xl p-2">
+        <option value="">Todas turmas</option>
+        @foreach($professor->turmas as $t)
+          <option value="{{ $t->turma }}">{{ $t->turma }}</option>
+        @endforeach
+      </select>
+
+      <select name="seq_rules[${seqIndex}][dia]" class="border rounded-xl p-2">
+        <option value="">Todos dias</option>
+        @foreach(['Segunda','Terça','Quarta','Quinta','Sexta'] as $d)
+          <option value="{{ $d }}">{{ $d }}</option>
+        @endforeach
+      </select>
+
+      <input type="number" min="1" max="6"
+             name="seq_rules[${seqIndex}][max]"
+             class="border rounded-xl p-2"
+             placeholder="Máx seguidas" required>
+    </div>
+  `;
+  wrap.insertAdjacentHTML('beforeend', html);
+  seqIndex++;
+}
+</script>
 
       {{-- ================= AÇÕES ================= --}}
       <div class="flex justify-between items-center pt-6">
