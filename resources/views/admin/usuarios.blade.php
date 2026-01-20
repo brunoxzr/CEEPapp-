@@ -77,27 +77,27 @@
                 <option value="">Selecione...</option>
 
                 <optgroup label="1º Ano">
-                <option>1º DS</option>
-                <option>1º EdF</option>
-                <option>1º Mec</option>
-                <option>1º Eletro</option>
+                <option>1º IA</option>
+                <option>1º EDF</option>
+                <option>1º MEC</option>
                 <option>1º Agro</option>
                 </optgroup>
 
                 <optgroup label="2º Ano">
                 <option>2º DS</option>
-                <option>2º EdF</option>
-                <option>2º Mec</option>
-                <option>2º Eletro</option>
+                <option>2º EDF</option>
+                <option>2º MEC</option>
                 <option>2º Agro</option>
+                <option>2º Agro2</option>
                 </optgroup>
 
                 <optgroup label="3º Ano">
                 <option>3º DS</option>
-                <option>3º EdF</option>
-                <option>3º Mec</option>
+                <option>3º EDF</option>
+                <option>3º MEC</option>
                 <option>3º Eletro</option>
                 <option>3º Agro</option>
+                <option>3º Enf</option>
                 </optgroup>
             </select>
             </label>

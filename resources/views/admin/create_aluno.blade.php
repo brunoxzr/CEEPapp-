@@ -25,7 +25,7 @@
 
     <form action="{{ route('admin.alunos.store') }}" method="POST" class="space-y-6">
       @csrf
-      
+
       <div class="grid md:grid-cols-2 gap-6">
         <label class="block">
           <span class="text-sm font-semibold text-slate-700 mb-2 block">Nome</span>
@@ -54,17 +54,19 @@
           <select name="turma" class="w-full rounded-lg border-2 border-slate-300 bg-white text-slate-900 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition" required>
             <option value="">Selecione...</option>
             <optgroup label="1º Ano">
-              <option value="1º DS">1º DS</option>
+              <option value="1º DS">1º IA</option>
               <option value="1º EdF">1º EdF</option>
               <option value="1º Mec">1º Mec</option>
-              <option value="1º Eletro">1º Eletro</option>
+              <option value="1º Enf">1º Enf</option>
+            <option value="1º Agro">1º Agro</option>
               <option value="1º Enf">1º Enf</option>
             </optgroup>
             <optgroup label="2º Ano">
               <option value="2º DS">2º DS</option>
               <option value="2º EdF">2º EdF</option>
               <option value="2º Mec">2º Mec</option>
-              <option value="2º Eletro">2º Eletro</option>
+              <option value="2º Agro">2º Agro</option>
+            <option value="2º Agro2">2º Agro2</option>
               <option value="2º Enf">2º Enf</option>
             </optgroup>
             <optgroup label="3º Ano">
@@ -72,7 +74,7 @@
               <option value="3º EdF">3º EdF</option>
               <option value="3º Mec">3º Mec</option>
               <option value="3º Eletro">3º Eletro</option>
-              <option value="3º Enf">3º Enf</option>
+              <option value="3º Agro">3º Agro</option>
             </optgroup>
           </select>
         </label>
