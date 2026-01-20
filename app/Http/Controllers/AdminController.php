@@ -136,8 +136,8 @@ return view(
 public function cronogramaIndex(Request $request)
 {
     $anos = [
-        "1º Ano" => ['1º DS','1º EDF','1º MEC','1º Eletro','1º Agro'],
-        "2º Ano" => ['2º DS','2º EDF','2º MEC','2º Eletro','2º Agro'],
+        "1º Ano" => ['1º IA','1º EDF','1º MEC','1º Agro'],
+        "2º Ano" => ['2º DS','2º EDF','2º MEC','2º Agro2','2º Agro'],
         "3º Ano" => ['3º DS','3º EDF','3º MEC','3º Eletro','3º Agro'],
     ];
 
@@ -284,8 +284,8 @@ public function cronograma(Request $request)
     $dias = ['Segunda','Terça','Quarta','Quinta','Sexta'];
 
     $anos = [
-        "1º Ano" => ['1º DS','1º EDF','1º MEC','1º Eletro','1º Agro'],
-        "2º Ano" => ['2º DS','2º EDF','2º MEC','2º Eletro','2º Agro'],
+        "1º Ano" => ['1º IA','1º EDF','1º MEC','1º Agro'],
+        "2º Ano" => ['2º DS','2º EDF','2º MEC','2º Agro2','2º Agro'],
         "3º Ano" => ['3º DS','3º EDF','3º MEC','3º Eletro','3º Agro'],
     ];
 
@@ -765,8 +765,8 @@ public function editarProfessor($id)
     $disciplinas = Disciplina::orderBy('nome')->get();
 
     $anos = [
-        "1º Ano" => ['1º DS','1º EDF','1º MEC','1º Eletro','1º Agro'],
-        "2º Ano" => ['2º DS','2º EDF','2º MEC','2º Eletro','2º Agro'],
+        "1º Ano" => ['1º IA','1º EDF','1º MEC','1º Agro'],
+        "2º Ano" => ['2º DS','2º EDF','2º MEC','2º Agro2','2º Agro'],
         "3º Ano" => ['3º DS','3º EDF','3º MEC','3º Eletro','3º Agro'],
     ];
 
@@ -1029,8 +1029,8 @@ public function dashboardProfessor()
 private function cronogramaConfig(): array
 {
     $anos = [
-        "1º Ano" => ['1º DS','1º EDF','1º MEC','1º Eletro','1º Agro'],
-        "2º Ano" => ['2º DS','2º EDF','2º MEC','2º Eletro','2º Agro'],
+        "1º Ano" => ['1º IA','1º EDF','1º MEC','1º Agro'],
+        "2º Ano" => ['2º DS','2º EDF','2º MEC','2º Agro2','2º Agro'],
         "3º Ano" => ['3º DS','3º EDF','3º MEC','3º Eletro','3º Agro'],
     ];
 
