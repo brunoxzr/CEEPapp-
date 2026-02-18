@@ -9,7 +9,7 @@
 {{-- ================= HEADER ================= --}}
 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
-<div class="flex gap-3">
+<div class="flex gap-3 flex-wrap">
   {{-- GERAR --}}
   <form method="POST" action="{{ route('admin.cronograma.gerar') }}">
     @csrf
@@ -39,6 +39,13 @@
       Apagar tudo
     </button>
   </form>
+
+  {{-- DOWNLOAD IMAGEM --}}
+  <button onclick="exportCronogramaImage()"
+          class="px-4 py-2 rounded-xl font-black bg-purple-600 text-white hover:bg-purple-700">
+     Baixar imagem
+  </button>
+
 </div>
 
 
@@ -53,7 +60,9 @@
       Blocos (Professores + Disciplinas)
     </h2>
 
-    <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-3 max-h-[360px] overflow-auto">
+    <div id="blocos-scroll"
+     class="grid sm:grid-cols-2 xl:grid-cols-3 gap-3 max-h-[360px] overflow-auto">
+
       @forelse($professores as $p)
         @foreach($p->disciplinas as $d)
           @php
@@ -244,6 +253,7 @@
 
 
 </div>
+
 <script>
 /* =========================================================
    CONFIG
@@ -395,11 +405,22 @@ function pulse(cell, ok = true) {
 /* =========================================================
    CONFLITO LOCAL (UX)
 ========================================================= */
-function hasConflict(dia, inicio, professor) {
+function hasConflict(dia, inicio, professor, from) {
   const iniMin = timeToMinutes(inicio);
   professor = professor.toLowerCase();
 
   return [...document.querySelectorAll('td[data-slot="1"]')].some(td => {
+
+    // ignora o slot de onde ele veio
+    if (
+      from &&
+      td.dataset.dia === from.dia &&
+      td.dataset.turma === from.turma &&
+      String(td.dataset.aula) === String(from.aula)
+    ) {
+      return false;
+    }
+
     return (
       td.dataset.dia === dia &&
       td.dataset.professor?.toLowerCase() === professor &&
@@ -407,6 +428,7 @@ function hasConflict(dia, inicio, professor) {
     );
   });
 }
+
 
 /* =========================================================
    DROP NA CÉLULA
@@ -434,7 +456,8 @@ async function dropCell(ev) {
   const inicio = cell.dataset.inicio;
   const fim    = cell.dataset.fim;
 
-  if (hasConflict(dia, inicio, data.professor)) {
+if (hasConflict(dia, inicio, data.professor, data.from)) {
+
     showToast('Conflito: professor já está em outra turma.', 'error');
     pulse(cell, false);
     return;
@@ -443,14 +466,13 @@ async function dropCell(ev) {
   try {
     await apiSave({ dia_semana: dia, turma, aula, inicio, fim, ...data });
 
-    if (data.from?.dia) {
-      await apiDelete({
-        dia_semana: data.from.dia,
-        turma: data.from.turma,
-        aula: parseInt(data.from.aula)
-      });
-      renderEmptyCell(findCell(data.from.dia, data.from.turma, data.from.aula));
-    }
+if (data.from?.dia) {
+  // apenas limpa visualmente a célula antiga
+  renderEmptyCell(
+    findCell(data.from.dia, data.from.turma, data.from.aula)
+  );
+}
+
 
     renderSlot(cell, { dia, turma, aula, ...data });
     showToast('Salvo com sucesso.');
@@ -570,5 +592,57 @@ function countConsecutiveAulas(aulasNums) {
 ========================================================= */
 window.addEventListener('load', () => {
   bootstrapSlots();
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+function exportCronogramaImage() {
+  const table = document.querySelector('table');
+
+  if (!table) {
+    alert('Tabela não encontrada');
+    return;
+  }
+
+  html2canvas(table, {
+    scale: 2,
+    backgroundColor: '#ffffff'
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'cronograma-ceep.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+}
+</script>
+
+<script>
+let dragging = false;
+
+document.addEventListener('dragstart', () => {
+  dragging = true;
+});
+
+document.addEventListener('dragend', () => {
+  dragging = false;
+});
+
+document.addEventListener('dragover', (e) => {
+  if (!dragging) return;
+
+  const edge = 80;      // distância da borda
+  const speed = 25;    // velocidade do scroll
+  const y = e.clientY;
+  const h = window.innerHeight;
+
+  // topo da tela
+  if (y < edge) {
+    window.scrollBy(0, -speed);
+  }
+
+  // fundo da tela
+  if (y > h - edge) {
+    window.scrollBy(0, speed);
+  }
 });
 </script>

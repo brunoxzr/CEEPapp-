@@ -50,7 +50,26 @@ public function perfil()
     return $this->hasOne(AlunoPerfil::class);
 }
 
+    public function premios()
+    {
+        return $this->belongsToMany(
+            Premio::class,
+            'premio_aluno'
+        )->withTimestamps();
+    }
 
-
+public function reconhecimentos()
+{
+    return $this->belongsToMany(
+        \App\Models\Premio::class,
+        'premio_aluno', // tabela pivot
+        'aluno_id',
+        'premio_id'
+    )->withTimestamps();
+}
+public function entregas()
+{
+    return $this->hasMany(AtividadeAluno::class);
+}
 
 }

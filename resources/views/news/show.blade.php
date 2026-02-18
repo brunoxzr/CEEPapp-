@@ -1,7 +1,17 @@
+
+
+@php
+    $heroImage = $news->hero_path ?? $news->cover_path;
+@endphp
+
 @include('layouts.header', ['title' => $news->title])
 
-<!-- CSS DO QUILL (APENAS ESTILO, SEM EDITOR) -->
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+@include('news.seo')
+
+@if(!empty($heroImage))
+<meta property="og:image" content="{{ asset('storage/'.$heroImage) }}">
+@endif
+
 
 <style>
 /* =========================
@@ -253,10 +263,7 @@
 
 <main class="bg-white">
 
-    <!-- ================= HERO / CAPA (ESTILO G1) ================= -->
-    @php
-        $heroImage = $news->hero_path ?? $news->cover_path;
-    @endphp
+
     <section class="relative {{ $heroImage ? 'h-[70vh] min-h-[500px]' : 'bg-gradient-to-br from-red-800 via-red-700 to-red-900 py-24' }}">
         @if($heroImage)
         <img
@@ -294,7 +301,12 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        <span>{{ $news->published_at?->format('d/m/Y \à\s H:i') ?? 'Data não informada' }}</span>
+@if($news->published_at)
+<time datetime="{{ $news->published_at->toIso8601String() }}">
+    {{ $news->published_at->format('d/m/Y \à\s H:i') }}
+</time>
+@endif
+
                     </div>
                 </div>
             </div>

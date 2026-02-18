@@ -13,9 +13,9 @@ class DiretorSeeder extends Seeder
         Admin::updateOrCreate(
             ['email' => 'bruno@gmail.com'],
             [
-                'nome'  => 'Bruno Yudi Kay',
-                'email' => 'bruno@gmail.com',
-                'senha' => Hash::make('senha123'),
+                'nome'  => 'Aislan Correia',
+                'email' => 'aislan.correia@escola.pr.gov.br',
+                'senha' => Hash::make('AislanCeep2026?'),
                 'role'  => 'diretor',
             ]
         );

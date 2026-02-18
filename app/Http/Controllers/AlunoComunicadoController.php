@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Aluno;
@@ -19,9 +20,12 @@ class AlunoComunicadoController extends Controller
                 $q->where('publico', 'geral')
                   ->orWhere(function ($q2) use ($aluno) {
                       $q2->where('publico', 'turma')
-                         ->where('turma', $aluno->turma);
+                         ->whereJsonContains('turmas', $aluno->turma);
                   });
             })
+            ->with(['leituras' => function ($q) use ($aluno) {
+                $q->where('aluno_id', $aluno->id);
+            }])
             ->orderByDesc('created_at')
             ->get();
 

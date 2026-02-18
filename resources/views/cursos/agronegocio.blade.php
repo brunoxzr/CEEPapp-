@@ -1,4 +1,4 @@
-@include('layouts.header', ['title' => 'Técnico em Agropecuária — CEEP Assaí'])
+@include('layouts.header', ['title' => 'Técnico em Agronegócio Integrado ao Ensino Médio — CEEP Assaí'])
 
 <!-- HERO CAMPO -->
 <section class="relative h-[85vh] min-h-[520px] flex items-center bg-slate-900">
@@ -6,12 +6,12 @@
     <!-- imagem de fundo -->
     <div class="absolute inset-0">
         <img src="/img/cursos/agropecuaria-bg.jpg"
-             alt="Produção agropecuária e campo"
+             alt="Agronegócio, produção agrícola e formação integrada"
              class="w-full h-full object-cover opacity-90">
         <div class="absolute inset-0 bg-emerald-950/65"></div>
     </div>
 
-    <!-- SVG orgânico (linhas de terreno) -->
+    <!-- SVG orgânico -->
     <svg class="absolute inset-0 w-full h-full opacity-[0.08]" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 480 C300 420 600 540 900 480 S1500 540 2000 480"
               fill="none" stroke="white" stroke-width="0.8"/>
@@ -26,17 +26,18 @@
         <div class="max-w-3xl">
 
             <span class="text-sm uppercase tracking-widest text-emerald-200">
-                Curso Técnico
+                Curso Técnico — Integrado ao Ensino Médio
             </span>
 
             <h1 class="mt-4 text-4xl md:text-5xl font-extrabold text-white leading-tight">
-                Agronegócio
+                Técnico em Agronegócio
             </h1>
 
             <p class="mt-8 text-lg text-emerald-100 leading-relaxed">
-                Formação técnica voltada à produção agropecuária, manejo sustentável,
-                gestão rural e aplicação de técnicas modernas no campo, integrando
-                produtividade, tecnologia e responsabilidade ambiental.
+                Formação integrada que alia o Ensino Médio à qualificação técnica
+                em agronegócio, preparando o estudante para compreender os sistemas
+                de produção agrícola e pecuária com visão científica, técnica,
+                social e ambiental.
             </p>
 
             <!-- dados rápidos -->
@@ -65,80 +66,98 @@
 
         <div>
             <h2 class="text-2xl font-bold text-slate-900">
-                Formação técnica integrada ao campo
+                Formação integrada e técnica para o agronegócio
             </h2>
 
             <p class="mt-6 text-slate-700 leading-relaxed">
-                O curso técnico em Agropecuária forma profissionais aptos a atuar
-                na produção animal e vegetal, no manejo do solo, na gestão rural
-                e na aplicação de tecnologias voltadas ao desenvolvimento sustentável
-                do setor agropecuário.
+                O Curso Técnico em Agronegócio Integrado ao Ensino Médio forma
+                profissionais capacitados para atuar nos diversos segmentos
+                do setor agropecuário, aliando conhecimentos técnicos, científicos
+                e de gestão à formação geral do Ensino Médio.
             </p>
         </div>
 
         <div class="relative pl-10 border-l border-slate-300">
             <p class="text-slate-700 leading-relaxed">
-                A formação alia conhecimentos teóricos e práticos, com atividades
-                em áreas produtivas, laboratórios e projetos técnicos, preparando
-                o estudante para os desafios do campo moderno.
+                A formação prepara o estudante para compreender os sistemas
+                de produção agrícola e pecuária considerando aspectos
+                econômicos, ambientais e sociais, valorizando práticas
+                sustentáveis, inovação tecnológica e empreendedorismo rural.
             </p>
         </div>
 
     </div>
 </section>
 
-<!-- ÁREAS DE ATUAÇÃO -->
-<section class="bg-slate-50 relative overflow-hidden">
+<!-- FORMAÇÃO DO ESTUDANTE -->
+<section class="bg-slate-50">
+    <div class="max-w-6xl mx-auto px-6 py-24">
 
-    <!-- shapes naturais -->
-    <div class="absolute -top-44 -right-44 w-[540px] h-[540px] rounded-full bg-emerald-200/25"></div>
-    <div class="absolute -bottom-40 -left-40 w-[520px] h-[520px] bg-slate-300/30"></div>
+        <h2 class="text-2xl font-bold text-slate-900 mb-10">
+            O que o estudante aprende
+        </h2>
+
+        <p class="max-w-4xl text-slate-700 leading-relaxed">
+            O estudante aprende sobre produção agrícola e pecuária, manejo do solo
+            e da água, fertilidade e nutrição de plantas, sanidade vegetal e animal,
+            mecanização agrícola, gestão e planejamento rural, comercialização,
+            cooperativismo, sustentabilidade, uso de tecnologias aplicadas ao campo,
+            além de práticas laboratoriais e atividades de campo.
+        </p>
+
+    </div>
+</section>
+
+<!-- ÁREAS DE ATUAÇÃO -->
+<section class="bg-white relative overflow-hidden">
 
     <div class="relative max-w-6xl mx-auto px-6 py-24">
 
         <h2 class="text-2xl font-bold text-slate-900 mb-14">
-            Áreas de atuação
+            Áreas de atuação profissional
         </h2>
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 text-sm">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-12 text-sm">
 
             <div>
-                <span class="text-slate-400">01</span>
-                <h3 class="mt-2 font-semibold text-slate-900">
-                    Produção Vegetal
-                </h3>
+                <h3 class="font-semibold text-slate-900">Propriedades rurais</h3>
                 <p class="mt-2 text-slate-600">
-                    Cultivo, manejo e colheita de culturas agrícolas.
+                    Planejamento e acompanhamento das atividades produtivas.
                 </p>
             </div>
 
             <div>
-                <span class="text-slate-400">02</span>
-                <h3 class="mt-2 font-semibold text-slate-900">
-                    Produção Animal
-                </h3>
+                <h3 class="font-semibold text-slate-900">Empresas do agronegócio</h3>
                 <p class="mt-2 text-slate-600">
-                    Manejo, nutrição e sanidade animal.
+                    Atuação em processos produtivos, comerciais e técnicos.
                 </p>
             </div>
 
             <div>
-                <span class="text-slate-400">03</span>
-                <h3 class="mt-2 font-semibold text-slate-900">
-                    Gestão Rural
-                </h3>
+                <h3 class="font-semibold text-slate-900">Cooperativas agropecuárias</h3>
                 <p class="mt-2 text-slate-600">
-                    Planejamento e administração da propriedade.
+                    Apoio técnico e gestão cooperativa.
                 </p>
             </div>
 
             <div>
-                <span class="text-slate-400">04</span>
-                <h3 class="mt-2 font-semibold text-slate-900">
-                    Assistência Técnica
-                </h3>
+                <h3 class="font-semibold text-slate-900">Agroindústrias</h3>
                 <p class="mt-2 text-slate-600">
-                    Apoio técnico a produtores e cooperativas.
+                    Processamento e controle de produtos agropecuários.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="font-semibold text-slate-900">Assistência técnica rural</h3>
+                <p class="mt-2 text-slate-600">
+                    Orientação técnica e extensão rural.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="font-semibold text-slate-900">Empreendimentos próprios</h3>
+                <p class="mt-2 text-slate-600">
+                    Desenvolvimento de negócios no meio rural.
                 </p>
             </div>
 
@@ -150,7 +169,6 @@
 <!-- PERFIL DO EGRESSO -->
 <section class="bg-emerald-950 text-emerald-100 relative overflow-hidden">
 
-    <!-- linhas orgânicas -->
     <svg class="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 120 L2000 360" stroke="white" stroke-width="0.6"/>
         <path d="M2000 120 L0 360" stroke="white" stroke-width="0.6"/>
@@ -164,13 +182,15 @@
             </span>
 
             <h2 class="mt-4 text-2xl font-bold text-white">
-                Profissional técnico para o campo e a produção sustentável
+                Profissional com formação técnica e visão integrada do agronegócio
             </h2>
 
             <p class="mt-6 leading-relaxed text-emerald-200">
-                O egresso estará apto a atuar de forma técnica, responsável
-                e sustentável no setor agropecuário, contribuindo para o
-                desenvolvimento produtivo, ambiental e econômico da região.
+                O egresso possui sólida formação técnica e visão integrada do
+                agronegócio, sendo capaz de planejar, executar e acompanhar
+                atividades produtivas no meio rural, com responsabilidade
+                ambiental, domínio de técnicas modernas e preparo para o
+                mercado de trabalho ou continuidade dos estudos em nível superior.
             </p>
         </div>
 

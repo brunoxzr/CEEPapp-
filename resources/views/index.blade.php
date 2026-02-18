@@ -291,6 +291,91 @@
 
     </div>
 </section>
+
+@php
+    $anoAprovados = now()->year - 1;
+@endphp
+
+<section class="py-20 bg-white border-t">
+    <div class="max-w-6xl mx-auto px-6">
+
+        <div class="bg-slate-50 border rounded-2xl p-10 md:p-14
+                    flex flex-col md:flex-row items-center justify-between gap-10">
+
+            <div class="max-w-xl">
+                <h2 class="text-2xl md:text-3xl font-black text-slate-900">
+                    Aprovados {{ $anoAprovados }}
+                </h2>
+
+                <p class="mt-4 text-slate-600 leading-relaxed">
+                    Conheça os alunos aprovados em universidades e programas de bolsa
+                    no ano de {{ $anoAprovados }}.
+                </p>
+            </div>
+
+            <div>
+                <a href="{{ route('portal.aprovados.index') }}"
+                   class="px-7 py-3 bg-red-700 text-white font-bold
+                          rounded-md hover:bg-red-800 transition shadow">
+                    Ver aprovados →
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+
+<!-- ================= CURSOS ================= -->
+<section id="cursos" class="py-28 bg-slate-50 border-t">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <h2 class="text-3xl font-black text-slate-900 mb-16 text-center">
+            Cursos Ofertados
+        </h2>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+
+            @php
+                $cursos = [
+                    ['nome' => 'Agronegócio', 'slug' => 'agronegocio'],
+                    ['nome' => 'Administração', 'slug' => 'administracao'],
+                    ['nome' => 'Desenvolvimento de Sistemas', 'slug' => 'desenvolvimento-de-sistemas'],
+                    ['nome' => 'Inteligência Artificial e Ciência de Dados', 'slug' => 'inteligencia-artificial-dados'],
+                    ['nome' => 'Edificações', 'slug' => 'edificacoes'],
+                    ['nome' => 'Eletroeletronica', 'slug' => 'eletrotecnica'],
+                    ['nome' => 'Enfermagem', 'slug' => 'enfermagem'],
+                    ['nome' => 'Mecânica Industrial', 'slug' => 'mecanica-industrial'],
+                    ['nome' => 'Segurança do Trabalho', 'slug' => 'seguranca-do-trabalho'],
+                ];
+            @endphp
+
+            @foreach($cursos as $curso)
+                <a href="{{ url('/cursos/'.$curso['slug']) }}"
+                   class="group bg-white border rounded-xl p-8
+                          hover:shadow-xl hover:-translate-y-1 transition-all">
+
+                    <h3 class="text-lg font-bold text-slate-900 group-hover:text-red-700">
+                        {{ $curso['nome'] }}
+                    </h3>
+
+                    <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+                        Curso técnico integrado ao Ensino Médio, com aulas
+                        teóricas e práticas em ambientes pedagógicos especializados.
+                    </p>
+
+                    <span class="inline-block mt-6 text-sm font-semibold text-red-700">
+                        Ver curso →
+                    </span>
+                </a>
+            @endforeach
+
+        </div>
+    </div>
+</section>
+
 <!-- ================= INSTITUCIONAL ================= -->
 <section id="institucional" class="py-28 bg-white">
     <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-24 items-start">

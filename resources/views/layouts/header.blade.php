@@ -3,7 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
     <title>{{ $title ?? 'CEEP Assaí — Portal Institucional' }}</title>
+
     {{-- ================= PRELOAD GLOBAL ================= --}}
 <link rel="preload" as="image" href="/img/frenteCeep.jpg">
 <link rel="stylesheet"
@@ -173,9 +176,14 @@
                 <a href="{{ url('/institucional') }}" class="hover:text-red-800 transition">
                     Institucional
                 </a>
-                <a href="{{ url('/projetos') }}" class="hover:text-red-800 transition">
-                    Projetos
+                <a href="{{ url('/premios-e-reconhecimentos') }}" class="hover:text-red-800 transition">
+                    Prêmios
                 </a>
+
+                <a href="{{ url('/aprovados') }}" class="hover:text-red-800 transition">
+                    Aprovados
+                </a>
+
                 <a href="{{ url('/contato') }}" class="hover:text-red-800 transition">
                     Contato
                 </a>
@@ -201,6 +209,17 @@
                             Área Acadêmica
                         </a>
                     @endif
+                    @if(session()->has('aluno_id') && !session()->has('admin_id'))
+    <form action="{{ route('logout') }}" method="POST" class="inline-block ml-3">
+        @csrf
+        <button type="submit"
+                class="px-4 py-2 bg-red-700 text-white text-sm rounded
+                       hover:bg-red-800 transition font-semibold">
+            Sair
+        </button>
+    </form>
+@endif
+
                 </div>
             </nav>
 
@@ -239,32 +258,50 @@
             <nav class="flex flex-col gap-4 text-sm font-semibold text-slate-700">
                 <a href="{{ url('/noticias') }}" class="hover:text-red-800">Notícias</a>
                 <a href="{{ url('/institucional') }}" class="hover:text-red-800">Institucional</a>
-                <a href="{{ url(path: '/projetos') }}" class="hover:text-red-800">Projetos</a>
+                <a href="{{ url( '/premios-e-reconhecimentos') }}" class="hover:text-red-800">Prêmios</a>
+                <a href="{{ url('/aprovados') }}" class="hover:text-red-800">Aprovados</a>
+                <a href="{{ url('/cursos') }}" class="hover:text-red-800">Cursos</a>
+
                 <a href="{{ url('/contato') }}" class="hover:text-red-800">Contato</a>
                 <a href="{{ url('/hub-rh') }}" class="hover:text-red-800">Hub de RH</a>
 
-                <div class="border-t pt-4 mt-4">
-                    @if(session('aluno_id'))
-                        <a href="{{ route('aluno.dashboard') }}"
-                           class="block text-red-800 font-bold">
-                            Área do Aluno
-                        </a>
-                    @elseif(session('admin_id'))
-                        <a href="{{ route('admin.dashboard') }}"
-                           class="block text-red-800 font-bold">
-                            Área do Gestor
-                        </a>
-                    @else
-                        <a href="{{ route('login.unificado') }}"
-                           class="block text-red-800 font-bold">
-                            Área Acadêmica
-                        </a>
-                    @endif
-                </div>
+<div class="border-t pt-4 mt-4">
+    @if(session('aluno_id') && !session('admin_id'))
+        <a href="{{ route('aluno.dashboard') }}"
+           class="block text-red-800 font-bold">
+            Área do Aluno
+        </a>
+
+    @elseif(session('admin_id'))
+        <a href="{{ route('admin.dashboard') }}"
+           class="block text-red-800 font-bold">
+            Área do Gestor
+        </a>
+
+    @else
+        <a href="{{ route('login.unificado') }}"
+           class="block text-red-800 font-bold">
+            Área Acadêmica
+        </a>
+    @endif
+</div>
+@if(session('aluno_id') && !session('admin_id'))
+    <form action="{{ route('logout') }}" method="POST" class="mt-3">
+        @csrf
+        <button type="submit"
+                class="w-full px-4 py-2 bg-red-700 text-white rounded-md
+                       hover:bg-red-800 transition font-semibold">
+            Sair
+        </button>
+    </form>
+@endif
+
+
             </nav>
         </div>
     </aside>
 </div>
+
 
 <!-- SCRIPT MENU MOBILE -->
 <script>

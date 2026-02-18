@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SmartAgroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,9 @@ use App\Http\Controllers\PortalController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProjetoPublicoController;
 use App\Http\Controllers\HubRHController;
+use App\Http\Controllers\Portal\AprovadoController;
+use App\Models\Aprovado;
+
 
 // Auth
 use App\Http\Controllers\Auth\AlunoAuthController;
@@ -34,10 +38,269 @@ use App\Http\Controllers\ProfessorRestricaoController;
 use App\Http\Controllers\ComunicadoController;
 use App\Http\Controllers\CalendarioController;
 use App\Http\Controllers\AlunoPublicController;
+use App\Http\Controllers\PremioController;
+use App\Http\Controllers\Admin\PremioAdminController;
+use App\Http\Middleware\AdminAuthMiddleware;
+use App\Http\Controllers\SitemapPremiosController;
+use App\Http\Controllers\AlunoPasswordResetController;
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\SitemapAlunosController;
+use App\Http\Controllers\NewsSitemapController;
+use App\Http\Controllers\ProfessorAtividadeController;
+use App\Http\Controllers\AlunoAtividadeController;
+/*
+|--------------------------------------------------------------------------
+| PORTAL • Aprovados
+|--------------------------------------------------------------------------
+*/
 
-Route::get('/perfil/{slug}', [AlunoPublicController::class, 'show'])
+Route::get('/aprovados', [AprovadoController::class, 'index'])
+    ->name('portal.aprovados.index');
+
+/*
+|--------------------------------------------------------------------------
+| SMART AGRO 2026 — INSCRIÇÕES INTERNAS
+|--------------------------------------------------------------------------
+*/
+Route::get('/selecionados', [SmartAgroController::class, 'selecionados'])
+    ->name('smartagro.selecionados');
+
+Route::get('/inscricoes', [SmartAgroController::class, 'index'])
+    ->name('smartagro.inscricoes');
+
+Route::post('/inscricoes', [SmartAgroController::class, 'store'])
+    ->name('smartagro.inscricoes.store');
+
+/*
+|--------------------------------------------------------------------------
+| ÁREA DO PROFESSOR — ATIVIDADES (DIÁRIO DE CLASSE)
+|--------------------------------------------------------------------------
+|
+| Middleware:
+| - web
+| - admin.professor (OBRIGATÓRIO no seu sistema)
+| - professor
+|
+*/
+Route::prefix('professor')
+    ->middleware(['web', 'professor'])
+    ->group(function () {
+Route::put(
+    '/atividades/disciplina/{disciplina}/{atividade}',
+    [ProfessorAtividadeController::class, 'update']
+)->name('professor.atividades.update');
+// CONFIRMAÇÃO (opcional, se você quiser uma tela)
+Route::get('/atividades/disciplina/{disciplina}/delete/{atividade}',
+    [ProfessorAtividadeController::class, 'confirmDelete']
+)->name('professor.atividades.delete');
+
+// DESTROY
+Route::delete('/atividades/disciplina/{disciplina}/{atividade}',
+    [ProfessorAtividadeController::class, 'destroy']
+)->name('professor.atividades.destroy');
+
+        // ===============================
+        // INDEX — matérias
+        // ===============================
+        Route::get('/atividades', [ProfessorAtividadeController::class, 'materias'])
+            ->name('professor.atividades.index');
+
+        // ===============================
+        // LISTA DE ATIVIDADES DA DISCIPLINA
+        // ===============================
+        Route::get('/atividades/disciplina/{disciplina}', [ProfessorAtividadeController::class, 'atividadesDisciplina'])
+            ->name('professor.atividades.disciplina');
+
+        // ===============================
+        // CREATE
+        // ===============================
+        Route::get('/atividades/disciplina/{disciplina}/create', [ProfessorAtividadeController::class, 'create'])
+            ->name('professor.atividades.create');
+        Route::get('/atividades/disciplina/{disciplina}/edit/{atividade}', [ProfessorAtividadeController::class, 'edit'])
+            ->name('professor.atividades.edit');
+
+        // ===============================
+        // STORE
+        // ===============================
+        Route::post('/atividades/disciplina/{disciplina}', [ProfessorAtividadeController::class, 'store'])
+            ->name('professor.atividades.store');
+
+        // ===============================
+        // LANÇAR ATIVIDADE
+        // ===============================
+        Route::get('/atividades/{atividade}/lancar', [ProfessorAtividadeController::class, 'lancar'])
+            ->name('professor.atividades.lancar');
+
+        Route::post('/atividades/{atividade}/salvar', [ProfessorAtividadeController::class, 'salvarLancamento'])
+            ->name('professor.atividades.salvar');
+    });
+
+Route::prefix('professor')
+    ->middleware(['web', 'professor'])
+    ->group(function () {
+
+        /*
+        |--------------------------------------------------------------------------
+        | 1️⃣ INDEX — MATÉRIAS QUE O PROFESSOR DÁ
+        |--------------------------------------------------------------------------
+        | GET /professor/atividades
+        */
+        Route::get('/atividades', [ProfessorAtividadeController::class, 'materias'])
+            ->name('professor.atividades.index');
+
+        /*
+        |--------------------------------------------------------------------------
+        | 2️⃣ DISCIPLINA — ATIVIDADES DA MATÉRIA
+        |--------------------------------------------------------------------------
+        | GET /professor/atividades/disciplina/{disciplina}
+        */
+        Route::get('/atividades/disciplina/{disciplina}', [ProfessorAtividadeController::class, 'atividadesDisciplina'])
+            ->name('professor.atividades.disciplina');
+
+        /*
+        |--------------------------------------------------------------------------
+        | 3️⃣ LANÇAMENTO — LISTA DE ALUNOS DA TURMA
+        |--------------------------------------------------------------------------
+        | GET /professor/atividades/{atividade}/lancar
+        */
+        Route::get('/atividades/{atividade}/lancar', [ProfessorAtividadeController::class, 'lancar'])
+            ->name('professor.atividades.lancar');
+
+        /*
+        |--------------------------------------------------------------------------
+        | 4️⃣ SALVAR — CHECKLIST FEZ / NÃO FEZ
+        |--------------------------------------------------------------------------
+        | POST /professor/atividades/{atividade}/salvar
+        */
+        Route::post('/atividades/{atividade}/salvar', [ProfessorAtividadeController::class, 'salvarLancamento'])
+            ->name('professor.atividades.salvar');
+
+    });
+
+
+Route::get('/sitemap-news.xml', [NewsSitemapController::class, 'index'])
+    ->name('sitemap.news');
+
+
+Route::get('/sitemap.xml', [SitemapController::class, 'index']);
+Route::get('/sitemap-alunos.xml', [SitemapAlunosController::class, 'index']);
+
+Route::get('/sitemap-premios.xml', [SitemapPremiosController::class, 'index']);
+
+Route::get('/senha/email-enviado', function () {
+    return view('auth.senha-email-enviado');
+})->name('senha.email.enviado');
+
+// enviar e-mail
+Route::post('/senha/enviar-link', [AlunoPasswordResetController::class, 'sendLink'])
+    ->name('senha.enviar');
+
+// formulário de redefinição
+Route::get('/senha/redefinir/{token}', [AlunoPasswordResetController::class, 'showResetForm'])
+    ->name('senha.form');
+
+// salvar nova senha
+Route::post('/senha/redefinir', [AlunoPasswordResetController::class, 'reset'])
+    ->name('senha.reset');
+
+Route::get('/admin/cronograma/export/excel',
+  [AdminController::class, 'exportExcel']
+)->name('admin.cronograma.export.excel');
+
+Route::post('/aluno/perfil/remover-foto', [AlunoPerfilController::class, 'removerFoto'])
+    ->name('aluno.perfil.removerFoto');
+
+Route::get('/sitemap-premios.xml', [SitemapPremiosController::class, 'index']);
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN • Prêmios e Reconhecimentos
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')
+    ->middleware(['web', AdminAuthMiddleware::class])
+    ->group(function () {
+                /*
+        |--------------------------------------------------------------------------
+        | Aprovados
+        |--------------------------------------------------------------------------
+        */
+        Route::middleware('permissao:gerenciar_usuarios')->group(function () {
+    Route::get('/aprovados/{id}/edit',
+        [AdminController::class, 'aprovadosEdit'])
+        ->name('admin.aprovados.edit');
+
+    Route::put('/aprovados/{id}',
+        [AdminController::class, 'aprovadosUpdate'])
+        ->name('admin.aprovados.update');
+
+            Route::get('/aprovados', [AdminController::class, 'aprovadosIndex'])
+                ->name('admin.aprovados.index');
+
+            Route::get('/aprovados/create', [AdminController::class, 'aprovadosCreate'])
+                ->name('admin.aprovados.create');
+
+            Route::post('/aprovados', [AdminController::class, 'aprovadosStore'])
+                ->name('admin.aprovados.store');
+
+            Route::delete('/aprovados/{id}', [AdminController::class, 'aprovadosDestroy'])
+                ->name('admin.aprovados.destroy');
+        });
+
+Route::get('/admin/smart-agro/{id}',
+    [SmartAgroController::class, 'adminShow'])
+    ->name('admin.smartagro.show');
+
+        // LISTAR prêmios
+        Route::get('/premios', [PremioAdminController::class, 'index'])
+            ->name('admin.premios.index');
+
+        // FORM novo prêmio
+        Route::get('/premios/novo', [PremioAdminController::class, 'create'])
+            ->name('admin.premios.create');
+
+        // SALVAR novo prêmio
+        Route::post('/premios', [PremioAdminController::class, 'store'])
+            ->name('admin.premios.store');
+
+        // EDITAR prêmio
+        Route::get('/premios/{premio}/editar', [PremioAdminController::class, 'edit'])
+            ->name('admin.premios.edit');
+
+        // ATUALIZAR prêmio + alunos
+        Route::put('/premios/{premio}', [PremioAdminController::class, 'update'])
+            ->name('admin.premios.update');
+                    /*
+        |--------------------------------------------------------------------------
+        | SMART AGRO 2026 — GESTÃO
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/smart-agro', [SmartAgroController::class, 'adminIndex'])
+            ->name('admin.smartagro.index');
+
+        Route::post('/smart-agro/{id}/avaliar', [SmartAgroController::class, 'avaliar'])
+            ->name('admin.smartagro.avaliar');
+
+        Route::post('/smart-agro/{id}/status/{status}', [SmartAgroController::class, 'alterarStatus'])
+            ->name('admin.smartagro.status');
+
+    });
+
+/*
+|--------------------------------------------------------------------------
+| PORTAL • Prêmios e Reconhecimentos
+|--------------------------------------------------------------------------
+*/
+
+// LISTA pública
+Route::get('/premios-e-reconhecimentos', [PremioController::class, 'index'])
+    ->name('portal.premios');
+Route::get('/perfil/aluno/{slug}', [AlunoPublicController::class, 'show'])
     ->name('aluno.public');
-
+// SHOW individual
+Route::get('/premios/{premio}', [PremioController::class, 'show'])
+    ->name('portal.premios.show');
 /*
 |--------------------------------------------------------------------------
 | ROTAS PÚBLICAS — PORTAL
@@ -155,10 +418,35 @@ Route::post('/logout', function () {
 | ÁREA DO ALUNO
 |--------------------------------------------------------------------------
 */
+Route::middleware(['web', 'aluno'])->group(function () {
+
+    Route::get('/egresso/dashboard', function () {
+        return view('egresso.dashboard');
+    })->name('egresso.dashboard');
+
+});
 
 Route::prefix('aluno')
     ->middleware(['web', 'aluno'])
     ->group(function () {
+                /*
+        |--------------------------------------------------------------------------
+        | ATIVIDADES DO ALUNO
+        |--------------------------------------------------------------------------
+        */
+
+        // LISTAR atividades
+        Route::get('/atividades', [AlunoAtividadeController::class, 'index'])
+            ->name('aluno.atividades.index');
+
+        // VER atividade específica
+        Route::get('/atividades/{atividade}', [AlunoAtividadeController::class, 'show'])
+            ->name('aluno.atividades.show');
+
+        // ENVIAR atividade (link drive)
+        Route::post('/atividades/{atividade}/enviar', [AlunoAtividadeController::class, 'enviar'])
+            ->name('aluno.atividades.enviar');
+
 
         Route::get('/dashboard', [AlunoController::class, 'dashboard'])
             ->name('aluno.dashboard');

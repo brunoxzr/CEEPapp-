@@ -113,6 +113,65 @@
           src="https://www.google.com/maps?q=Centro+Estadual+de+Educação+Profissional+Assaí&output=embed">
         </iframe>
       </div>
+<!-- SUPORTE TÉCNICO -->
+<div class="mt-10 p-6 rounded-2xl border border-slate-200 bg-slate-50">
+  <h3 class="text-xl font-black text-red-800 mb-4 flex items-center gap-3">
+    <!-- Ícone ferramenta -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-700" fill="none"
+         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M11.983 2a1 1 0 01.993.883l.007.117v1.07a7.002 7.002 0 013.947 11.947l.758.758a1 1 0 01-1.32 1.497l-.094-.083-.758-.758A7.002 7.002 0 014.93 7.07H3.86a1 1 0 01-.117-1.993L3.86 5h1.07A7.002 7.002 0 0111.983 2z" />
+    </svg>
+    Suporte Técnico do Portal
+  </h3>
+
+  <p class="text-slate-700 mb-6 leading-relaxed">
+    Problemas de acesso ao portal, área do aluno, inconsistências no sistema ou dúvidas técnicas
+    devem ser direcionadas ao suporte responsável pelo CEEPapp.
+  </p>
+
+  <div class="space-y-5 text-slate-800">
+
+    <!-- EMAIL -->
+    <div class="flex items-start gap-4">
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="w-6 h-6 text-slate-600 mt-0.5"
+           fill="none" viewBox="0 0 24 24"
+           stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V6a2 2 0 00-2-2H3a2 2 0 00-2 2v8a2 2 0 002 2z" />
+      </svg>
+
+      <div>
+        <p class="font-bold">E-mail de suporte</p>
+        <a href="mailto:bruno.kay2304@gmail.com"
+           class="text-red-700 hover:underline">
+          bruno.kay2304@gmail.com
+        </a>
+      </div>
+    </div>
+
+    <!-- TELEFONE -->
+    <div class="flex items-start gap-4">
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="w-6 h-6 text-slate-600 mt-0.5"
+           fill="none" viewBox="0 0 24 24"
+           stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 5a2 2 0 012-2h2.28a1 1 0 01.948.684l1.516 4.548a1 1 0 01-.502 1.21l-1.27.635a11.042 11.042 0 005.516 5.516l.635-1.27a1 1 0 011.21-.502l4.548 1.516a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+      </svg>
+
+      <div>
+        <p class="font-bold">Telefone / WhatsApp</p>
+        <a href="tel:+5543988506395"
+           class="text-red-700 hover:underline">
+          (43) 98850-6395
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
 
     </div>
   </section>

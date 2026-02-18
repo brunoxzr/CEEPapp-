@@ -7,7 +7,7 @@
         <div class="lg:col-span-2 flex flex-col gap-4">
             <a href="{{ url('/') }}" class="flex items-center gap-4">
                 <img
-                    src="{{ asset('img/logoceep.png') }}"
+                    src="{{ asset('img/logoCeep.png') }}"
                     alt="CEEP Assaí"
                     class="h-16 w-auto object-contain bg-white rounded-md p-2 shadow"
                 >

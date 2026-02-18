@@ -87,8 +87,9 @@
                 <option>2º DS</option>
                 <option>2º EDF</option>
                 <option>2º MEC</option>
-                <option>2º Agro</option>
-                <option>2º Agro2</option>
+                <option>2º Agro A</option>
+                <option>2º Agro E</option>
+                <option>2º Enf</option>
                 </optgroup>
 
                 <optgroup label="3º Ano">
@@ -98,6 +99,7 @@
                 <option>3º Eletro</option>
                 <option>3º Agro</option>
                 <option>3º Enf</option>
+                                <option>Egresso</option>
                 </optgroup>
             </select>
             </label>
@@ -146,41 +148,108 @@
             </tbody>
           </table>
         </div>
+<!-- Alunos -->
+<h3 class="font-bold text-red-800 mb-4 text-lg">Alunos</h3>
 
-        <!-- Alunos -->
-        <h3 class="font-bold text-red-800 mb-4 text-lg">Alunos</h3>
-        <div class="overflow-x-auto rounded-lg border border-slate-200">
-          <table class="min-w-full text-sm">
-            <thead class="bg-red-50 text-red-800">
-              <tr>
+<!-- Filtro por turma -->
+<div class="mb-4 flex flex-col sm:flex-row sm:items-center gap-3">
+    <label class="text-sm font-semibold text-red-800">
+        Filtrar por turma
+    </label>
+
+    <select id="filtroTurma"
+            class="w-full sm:w-64 rounded-lg border-2 border-red-300 bg-white text-red-900
+                   focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+        <option value="">Todas as turmas</option>
+
+        <optgroup label="1º Ano">
+            <option>1º IA</option>
+            <option>1º EDF</option>
+            <option>1º MEC</option>
+            <option>1º Agro</option>
+        </optgroup>
+
+        <optgroup label="2º Ano">
+            <option>2º DS</option>
+            <option>2º EDF</option>
+            <option>2º MEC</option>
+            <option>2º Agro</option>
+            <option>2º Agro2</option>
+        </optgroup>
+
+        <optgroup label="3º Ano">
+            <option>3º DS</option>
+            <option>3º EDF</option>
+            <option>3º MEC</option>
+            <option>3º Eletro</option>
+            <option>3º Agro</option>
+            <option>3º Enf</option>
+            <option>Egresso</option>
+        </optgroup>
+    </select>
+</div>
+
+<div class="overflow-x-auto rounded-lg border border-slate-200">
+    <table class="min-w-full text-sm">
+        <thead class="bg-red-50 text-red-800">
+            <tr>
                 <th class="py-3 px-4 text-left font-semibold">Nome</th>
                 <th class="py-3 px-4 text-left font-semibold">E-mail</th>
                 <th class="py-3 px-4 text-left font-semibold">Escola</th>
                 <th class="py-3 px-4 text-left font-semibold">Turma</th>
                 <th class="py-3 px-4 text-center font-semibold">Ações</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-              @foreach($alunos as $al)
-              <tr class="hover:bg-red-50/40 transition">
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100" id="tabelaAlunos">
+            @foreach($alunos as $al)
+            <tr class="hover:bg-red-50/40 transition"
+                data-turma="{{ $al->turma }}">
                 <td class="py-3 px-4 font-medium text-slate-800">{{ $al->nome }}</td>
                 <td class="py-3 px-4 text-slate-700">{{ $al->email }}</td>
                 <td class="py-3 px-4 text-slate-700">{{ $al->escola }}</td>
                 <td class="py-3 px-4 text-slate-700">{{ $al->turma }}</td>
                 <td class="py-3 px-4 text-center space-x-3">
-                  <a href="{{ route('admin.usuarios.edit', ['id' => $al->id, 'tipo'=>'aluno']) }}"
-                    class="text-yellow-600 font-semibold hover:text-yellow-700 hover:underline">Editar</a>
-                  <form action="{{ route('admin.usuarios.delete', ['id'=>$al->id, 'tipo'=>'aluno']) }}"
-                      method="POST" class="inline">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="text-red-700 font-semibold hover:text-red-800 hover:underline">Excluir</button>
-                  </form>
+                    <a href="{{ route('admin.usuarios.edit', ['id' => $al->id, 'tipo'=>'aluno']) }}"
+                       class="text-yellow-600 font-semibold hover:text-yellow-700 hover:underline">
+                        Editar
+                    </a>
+
+                    <form action="{{ route('admin.usuarios.delete', ['id'=>$al->id, 'tipo'=>'aluno']) }}"
+                          method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                                class="text-red-700 font-semibold hover:text-red-800 hover:underline">
+                            Excluir
+                        </button>
+                    </form>
                 </td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
-        </div>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+<!-- Script filtro -->
+<script>
+    const filtroTurma = document.getElementById('filtroTurma');
+    const linhasAlunos = document.querySelectorAll('#tabelaAlunos tr');
+
+    filtroTurma.addEventListener('change', () => {
+        const turma = filtroTurma.value;
+
+        linhasAlunos.forEach(linha => {
+            const turmaLinha = linha.dataset.turma;
+
+            if (!turma || turmaLinha === turma) {
+                linha.style.display = '';
+            } else {
+                linha.style.display = 'none';
+            }
+        });
+    });
+</script>
+
 
     </div>
   </section>

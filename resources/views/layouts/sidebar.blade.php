@@ -54,7 +54,7 @@
         @endif
 
         <!-- 🔥 DISCIPLINAS / MATÉRIAS -->
-        @if(adminPode('gerenciar_disciplinas'))
+        @if(adminPode('gerenciar_professores'))
         <a href="{{ route('admin.disciplinas.index') }}"
            class="block px-4 py-2 rounded hover:bg-red-700">
             Disciplinas
@@ -77,17 +77,26 @@
         @endif
         {{-- RESTRIÇÕES DE PROFESSORES (SÓ DIRETOR) --}}
 
-<a href="{{ route('admin.restricoes') }}"
-   class="block px-4 py-2 rounded hover:bg-red-700">
-    Restrições de Professores
-</a>
+
+                @if(adminPode('gerenciar_professores'))
+        <a href="{{ route('admin.restricoes') }}"
+           class="block px-4 py-2 rounded hover:bg-red-700">
+            Restrições de Professores
+        </a>
+        @endif
+
 <a href="{{ route('admin.comunicados.index') }}"
    class="block px-4 py-2 rounded hover:bg-red-700">
     Comunicados
 </a>
-<a href="{{ route('admin.calendario.index') }}"
+<a href="{{ route('admin.aprovados.index') }}"
    class="block px-4 py-2 rounded hover:bg-red-700">
-    Calendario
+    Aprovados
+</a>
+
+<a href="{{ route('admin.smartagro.index') }}"
+   class="block px-4 py-2 rounded hover:bg-red-700">
+    Smart Agro 2026
 </a>
 
 
@@ -100,11 +109,12 @@
         @endif
 
         @if(adminPode('gerenciar_projetos'))
-        <a href="{{ route('admin.projetos') }}"
+        <a href="{{ route('admin.premios.create') }}"
            class="block px-4 py-2 rounded hover:bg-red-700">
-            Projetos Técnicos
+            Prêmios
         </a>
         @endif
+
 
 
         <!-- SÓ DIRETOR -->
@@ -112,6 +122,13 @@
         <a href="{{ route('admin.permissoes.index') }}"
            class="block px-4 py-2 rounded bg-red-900 hover:bg-red-800 mt-4">
             Controle de Permissões
+        </a>
+        @endif
+                <!-- SÓ DIRETOR -->
+        @if(auth()->check() && auth()->user()?->role === 'diretor')
+        <a href="{{ route('admin.calendario.index') }}"
+           class="block px-4 py-2 rounded bg-red-900 hover:bg-red-800 mt-4">
+            Calendario
         </a>
         @endif
         <!-- INSTITUCIONAL -->

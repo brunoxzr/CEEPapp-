@@ -17,7 +17,7 @@
                 <!-- HEADER -->
                 <tr>
                     <td style="background:#7f1d1d;padding:20px;text-align:center">
-                        <img src="https://ceepapp-production.up.railway.app/img/logo_ceep.jpeg"
+                        <img src="https://ceepassai.com.br/img/logo_ceep.jpeg"
                              alt="CEEP Assaí"
                              style="max-height:70px">
                     </td>
@@ -40,7 +40,7 @@
 <tr>
     <td align="center" style="padding:30px 0">
 
-        <a href="https://ceepapp-production.up.railway.app/area-academica"
+        <a href="https://ceepassai.com.br/area-academica"
            target="_blank"
            style="
                display:inline-block;

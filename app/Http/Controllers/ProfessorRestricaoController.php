@@ -8,18 +8,36 @@ use Illuminate\Http\Request;
 
 class ProfessorRestricaoController extends Controller
 {
-    private function requireDiretor()
+    /**
+     * Diretor OU gestor com permissão de professores
+     */
+    private function requirePermissaoProfessores()
     {
         $admin = Admin::find(session('admin_id'));
-        if (!$admin || !$admin->isDiretor()) {
-            abort(403);
+
+        if (!$admin) {
+            abort(403, 'Não autenticado.');
         }
-        return $admin;
+
+        // Diretor sempre pode
+        if ($admin->role === 'diretor') {
+            return $admin;
+        }
+
+        // Gestor precisa da permissão
+        if ($admin->role === 'gestor' && adminPode('gerenciar_professores')) {
+            return $admin;
+        }
+
+        abort(403, 'Sem permissão para gerenciar professores.');
     }
 
+    /**
+     * Lista professores e restrições
+     */
     public function index()
     {
-        $this->requireDiretor();
+        $this->requirePermissaoProfessores();
 
         $professores = Admin::where('role', 'professor')
             ->with('restricoes')
@@ -29,13 +47,16 @@ class ProfessorRestricaoController extends Controller
         return view('admin.restricoes.index', compact('professores'));
     }
 
+    /**
+     * Cria restrição
+     */
     public function store(Request $request)
     {
-        $this->requireDiretor();
+        $this->requirePermissaoProfessores();
 
         $data = $request->validate([
             'admin_id'   => 'required|exists:admins,id',
-            'dia_semana' => 'required|string',
+            'dia_semana' => 'required|string|max:20',
             'aula'       => 'nullable|integer|min:1|max:6',
             'motivo'     => 'nullable|string|max:255',
         ]);
@@ -45,9 +66,12 @@ class ProfessorRestricaoController extends Controller
         return back()->with('ok', 'Restrição adicionada.');
     }
 
+    /**
+     * Remove restrição
+     */
     public function destroy($id)
     {
-        $this->requireDiretor();
+        $this->requirePermissaoProfessores();
 
         ProfessorRestricao::findOrFail($id)->delete();
 

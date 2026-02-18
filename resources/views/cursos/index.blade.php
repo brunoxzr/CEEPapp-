@@ -83,7 +83,7 @@
         <article class="grid md:grid-cols-2 gap-10 items-center">
             <div>
                 <h2 class="text-2xl font-semibold text-slate-900">
-                    Técnico em Eletrotécnica
+                    Técnico em Eletroeletronica
                 </h2>
                 <p class="mt-4 text-slate-700 leading-relaxed">
                     Curso que prepara profissionais para trabalhar com instalações

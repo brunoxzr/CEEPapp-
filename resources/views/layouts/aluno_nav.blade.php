@@ -85,12 +85,19 @@
                 <a href="{{ route('aluno.cronograma') }}" class="hover:text-red-800">
                     Cronograma
                 </a>
-                                <a href="{{ route('aluno.calendario.index') }}" class="hover:text-red-800">
+                <a href="{{ route('aluno.calendario.index') }}" class="hover:text-red-800">
                     Calendario
                 </a>
-<a href="{{ route('aluno.perfil') }}" class="hover:text-red-800 transition">
-    Perfil
+                <a href="{{ route('smartagro.inscricoes') }}" class="hover:text-red-800 transition">
+                    Smart Agro
+                </a>
+<a href="{{ route('aluno.atividades.index') }}" class="hover:text-red-800">
+    Atividades
 </a>
+
+                <a href="{{ route('aluno.perfil') }}" class="hover:text-red-800 transition">
+                    Perfil
+                </a>
 
                 <form action="{{ route('logout') }}" method="POST" class="ml-4">
                     @csrf
@@ -139,6 +146,9 @@
                 <a href="{{ route('aluno.saeb') }}">SAEB</a>
                 <a href="{{ route('aluno.cronograma') }}">Cronograma</a>
                                 <a href="{{ route('aluno.calendario.index') }}">Calendario</a>
+                                                                <a href="{{ route('smartagro.inscricoes') }}">Smart Agro</a>
+                                                                <a href="{{ route('aluno.atividades.index') }}">Atividades</a>
+
                                                                 <a href="{{ route('aluno.perfil') }}">Perfil</a>
 
                 <div class="border-t pt-4 mt-4">

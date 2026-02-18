@@ -15,31 +15,39 @@ class ComunicadoController extends Controller
     /* ================= ADMIN ================= */
 
 
-
 public function indexAdmin()
 {
     $comunicados = Comunicado::with(['leituras'])->orderByDesc('created_at')->get();
 
-    // Pré-calcular stats por comunicado
     $stats = [];
 
     foreach ($comunicados as $c) {
 
-        // Define público alvo
         $alunosQuery = Aluno::query();
 
-        if ($c->publico === 'turma' && $c->turma) {
-            $alunosQuery->where('turma', $c->turma);
+        // 🎯 PÚBLICO GERAL
+        if ($c->publico === 'geral') {
+            // não filtra, pega todos
         }
 
+        // 🎯 TURMAS ESPECÍFICAS (JSON)
+        if ($c->publico === 'turma' && !empty($c->turmas)) {
+            $alunosQuery->whereIn('turma', $c->turmas);
+        }
+
+        // 🎯 CURSO
         if ($c->publico === 'curso' && $c->curso) {
             $alunosQuery->where('curso', $c->curso);
         }
 
-        $totalAlunos = $alunosQuery->count();
+        // TOTAL DE ALUNOS QUE DEVERIAM RECEBER
+        $alunosIds = $alunosQuery->pluck('id');
 
+        $totalAlunos = $alunosIds->count();
+
+        // TOTAL DE LEITURAS APENAS DESSE PÚBLICO
         $lidos = $c->leituras
-            ->whereIn('aluno_id', $alunosQuery->pluck('id'))
+            ->whereIn('aluno_id', $alunosIds)
             ->count();
 
         $stats[$c->id] = [
@@ -95,70 +103,79 @@ public function create()
             ->route('admin.comunicados.index')
             ->with('ok', 'Comunicado excluído com sucesso.');
     }
-
 public function store(Request $request)
 {
     $data = $request->validate([
         'titulo'   => 'required|string|max:200',
         'conteudo' => 'required|string',
         'publico'  => 'required|in:geral,turma,curso',
-        'turma'    => 'nullable|string|max:50',
+        'turmas'   => 'nullable|array',
+        'turmas.*' => 'string|max:50',
         'curso'    => 'nullable|string|max:50',
-        'ativo'    => 'nullable|boolean',
     ]);
 
     $data['criado_por'] = session('admin_id');
-    $data['ativo'] = $request->boolean('ativo', true);
+    $data['ativo'] = true;
 
-    // 🔥 ISSO é um MODEL, não string
+    // ✅ ISSO FALTAVA
+    if ($data['publico'] === 'turma') {
+        $data['turmas'] = $request->turmas ?? [];
+    } else {
+        $data['turmas'] = null;
+    }
+
     $comunicado = Comunicado::create($data);
+
+    /* ================= ENVIO DE EMAIL ================= */
 
     $alunosQuery = Aluno::whereNotNull('email');
 
-    if ($comunicado->publico === 'turma') {
-        $alunosQuery->where('turma', $comunicado->turma);
+    // ✅ CORRETO: múltiplas turmas
+    if ($comunicado->publico === 'turma' && !empty($comunicado->turmas)) {
+        $alunosQuery->whereIn('turma', $comunicado->turmas);
     }
 
-    if ($comunicado->publico === 'curso') {
+    if ($comunicado->publico === 'curso' && $comunicado->curso) {
         $alunosQuery->where('curso', $comunicado->curso);
     }
 
     $emails = $alunosQuery->pluck('email');
 
-foreach ($emails as $email) {
-    EnviarComunicadoEmail::dispatch(
-        $email,
-        $comunicado->id
-    );
-}
+    foreach ($emails as $email) {
+        EnviarComunicadoEmail::dispatch(
+            $email,
+            $comunicado->id
+        );
+    }
 
-return redirect()
-    ->route('admin.comunicados.index')
-    ->with('ok', 'Comunicado publicado. Envio de e-mails em segundo plano.');
+    return redirect()
+        ->route('admin.comunicados.index')
+        ->with('ok', 'Comunicado publicado. Envio de e-mails em segundo plano.');
 }
 
     /* ================= ALUNO ================= */
 
 public function indexAluno()
 {
-    $aluno = \App\Models\Aluno::findOrFail(session('aluno_id'));
+    if (!session('aluno_id')) {
+        abort(403);
+    }
 
-    /* ================= COMUNICADOS ================= */
-    $comunicados = \App\Models\Comunicado::where('ativo', true)
+    $aluno = Aluno::findOrFail(session('aluno_id'));
+
+    $comunicados = Comunicado::where('ativo', true)
         ->where(function ($q) use ($aluno) {
             $q->where('publico', 'geral')
-              ->orWhere(function ($q) use ($aluno) {
-                  $q->where('publico', 'turma')
-                    ->where('turma', $aluno->turma);
+              ->orWhere(function ($q2) use ($aluno) {
+                  $q2->where('publico', 'turma')
+                     ->whereJsonContains('turmas', $aluno->turma);
               });
         })
-        ->orderByDesc('created_at')
         ->with(['leituras' => function ($q) {
-    $q->where('aluno_id', session('aluno_id'));
-}])
-->get();
-
-
+            $q->where('aluno_id', session('aluno_id'));
+        }])
+        ->orderByDesc('created_at')
+        ->get();
 
     /* ================= EVENTOS (10 DIAS) ================= */
     $eventosProximos = \App\Models\CalendarioInstitucional::where('ativo', true)
@@ -172,11 +189,11 @@ public function indexAluno()
         ->get();
 
     return view('aluno.comunicados.index', compact(
-        'aluno',
         'comunicados',
         'eventosProximos'
     ));
 }
+
 
 public function marcarLido(Comunicado $comunicado)
 {

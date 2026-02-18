@@ -125,57 +125,79 @@
         </p>
       </div>
 {{-- ================= DISTRIBUIÇÃO POR TURMA (DISCIPLINAS + AULAS/SEMANA) ================= --}}
+{{-- ================= DISTRIBUIÇÃO POR TURMA (DISCIPLINAS + AULAS/SEMANA) ================= --}}
 <div>
   <h3 class="font-black text-lg mb-3">
-    Disciplinas por turma <span class="text-sm text-slate-500">(o que o professor realmente leciona)</span>
+    Disciplinas por turma
+    <span class="text-sm text-slate-500">(o que o professor realmente leciona)</span>
   </h3>
 
   <p class="text-sm text-slate-500 mb-5">
-    Aqui você define quais matérias ele dá em cada turma e quantas aulas por semana.
-    É ISSO que o gerador usa pra distribuir.
+    Defina quais matérias o professor leciona em cada turma e quantas aulas por semana.
+    <strong>O gerador automático usa EXATAMENTE isso.</strong>
   </p>
 
   <div class="space-y-4">
-    @foreach($professor->turmas as $rel)
-      @php $turma = $rel->turma; @endphp
+
+    @foreach($turmas as $turma)
+      @php
+        // só renderiza se a turma estiver marcada
+        $rel = $professor->turmas->firstWhere('turma', $turma);
+        if (!$rel) continue;
+      @endphp
 
       <div class="border rounded-2xl p-4 bg-slate-50">
-        <div class="flex items-center justify-between">
-          <h4 class="font-black text-slate-900">{{ $turma }}</h4>
-          <span class="text-xs text-slate-500">Máx nesta turma: {{ $rel->carga_max ?? '—' }}</span>
+
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="font-black text-slate-900">
+            {{ $turma }}
+          </h4>
+          <span class="text-xs text-slate-500">
+            Máx. nesta turma: {{ $rel->carga_max ?? '—' }}
+          </span>
         </div>
 
-        <div class="mt-3 grid md:grid-cols-2 gap-3">
+        <div class="grid md:grid-cols-2 gap-3 mt-3">
+
           @foreach($professor->disciplinas as $disc)
             @php
-              // você vai preencher isso vindo do banco depois
-              $key = $turma.'|'.$disc->id;
-              $valor = $vinculos[$key] ?? null; // ex: aulas_semana
+              $key   = $turma.'|'.$disc->id;
+              $valor = $vinculos[$key] ?? 0;
             @endphp
 
             <div class="border rounded-xl p-3 bg-white flex items-center justify-between gap-3">
               <div class="min-w-0">
-                <p class="font-semibold text-slate-800 truncate">{{ $disc->nome }}</p>
-                <p class="text-xs text-slate-500">Aulas/semana nesta turma</p>
+                <p class="font-semibold text-slate-800 truncate">
+                  {{ $disc->nome }}
+                </p>
+                <p class="text-xs text-slate-500">
+                  Aulas por semana nesta turma
+                </p>
               </div>
 
-              <input type="number"
-                     min="0"
-                     max="10"
-                     name="turma_disc[{{ $turma }}][{{ $disc->id }}]"
-                     value="{{ $valor ?? 0 }}"
-                     class="w-20 border rounded-lg px-2 py-1 text-center">
+              <input
+                type="number"
+                min="0"
+                max="10"
+                name="turma_disc[{{ $turma }}][{{ $disc->id }}]"
+                value="{{ $valor }}"
+                class="w-20 border rounded-lg px-2 py-1 text-center"
+              >
             </div>
           @endforeach
+
         </div>
 
         <p class="mt-2 text-xs text-slate-500">
-          Dica: coloque 0 nas matérias que ele NÃO dá nessa turma.
+          Coloque <strong>0</strong> nas disciplinas que o professor não leciona nesta turma.
         </p>
+
       </div>
     @endforeach
+
   </div>
 </div>
+
 <div>
   <h3 class="font-black text-lg mb-3">Aulas seguidas (regras)</h3>
 

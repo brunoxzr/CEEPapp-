@@ -94,7 +94,8 @@
 
                 <!-- NOME -->
                 <h1 class="mt-8 text-4xl font-black text-{{ $tema['cor'] }}-800">
-                    {{ $perfil->aluno->nome }}
+                    {{ $perfil->aluno?->nome }}
+
                 </h1>
 
                 <!-- CURSO -->
@@ -144,6 +145,47 @@
                 @endif
 
             </div>
+@if($perfil->aluno && $perfil->aluno->reconhecimentos && $perfil->aluno->reconhecimentos->count())
+
+    <div class="mt-16">
+
+        <h2 class="text-xl font-black text-center text-{{ $tema['cor'] }}-800 mb-8">
+            Reconhecimentos & Premiações
+        </h2>
+
+        <div class="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+
+            @foreach($perfil->aluno->reconhecimentos as $premio)
+                <div class="relative bg-white border rounded-2xl p-6
+                            shadow-sm hover:shadow-lg transition
+                            group overflow-hidden">
+
+                    <!-- detalhe lateral -->
+                    <div class="absolute left-0 top-0 h-full w-1
+                                bg-{{ $tema['cor'] }}-600"></div>
+
+                    <h3 class="font-bold text-slate-800 text-lg">
+                        {{ $premio->titulo }}
+                    </h3>
+
+                    @if($premio->ano)
+                        <p class="text-sm text-slate-500 mt-1">
+                            {{ $premio->ano }}
+                        </p>
+                    @endif
+
+                    @if($premio->descricao)
+                        <p class="text-slate-600 text-sm mt-3 leading-relaxed">
+                            {{ $premio->descricao }}
+                        </p>
+                    @endif
+
+                </div>
+            @endforeach
+
+        </div>
+    </div>
+@endif
 
             <!-- VOLTAR -->
             <div class="mt-16 text-center">

@@ -34,23 +34,30 @@ public function dashboard()
 {
     $aluno = $this->requireAluno();
 
+    /* ================= REGRA: EGRESSO ================= */
+    if ($aluno->turma === 'Egresso') {
+        return redirect()->route('egresso.dashboard');
+    }
+
+    /* ================= BOLETINS ================= */
     $boletins = Boletim::where('aluno_id', $aluno->id)
         ->orderByDesc('created_at')
         ->take(10)
         ->get();
 
+    /* ================= CRONOGRAMA (HOJE) ================= */
     $cronograma = Cronograma::where('turma', $aluno->turma)
         ->where('dia_semana', now()->locale('pt_BR')->dayName)
         ->orderBy('inicio')
         ->get();
 
-/* ================= COMUNICADOS ================= */
+    /* ================= COMUNICADOS (EXIBIÇÃO) ================= */
 $ultimosComunicados = Comunicado::where('ativo', true)
     ->where(function ($q) use ($aluno) {
         $q->where('publico', 'geral')
-          ->orWhere(function ($q) use ($aluno) {
-              $q->where('publico', 'turma')
-                ->where('turma', $aluno->turma);
+          ->orWhere(function ($q2) use ($aluno) {
+              $q2->where('publico', 'turma')
+                 ->whereJsonContains('turmas', $aluno->turma);
           });
     })
     ->with(['leituras' => function ($q) use ($aluno) {
@@ -60,24 +67,20 @@ $ultimosComunicados = Comunicado::where('ativo', true)
     ->take(3)
     ->get();
 
-/* ================= COMUNICADOS NÃO LIDOS ================= */
-$ultimosComunicados = Comunicado::where('ativo', true)
+
+    /* ================= COMUNICADOS NÃO LIDOS ================= */
+$comunicadosNaoLidos = Comunicado::where('ativo', true)
     ->where(function ($q) use ($aluno) {
         $q->where('publico', 'geral')
-          ->orWhere(function ($q) use ($aluno) {
-              $q->where('publico', 'turma')
-                ->where('turma', $aluno->turma);
+          ->orWhere(function ($q2) use ($aluno) {
+              $q2->where('publico', 'turma')
+                 ->whereJsonContains('turmas', $aluno->turma);
           });
     })
     ->whereDoesntHave('leituras', function ($q) use ($aluno) {
         $q->where('aluno_id', $aluno->id);
     })
-    ->orderByDesc('created_at')
-    ->take(2) // no dashboard só os mais recentes
-    ->get();
-
-/* ================= CONTADOR (SÓ NÃO LIDOS) ================= */
-$comunicadosCount = $ultimosComunicados->count();
+    ->count();
 
 
     /* ================= EVENTOS (10 DIAS) ================= */
@@ -91,7 +94,8 @@ $comunicadosCount = $ultimosComunicados->count();
         ->orderBy('hora_inicio')
         ->get();
 
-    $comunicadosCount = $ultimosComunicados->count() + $eventosProximos->count();
+    /* ================= CONTADOR GERAL ================= */
+    $comunicadosCount = $comunicadosNaoLidos + $eventosProximos->count();
 
     return view('aluno.dashboard', compact(
         'aluno',

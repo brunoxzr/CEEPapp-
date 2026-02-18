@@ -1,7 +1,41 @@
-@include('layouts.aluno_nav', ['title' => 'Meu Perfil Profissional'])
+@include('layouts.header', ['title' => 'Meu Perfil Profissional'])
 
 @php
     $aluno = \App\Models\Aluno::find(session('aluno_id'));
+@endphp
+@php
+    $turma = $aluno->turma ?? '';
+
+    // Etapa
+    $ano = '—';
+    if (str_contains($turma, '1º')) {
+        $ano = 'Primeiro Ano';
+    } elseif (str_contains($turma, '2º')) {
+        $ano = 'Segundo Ano';
+    } elseif (str_contains($turma, '3º')) {
+        $ano = 'Terceiro Ano';
+    } elseif (str_contains(strtolower($turma), 'egresso')) {
+        $ano = 'Formado';
+    }
+
+    // Curso (ordem importa: IA antes de "I" genérico etc.)
+    $curso = '—';
+
+    if (str_contains($turma, 'IA')) {
+        $curso = 'Inteligência Artificial';
+    } elseif (str_contains($turma, 'DS')) {
+        $curso = 'Desenvolvimento de Sistemas';
+    } elseif (str_contains($turma, 'Agro')) {
+        $curso = 'Agronegócio';
+    } elseif (str_contains($turma, 'EDF')) {
+        $curso = 'Edificações';
+    } elseif (str_contains($turma, 'Eletro')) {
+        $curso = 'EletroEletrônica';
+    } elseif (str_contains($turma, 'Enf')) {
+        $curso = 'Enfermagem';
+    } elseif (str_contains($turma, 'Mec')) {
+        $curso = 'Mecânica Industrial';
+    }
 @endphp
 
 <main class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen py-16">
@@ -48,10 +82,10 @@
                         Seu perfil público
                     </p>
 
-                    <a href="{{ url('/perfil/'.$aluno->slug) }}"
+                    <a href="{{ url('/perfil/aluno/'.$aluno->slug) }}"
                        target="_blank"
                        class="text-green-800 font-semibold underline break-all">
-                        {{ url('/perfil/'.$aluno->slug) }}
+                        {{ url('/perfil/aluno/'.$aluno->slug) }}
                     </a>
 
                     <p class="text-xs text-green-700 mt-2">
@@ -71,6 +105,8 @@
         <form method="POST" enctype="multipart/form-data"
               class="bg-white rounded-3xl shadow-2xl border p-12 space-y-12">
             @csrf
+            <input type="hidden" name="remove_foto" id="removeFotoInput" value="0">
+
 
             <!-- ================= FOTO ================= -->
             <section>
@@ -95,17 +131,27 @@
                         </span>
                     </div>
 
-                    <div>
-                        <input type="file" name="foto" id="fotoInput" accept="image/*"
-                               class="block text-sm
-                                      file:mr-4 file:py-2 file:px-5
-                                      file:rounded-full file:border-0
-                                      file:bg-red-700 file:text-white
-                                      hover:file:bg-red-800 transition">
-                        <p class="text-xs text-slate-600 mt-2">
-                            Foto nítida, fundo neutro e boa iluminação.
-                        </p>
-                    </div>
+                    <div class="space-y-3">
+
+    <input type="file" name="foto" id="fotoInput" accept="image/*"
+           class="block text-sm
+                  file:mr-4 file:py-2 file:px-5
+                  file:rounded-full file:border-0
+                  file:bg-red-700 file:text-white
+                  hover:file:bg-red-800 transition">
+
+    <!-- BOTÃO REMOVER FOTO -->
+    <button type="button"
+            id="removeFotoBtn"
+            class="hidden text-sm font-semibold text-red-700 hover:text-red-900 transition">
+        Remover foto
+    </button>
+
+    <p class="text-xs text-slate-600">
+        Foto nítida, fundo neutro e boa iluminação.
+    </p>
+</div>
+
                 </div>
             </section>
 
@@ -168,59 +214,45 @@
             </section>
 
             <!-- ================= CURSO / ETAPA ================= -->
-            <section>
-                <h2 class="text-lg font-black text-red-800 mb-4">
-                    Dados Acadêmicos
-                </h2>
+<section>
+    <h2 class="text-lg font-black text-red-800 mb-4">
+        Dados Acadêmicos
+    </h2>
 
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">
-                            Curso
-                        </label>
-                        <select name="curso"
-                                class="w-full rounded-xl border-2 border-slate-300
-                                       bg-slate-50 px-4 py-3
-                                       focus:border-red-600 focus:ring-2 focus:ring-red-200">
-                            @foreach([
-                                'Agronegócio',
-                                'Desenvolvimento de Sistemas',
-                                'Edificações',
-                                'EletroEletrônica',
-                                'Enfermagem',
-                                'Mecânica Industrial'
-                            ] as $curso)
-                                <option value="{{ $curso }}"
-                                    @selected(($perfil->curso ?? '') === $curso)>
-                                    {{ $curso }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+    <div class="grid md:grid-cols-2 gap-6">
 
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">
-                            Etapa
-                        </label>
-                        <select name="ano"
-                                class="w-full rounded-xl border-2 border-slate-300
-                                       bg-slate-50 px-4 py-3
-                                       focus:border-red-600 focus:ring-2 focus:ring-red-200">
-                            @foreach([
-                                'Primeiro Ano',
-                                'Segundo Ano',
-                                'Terceiro Ano',
-                                'Formado'
-                            ] as $ano)
-                                <option value="{{ $ano }}"
-                                    @selected(($perfil->ano ?? '') === $ano)>
-                                    {{ $ano }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </section>
+        <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+                Curso
+            </label>
+
+            <input type="text"
+                   value="{{ $curso }}"
+                   disabled
+                   class="w-full rounded-xl border-2 border-slate-300
+                          bg-slate-100 px-4 py-3 text-slate-800 font-semibold
+                          cursor-not-allowed">
+        </div>
+
+        <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+                Etapa
+            </label>
+
+            <input type="text"
+                   value="{{ $ano }}"
+                   disabled
+                   class="w-full rounded-xl border-2 border-slate-300
+                          bg-slate-100 px-4 py-3 text-slate-800 font-semibold
+                          cursor-not-allowed">
+        </div>
+
+    </div>
+
+    {{-- envia pro backend sem o aluno poder mexer --}}
+    <input type="hidden" name="curso" value="{{ $curso }}">
+    <input type="hidden" name="ano" value="{{ $ano }}">
+</section>
 
             <!-- ================= BOTÃO ================= -->
             <div class="pt-6 flex justify-end">
@@ -230,6 +262,17 @@
                     Salvar Perfil
                 </button>
             </div>
+<div class="pt-2 flex justify-end">
+    <button type="submit"
+            formaction="{{ route('senha.enviar') }}"
+            formmethod="POST"
+            class="text-sm font-bold text-red-700 underline hover:text-red-900">
+        Redefinir senha
+    </button>
+</div>
+
+
+
 
         </form>
     </div>
@@ -237,21 +280,42 @@
 
 <!-- ================= JS PREVIEW ================= -->
 <script>
-document.getElementById('fotoInput')?.addEventListener('change', function (e) {
-    const file = e.target.files[0]
-    if (!file) return
+const fotoInput = document.getElementById('fotoInput')
+const preview = document.getElementById('fotoPreview')
+const placeholder = document.getElementById('fotoPlaceholder')
+const removeBtn = document.getElementById('removeFotoBtn')
 
-    const preview = document.getElementById('fotoPreview')
-    const placeholder = document.getElementById('fotoPlaceholder')
+// Se já existe foto salva
+if (preview && !preview.classList.contains('hidden')) {
+    removeBtn?.classList.remove('hidden')
+}
+
+fotoInput?.addEventListener('change', function () {
+    const file = this.files[0]
+    if (!file) return
 
     const reader = new FileReader()
     reader.onload = () => {
         preview.src = reader.result
         preview.classList.remove('hidden')
         placeholder.classList.add('hidden')
+        removeBtn.classList.remove('hidden')
     }
     reader.readAsDataURL(file)
 })
+
+removeBtn?.addEventListener('click', function () {
+    fotoInput.value = ''
+    preview.src = ''
+    preview.classList.add('hidden')
+    placeholder.classList.remove('hidden')
+    removeBtn.classList.add('hidden')
+
+    // avisa o backend
+    document.getElementById('removeFotoInput').value = 1
+})
+
 </script>
+
 
 @include('layouts.footer')

@@ -36,7 +36,8 @@
                     'Edificações',
                     'EletroEletrônica',
                     'Enfermagem',
-                    'Mecânica Industrial'
+                    'Mecânica Industrial',
+                    'Inteligência Artificial'
                 ] as $curso)
                     <option value="{{ $curso }}" @selected(request('curso') === $curso)>
                         {{ $curso }}
