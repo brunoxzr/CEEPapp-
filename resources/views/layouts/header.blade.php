@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <title>{{ $title ?? 'CEEP AssaÃ­ â€” Portal Institucional' }}</title>
+    <title>{{ $title ?? 'CEEP Assaí — Portal Institucional' }}</title>
 
     {{-- ================= PRELOAD GLOBAL ================= --}}
 <link rel="preload" as="image" href="/img/frenteCeep.jpg">
@@ -152,7 +152,7 @@
     <!-- LOGO -->
     <img
         src="{{ asset('img/logo_ceep.jpeg') }}"
-        alt="CEEP AssaÃ­"
+        alt="CEEP Assaí — Portal Institucional"
         class="h-20 w-auto object-contain"
     >
 
@@ -170,14 +170,14 @@
             <nav class="hidden md:flex items-center gap-10 text-sm font-semibold text-slate-700">
 
                 <a href="{{ url('/noticias') }}" class="hover:text-red-800 transition">
-                    NotÃ­cias
+                    Notícias
                 </a>
 
                 <a href="{{ url('/institucional') }}" class="hover:text-red-800 transition">
                     Institucional
                 </a>
                 <a href="{{ url('/premios-e-reconhecimentos') }}" class="hover:text-red-800 transition">
-                    PrÃªmios
+                    Prêmios
                 </a>
 
                 <a href="{{ url('/aprovados') }}" class="hover:text-red-800 transition">
@@ -202,19 +202,19 @@
 @elseif(session('admin_id') && session('admin_role') === 'professor')
     <a href="{{ url('/professor/dashboard') }}"
        class="px-4 py-2 bg-red-800 text-white text-sm rounded hover:bg-red-900 transition">
-        Ãrea do Professor
+        Área do Professor
     </a>
 
 @elseif(session('admin_id'))
     <a href="{{ route('admin.dashboard') }}"
        class="px-4 py-2 bg-red-800 text-white text-sm rounded hover:bg-red-900 transition">
-        Ãrea do Gestor
+        Área do Gestor
     </a>
 
 @else
     <a href="{{ route('login.unificado') }}"
        class="px-4 py-2 border border-red-800 text-red-800 text-sm rounded hover:bg-red-50 transition">
-        Ãrea AcadÃªmica
+        Área Acadêmica
     </a>
 @endif
 
@@ -254,9 +254,9 @@
             </div>
 
             <nav class="flex flex-col gap-4 text-sm font-semibold text-slate-700">
-                <a href="{{ url('/noticias') }}" class="hover:text-red-800">NotÃ­cias</a>
+                <a href="{{ url('/noticias') }}" class="hover:text-red-800">Notícias</a>
                 <a href="{{ url('/institucional') }}" class="hover:text-red-800">Institucional</a>
-                <a href="{{ url( '/premios-e-reconhecimentos') }}" class="hover:text-red-800">PrÃªmios</a>
+                <a href="{{ url( '/premios-e-reconhecimentos') }}" class="hover:text-red-800">Prêmios</a>
                 <a href="{{ url('/aprovados') }}" class="hover:text-red-800">Aprovados</a>
                 <a href="{{ url('/cursos') }}" class="hover:text-red-800">Cursos</a>
 
@@ -267,25 +267,25 @@
    @if(session('aluno_id') && !session('admin_id') && !session('professor_id'))
     <a href="{{ route('aluno.dashboard') }}"
        class="block text-red-800 font-bold">
-        Ãrea do Aluno
+        Área do Aluno
     </a>
 
 @elseif(session('professor_id'))
     <a href="{{ url('/professor/dashboard') }}"
        class="block text-red-800 font-bold">
-        Ãrea do Professor
+        Área do Professor
     </a>
 
 @elseif(session('admin_id'))
     <a href="{{ route('admin.dashboard') }}"
        class="block text-red-800 font-bold">
-        Ãrea do Gestor
+        Área do Gestor
     </a>
 
 @else
     <a href="{{ route('login.unificado') }}"
        class="block text-red-800 font-bold">
-        Ãrea AcadÃªmica
+        Área Acadêmica
     </a>
 @endif
 </div>
