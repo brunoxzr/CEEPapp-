@@ -42,9 +42,10 @@ class PasswordResetUnificadoController extends Controller
         $admin = Admin::whereRaw('LOWER(email) = ?', [$email])->first();
 
         if (!$aluno && !$admin) {
-            return redirect()->route('senha.email.enviado');
-        }
-
+    throw ValidationException::withMessages([
+        'email' => 'Não existe nenhum usuário cadastrado com este e-mail.',
+    ]);
+}
         $usuario = $aluno ?: $admin;
         $tipo = $aluno ? 'aluno' : 'admin';
         $token = Str::random(64);
