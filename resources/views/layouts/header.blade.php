@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <title>{{ $title ?? 'CEEP Assaí — Portal Institucional' }}</title>
+    <title>{{ $title ?? 'CEEP AssaÃ­ â€” Portal Institucional' }}</title>
 
     {{-- ================= PRELOAD GLOBAL ================= --}}
 <link rel="preload" as="image" href="/img/frenteCeep.jpg">
@@ -85,11 +85,11 @@
     <div class="pull-left">
       <a class="marca-gov-pr" href="https://www.parana.pr.gov.br">
         <img src="https://web.celepar.pr.gov.br/drupal/instbar/images/pr-gov-br-logo.png"
-             alt="Governo do Paraná">
+             alt="Governo do ParanÃ¡">
       </a>
 
       <a id="btn-acionar-redes" class="btn-redes-gov-mobile" href="#">
-        <span>Redes Sociais do Governo do Paraná</span>
+        <span>Redes Sociais do Governo do ParanÃ¡</span>
       </a>
 
       <ul id="div-header-social" class="header-social">
@@ -123,14 +123,14 @@
       <nav class="pull-left">
         <div class="btn-group">
           <button type="button" class="dropdown-toggle">
-            GOVERNO DO PARANÁ <span class="caret"></span>
+            GOVERNO DO PARANÃ <span class="caret"></span>
           </button>
 
           <ul class="dropdown-menu">
             <li><a href="https://www.parana.pr.gov.br/Pagina/Orgaos-e-Entidades">Estrutura</a></li>
-            <li><a href="http://www.aen.pr.gov.br/">Agência de Notícias</a></li>
-            <li><a href="https://www.pia.pr.gov.br/">PIÁ</a></li>
-            <li><a href="http://www.transparencia.pr.gov.br/">Portal da Transparência</a></li>
+            <li><a href="http://www.aen.pr.gov.br/">AgÃªncia de NotÃ­cias</a></li>
+            <li><a href="https://www.pia.pr.gov.br/">PIÃ</a></li>
+            <li><a href="http://www.transparencia.pr.gov.br/">Portal da TransparÃªncia</a></li>
           </ul>
         </div>
       </nav>
@@ -152,7 +152,7 @@
     <!-- LOGO -->
     <img
         src="{{ asset('img/logo_ceep.jpeg') }}"
-        alt="CEEP Assaí"
+        alt="CEEP AssaÃ­"
         class="h-20 w-auto object-contain"
     >
 
@@ -170,14 +170,14 @@
             <nav class="hidden md:flex items-center gap-10 text-sm font-semibold text-slate-700">
 
                 <a href="{{ url('/noticias') }}" class="hover:text-red-800 transition">
-                    Notícias
+                    NotÃ­cias
                 </a>
 
                 <a href="{{ url('/institucional') }}" class="hover:text-red-800 transition">
                     Institucional
                 </a>
                 <a href="{{ url('/premios-e-reconhecimentos') }}" class="hover:text-red-800 transition">
-                    Prêmios
+                    PrÃªmios
                 </a>
 
                 <a href="{{ url('/aprovados') }}" class="hover:text-red-800 transition">
@@ -191,39 +191,37 @@
                     Hub de RH
                 </a>
 
-                <!-- ÁREA ACADÊMICA -->
+                <!-- ÃREA ACADÃŠMICA -->
                 <div class="pl-6 border-l border-slate-200">
-                    @if(session('aluno_id'))
-                        <a href="{{ route('aluno.dashboard') }}"
-                           class="px-4 py-2 bg-red-800 text-white text-sm rounded hover:bg-red-900 transition">
-                            Área do Aluno
-                        </a>
-                    @elseif(session('admin_id'))
-                        <a href="{{ route('admin.dashboard') }}"
-                           class="px-4 py-2 bg-red-800 text-white text-sm rounded hover:bg-red-900 transition">
-                            Área do Gestor
-                        </a>
-                    @else
-                        <a href="{{ route('login.unificado') }}"
-                           class="px-4 py-2 border border-red-800 text-red-800 text-sm rounded hover:bg-red-50 transition">
-                            Área Acadêmica
-                        </a>
-                    @endif
-                    @if(session()->has('aluno_id') && !session()->has('admin_id'))
-    <form action="{{ route('logout') }}" method="POST" class="inline-block ml-3">
-        @csrf
-        <button type="submit"
-                class="px-4 py-2 bg-red-700 text-white text-sm rounded
-                       hover:bg-red-800 transition font-semibold">
-            Sair
-        </button>
-    </form>
+@if(session('aluno_id'))
+    <a href="{{ route('aluno.dashboard') }}"
+       class="px-4 py-2 bg-red-800 text-white text-sm rounded hover:bg-red-900 transition">
+        Ãrea do Aluno
+    </a>
+
+@elseif(session('admin_id') && session('admin_role') === 'professor')
+    <a href="{{ url('/professor/dashboard') }}"
+       class="px-4 py-2 bg-red-800 text-white text-sm rounded hover:bg-red-900 transition">
+        Ãrea do Professor
+    </a>
+
+@elseif(session('admin_id'))
+    <a href="{{ route('admin.dashboard') }}"
+       class="px-4 py-2 bg-red-800 text-white text-sm rounded hover:bg-red-900 transition">
+        Ãrea do Gestor
+    </a>
+
+@else
+    <a href="{{ route('login.unificado') }}"
+       class="px-4 py-2 border border-red-800 text-red-800 text-sm rounded hover:bg-red-50 transition">
+        Ãrea AcadÃªmica
+    </a>
 @endif
 
                 </div>
             </nav>
 
-            <!-- BOTÃO MOBILE -->
+            <!-- BOTÃƒO MOBILE -->
             <button id="menuBtn"
                     class="md:hidden p-2 rounded hover:bg-slate-100 transition"
                     aria-label="Abrir menu">
@@ -248,7 +246,7 @@
         <div class="p-6">
             <div class="mb-8">
                 <h2 class="text-xl font-extrabold text-red-800">
-                    CEEP Assaí
+                    CEEP AssaÃ­
                 </h2>
                 <p class="text-xs text-slate-500 uppercase tracking-wide">
                     Portal Institucional
@@ -256,9 +254,9 @@
             </div>
 
             <nav class="flex flex-col gap-4 text-sm font-semibold text-slate-700">
-                <a href="{{ url('/noticias') }}" class="hover:text-red-800">Notícias</a>
+                <a href="{{ url('/noticias') }}" class="hover:text-red-800">NotÃ­cias</a>
                 <a href="{{ url('/institucional') }}" class="hover:text-red-800">Institucional</a>
-                <a href="{{ url( '/premios-e-reconhecimentos') }}" class="hover:text-red-800">Prêmios</a>
+                <a href="{{ url( '/premios-e-reconhecimentos') }}" class="hover:text-red-800">PrÃªmios</a>
                 <a href="{{ url('/aprovados') }}" class="hover:text-red-800">Aprovados</a>
                 <a href="{{ url('/cursos') }}" class="hover:text-red-800">Cursos</a>
 
@@ -266,24 +264,30 @@
                 <a href="{{ url('/hub-rh') }}" class="hover:text-red-800">Hub de RH</a>
 
 <div class="border-t pt-4 mt-4">
-    @if(session('aluno_id') && !session('admin_id'))
-        <a href="{{ route('aluno.dashboard') }}"
-           class="block text-red-800 font-bold">
-            Área do Aluno
-        </a>
+   @if(session('aluno_id') && !session('admin_id') && !session('professor_id'))
+    <a href="{{ route('aluno.dashboard') }}"
+       class="block text-red-800 font-bold">
+        Ãrea do Aluno
+    </a>
 
-    @elseif(session('admin_id'))
-        <a href="{{ route('admin.dashboard') }}"
-           class="block text-red-800 font-bold">
-            Área do Gestor
-        </a>
+@elseif(session('professor_id'))
+    <a href="{{ url('/professor/dashboard') }}"
+       class="block text-red-800 font-bold">
+        Ãrea do Professor
+    </a>
 
-    @else
-        <a href="{{ route('login.unificado') }}"
-           class="block text-red-800 font-bold">
-            Área Acadêmica
-        </a>
-    @endif
+@elseif(session('admin_id'))
+    <a href="{{ route('admin.dashboard') }}"
+       class="block text-red-800 font-bold">
+        Ãrea do Gestor
+    </a>
+
+@else
+    <a href="{{ route('login.unificado') }}"
+       class="block text-red-800 font-bold">
+        Ãrea AcadÃªmica
+    </a>
+@endif
 </div>
 @if(session('aluno_id') && !session('admin_id'))
     <form action="{{ route('logout') }}" method="POST" class="mt-3">
@@ -326,3 +330,5 @@
     });
 </script>
 <script src="https://web.celepar.pr.gov.br/drupal/instbar/js/inst-bar.js" defer></script>
+
+

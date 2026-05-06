@@ -8,24 +8,24 @@
             <a href="{{ url('/') }}" class="flex items-center gap-4">
                 <img
                     src="{{ asset('img/logoCeep.png') }}"
-                    alt="CEEP Assaí"
+                    alt="CEEP AssaÃ­"
                     class="h-16 w-auto object-contain bg-white rounded-md p-2 shadow"
                 >
                 <div class="leading-tight">
                     <div class="text-yellow-400 font-extrabold text-lg tracking-wide">
-                        CEEP ASSAÍ
+                        CEEP ASSAÃ
                     </div>
                     <div class="text-xs uppercase tracking-widest text-red-200">
-                        Sistema Acadêmico Integrado
+                        Sistema AcadÃªmico Integrado
                     </div>
                 </div>
             </a>
 
             <p class="text-sm leading-relaxed text-red-100/90">
-                Plataforma oficial de gestão acadêmica do
-                <strong>Centro Estadual de Educação Profissional de Assaí</strong>,
-                desenvolvida para centralizar acesso, comunicação, cronogramas,
-                boletins digitais e processos educacionais em um único ambiente seguro.
+                Plataforma oficial de gestÃ£o acadÃªmica do
+                <strong>Centro Estadual de EducaÃ§Ã£o Profissional de AssaÃ­</strong>,
+                desenvolvida para centralizar acesso, comunicaÃ§Ã£o, cronogramas,
+                boletins digitais e processos educacionais em um Ãºnico ambiente seguro.
             </p>
 
             <div class="flex items-center gap-3 text-xs text-red-200">
@@ -44,18 +44,18 @@
                 Portal
             </h3>
             <ul class="space-y-2 text-sm">
-                <li><a href="{{ url('/') }}" class="hover:text-yellow-400 transition">Página Inicial</a></li>
-                <li><a href="{{ url('/noticias') }}" class="hover:text-yellow-400 transition">Notícias</a></li>
+                <li><a href="{{ url('/') }}" class="hover:text-yellow-400 transition">PÃ¡gina Inicial</a></li>
+                <li><a href="{{ url('/noticias') }}" class="hover:text-yellow-400 transition">NotÃ­cias</a></li>
                 <li><a href="{{ url('/cursos') }}" class="hover:text-yellow-400 transition">Cursos</a></li>
                 <li><a href="{{ url('/projetos') }}" class="hover:text-yellow-400 transition">Projetos</a></li>
                 <li><a href="{{ url('/institucional') }}" class="hover:text-yellow-400 transition">Institucional</a></li>
             </ul>
         </div>
 
-        <!-- ÁREA ACADÊMICA -->
+        <!-- ÃREA ACADÃŠMICA -->
         <div>
             <h3 class="font-bold text-yellow-400 mb-4 uppercase tracking-wide text-sm">
-                Área Acadêmica
+                Ãrea AcadÃªmica
             </h3>
             <ul class="space-y-2 text-sm">
                 <li>
@@ -64,10 +64,10 @@
                         Acesso ao Sistema
                     </a>
                 </li>
-                <li>Cronograma Automático</li>
+                <li>Cronograma AutomÃ¡tico</li>
                 <li>Boletim Digital</li>
                 <li>Comunicados Oficiais</li>
-                <li>Gestão Escolar Integrada</li>
+                <li>GestÃ£o Escolar Integrada</li>
             </ul>
         </div>
 
@@ -79,24 +79,24 @@
             <ul class="space-y-2 text-sm">
 <li>
     <a href="https://www.parana.pr.gov.br" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-300 transition">
-        Governo do Estado do Paraná
+        Governo do Estado do ParanÃ¡
     </a>
 </li>
 
 <li>
     <a href="https://www.educacao.pr.gov.br" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-300 transition">
-        Secretaria da Educação
+        Secretaria da EducaÃ§Ã£o
     </a>
 </li>
 
 <li>
     <a href="{{ url('/') }}" class="hover:text-yellow-300 transition">
-        Centro Estadual de Educação Profissional
+        Centro Estadual de EducaÃ§Ã£o Profissional
     </a>
 </li>
 
 <li class="pt-2 text-red-200">
-    Suporte Técnico:<br>
+    Suporte TÃ©cnico:<br>
     <span class="font-medium">bruno.kay2304@gmail.com</span>
 </li>
 
@@ -104,21 +104,21 @@
         </div>
     </div>
 
-    <!-- DIVISÓRIA -->
+    <!-- DIVISÃ“RIA -->
     <div class="border-t border-red-800"></div>
 
     <!-- BASE INFERIOR -->
     <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between gap-4 text-xs text-red-200">
 
         <div>
-            © {{ date('Y') }} CEEP Assaí — Sistema Acadêmico Institucional.<br>
+            Â© {{ date('Y') }} CEEP AssaÃ­ â€” Sistema AcadÃªmico Institucional.<br>
             Todos os direitos reservados.
         </div>
 
 <div class="flex flex-wrap gap-6 text-sm text-slate-400">
     <a href="{{ route('legal.privacidade') }}"
        class="hover:text-red-700 hover:underline transition">
-        Política de Privacidade
+        PolÃ­tica de Privacidade
     </a>
 
     <a href="{{ route('legal.termos') }}"
@@ -135,3 +135,5 @@
     </div>
 
 </footer>
+
+
