@@ -1,7 +1,7 @@
 @include('layouts.header', ['title' => 'Redefinir Senha'])
 
 <main class="min-h-screen flex items-center justify-center bg-slate-100 px-4">
-    <form method="POST" action="{{ route('senha.reset') }}"
+    <form method="POST" action="{{ route('senha.redefinir.salvar') }}"
           class="bg-white p-10 rounded-2xl shadow-xl w-full max-w-md space-y-6">
         @csrf
 
@@ -14,12 +14,14 @@
         <div>
             <label class="block text-sm font-semibold mb-1">Nova senha</label>
             <input type="password" name="password"
+                   autocomplete="new-password"
                    class="w-full rounded-xl border px-4 py-3">
         </div>
 
         <div>
             <label class="block text-sm font-semibold mb-1">Confirmar senha</label>
             <input type="password" name="password_confirmation"
+                   autocomplete="new-password"
                    class="w-full rounded-xl border px-4 py-3">
         </div>
 

@@ -20,6 +20,7 @@ class Alunos3DsSeeder extends Seeder
             ['nome' => 'ANA CLARA UTRERA MARCHI', 'dn' => '13/01/2009', 'email' => 'ana.utrera.marchi@escola.pr.gov.br'],
             ['nome' => 'ANA MARIA RODRIGUES GOUDINHO', 'dn' => '28/10/2008', 'email' => 'ana.goudinho@escola.pr.gov.br'],
             ['nome' => 'ANTÔNIO CORPA GUIMARÃES GUEDES', 'dn' => '21/10/2008', 'email' => 'antonio.guimaraes.guedes@escola.pr.gov.br'],
+            ['nome' => 'BRUNO YUDI KAY', 'dn' => '23/04/2009', 'email' => 'bruno.kay@escola.pr.gov.br'],
             ['nome' => 'DAVI MICAEL NASCIMENTO RODRIGUES', 'dn' => '23/03/2009', 'email' => 'nascimento.rodrigues.davi@escola.pr.gov.br'],
             ['nome' => 'EDUARDO PENEROTTI DIAS', 'dn' => '17/06/2009', 'email' => 'eduardo.penerotti.dias@escola.pr.gov.br'],
             ['nome' => 'EMANUELLY ALVES OLIVEIRA', 'dn' => '20/03/2009', 'email' => 'emanuelly.oliveira20@escola.pr.gov.br'],

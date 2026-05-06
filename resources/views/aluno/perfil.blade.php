@@ -84,6 +84,7 @@
 
                     <a href="{{ url('/perfil/aluno/'.$aluno->slug) }}"
                        target="_blank"
+                       rel="noopener noreferrer"
                        class="text-green-800 font-semibold underline break-all">
                         {{ url('/perfil/aluno/'.$aluno->slug) }}
                     </a>

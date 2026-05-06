@@ -2,24 +2,25 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Models\Admin;
+use Closure;
+use Illuminate\Http\Request;
 
 class ProfessorAuthMiddleware
 {
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        $adminId = session('admin_id');
+        $admin = Admin::find(session('admin_id'));
 
-        if (!$adminId) {
-            abort(403, 'Não autenticado.');
+        if (!$admin) {
+            return redirect()->route('login.unificado');
         }
 
-        $admin = Admin::find($adminId);
-
-        if (!$admin || $admin->role !== 'professor') {
+        if ($admin->role !== 'professor') {
             abort(403, 'Acesso restrito a professores.');
         }
+
+        session(['admin_role' => $admin->role]);
 
         return $next($request);
     }

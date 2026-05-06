@@ -38,7 +38,7 @@
                 {{ $news->excerpt }}
             </p>
 
-            <a href="{{ route('news.show', $news->slug) }}"
+            <a href="{{ route('portal.news.show', $news->slug) }}"
                style="
                    display:inline-block;
                    margin-top:20px;
@@ -111,7 +111,7 @@
                 {{ $news->excerpt }}
             </p>
 
-            <a href="{{ route('news.show', $news->slug) }}"
+            <a href="{{ route('portal.news.show', $news->slug) }}"
                style="
                    display:inline-block;
                    margin-top:20px;

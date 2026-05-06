@@ -27,7 +27,7 @@
 
       <div class="mb-6">
         <label class="text-sm font-bold">Senha</label>
-        <input type="password" name="senha"
+        <input type="password" name="senha" minlength="8" autocomplete="new-password"
                class="mt-2 w-full border rounded-xl px-4 py-3"
                required>
       </div>

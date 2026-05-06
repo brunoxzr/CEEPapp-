@@ -23,8 +23,9 @@
       </div>
     @endif
 
-    <form action="{{ route('admin.alunos.store') }}" method="POST" class="space-y-6">
+    <form action="{{ route('admin.usuarios.store') }}" method="POST" class="space-y-6">
       @csrf
+      <input type="hidden" name="tipo" value="aluno">
 
       <div class="grid md:grid-cols-2 gap-6">
         <label class="block">
@@ -40,7 +41,7 @@
 
       <label class="block">
         <span class="text-sm font-semibold text-slate-700 mb-2 block">Senha</span>
-        <input type="password" name="senha" class="w-full rounded-lg border-2 border-slate-300 bg-white text-slate-900 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition" required>
+        <input type="password" name="senha" minlength="8" autocomplete="new-password" class="w-full rounded-lg border-2 border-slate-300 bg-white text-slate-900 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition" required>
       </label>
 
       <div class="grid md:grid-cols-2 gap-6">

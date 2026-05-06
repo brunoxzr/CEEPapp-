@@ -132,6 +132,7 @@
                   @if($registro && $registro->link_drive)
                     <a href="{{ $registro->link_drive }}"
                        target="_blank"
+                       rel="noopener noreferrer"
                        class="px-3 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700 transition">
                       Abrir
                     </a>

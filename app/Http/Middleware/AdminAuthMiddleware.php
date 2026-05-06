@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Admin;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -9,12 +10,17 @@ class AdminAuthMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        $adminId = session('admin_id');
-        $admin = \App\Models\Admin::find($adminId);
+        $admin = Admin::find(session('admin_id'));
 
         if (!$admin) {
-            abort(403, 'Administrador não encontrado ou não autenticado.');
+            return redirect()->route('login.unificado');
         }
+
+        if ($admin->role === 'professor') {
+            abort(403, 'Acesso restrito a administradores.');
+        }
+
+        session(['admin_role' => $admin->role]);
 
         return $next($request);
     }

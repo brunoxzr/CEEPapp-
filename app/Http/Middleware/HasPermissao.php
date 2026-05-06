@@ -2,28 +2,22 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Admin;
 use Closure;
 use Illuminate\Http\Request;
-use App\Models\Admin;
 
 class HasPermissao
 {
     public function handle(Request $request, Closure $next, string $permissao)
     {
-        $adminId = session('admin_id');
-
-        if (!$adminId) {
-            abort(403, 'Não autenticado.');
-        }
-
-        $admin = Admin::with('permissoes')->find($adminId);
+        $admin = Admin::with('permissoes')->find(session('admin_id'));
 
         if (!$admin) {
-            abort(403, 'Administrador não encontrado.');
+            return redirect()->route('login.unificado');
         }
 
-        if (!adminPode($permissao)) {
-            abort(403, 'Você não possui permissão: ' . $permissao);
+        if (!$admin->temPermissao($permissao)) {
+            abort(403, 'Sem permissao: ' . $permissao);
         }
 
         return $next($request);

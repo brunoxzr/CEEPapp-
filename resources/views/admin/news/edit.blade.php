@@ -100,7 +100,7 @@
 
             <!-- EDITOR -->
             <div id="editor" class="min-h-[500px] bg-white border-2 border-slate-300 rounded-lg">
-                {!! old('content', $news->content) !!}
+                {!! \App\Models\News::sanitizeHtml(old('content', $news->content)) !!}
             </div>
 
             <!-- CAMPO OCULTO -->

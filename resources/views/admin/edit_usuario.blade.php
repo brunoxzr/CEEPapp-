@@ -47,7 +47,7 @@
 
       <label class="block">
         <span class="text-sm font-semibold text-slate-700 mb-2 block">Senha</span>
-        <input type="password" name="senha"
+        <input type="password" name="senha" minlength="8" autocomplete="new-password"
                placeholder="Deixe em branco para não alterar"
                class="w-full rounded-lg border-2 border-slate-300 bg-white text-slate-900 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition">
         <p class="text-xs text-slate-500 mt-1">Deixe em branco para manter a senha atual</p>

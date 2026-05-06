@@ -60,6 +60,7 @@ Entrega até:
 
 <a href="https://ceepassai.com.br/area-academica"
    target="_blank"
+   rel="noopener noreferrer"
    style="
        display:inline-block;
        background:#7f1d1d;

@@ -38,6 +38,7 @@
             <p class="mt-2">
                 <a href="{{ $entrega->link_drive }}"
                    target="_blank"
+                   rel="noopener noreferrer"
                    class="text-blue-600 font-semibold hover:underline">
                     Ver link enviado
                 </a>

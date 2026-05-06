@@ -11,7 +11,7 @@ class DiretorSeeder extends Seeder
     public function run(): void
     {
         Admin::updateOrCreate(
-            ['email' => 'bruno@gmail.com'],
+            ['email' => 'aislan.correia@escola.pr.gov.br'],
             [
                 'nome'  => 'Aislan Correia',
                 'email' => 'aislan.correia@escola.pr.gov.br',

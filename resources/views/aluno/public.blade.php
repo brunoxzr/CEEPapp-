@@ -122,6 +122,7 @@
 
                 @if($perfil->linkedin)
                     <a href="{{ $perfil->linkedin }}" target="_blank"
+                       rel="noopener noreferrer"
                        class="px-6 py-3 rounded-xl bg-blue-50 text-blue-700
                               font-semibold hover:bg-blue-100 transition">
                         LinkedIn
@@ -130,6 +131,7 @@
 
                 @if($perfil->github)
                     <a href="{{ $perfil->github }}" target="_blank"
+                       rel="noopener noreferrer"
                        class="px-6 py-3 rounded-xl bg-slate-100 text-slate-800
                               font-semibold hover:bg-slate-200 transition">
                         GitHub
@@ -138,6 +140,7 @@
 
                 @if($perfil->portfolio)
                     <a href="{{ $perfil->portfolio }}" target="_blank"
+                       rel="noopener noreferrer"
                        class="px-6 py-3 rounded-xl bg-yellow-100 text-yellow-800
                               font-semibold hover:bg-yellow-200 transition">
                         Portfólio

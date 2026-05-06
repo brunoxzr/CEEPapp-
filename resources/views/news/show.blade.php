@@ -65,6 +65,27 @@
     color: #1e293b;
 }
 
+.ql-editor .ql-size-small {
+    font-size: 0.875em;
+}
+
+.ql-editor .ql-size-large {
+    font-size: 1.35em;
+}
+
+.ql-editor .ql-size-huge {
+    font-size: 1.8em;
+    line-height: 1.25;
+}
+
+.ql-editor .ql-font-serif {
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.ql-editor .ql-font-monospace {
+    font-family: "Courier New", Courier, monospace;
+}
+
 /* Imagens */
 .ql-editor img {
     max-width: 100%;
@@ -101,6 +122,38 @@
 .ql-editor li {
     margin-bottom: 0.5rem;
     line-height: 1.7;
+}
+
+.ql-editor .ql-indent-1 {
+    margin-left: 3em;
+}
+
+.ql-editor .ql-indent-2 {
+    margin-left: 6em;
+}
+
+.ql-editor .ql-indent-3 {
+    margin-left: 9em;
+}
+
+.ql-editor .ql-indent-4 {
+    margin-left: 12em;
+}
+
+.ql-editor .ql-indent-5 {
+    margin-left: 15em;
+}
+
+.ql-editor .ql-indent-6 {
+    margin-left: 18em;
+}
+
+.ql-editor .ql-indent-7 {
+    margin-left: 21em;
+}
+
+.ql-editor .ql-indent-8 {
+    margin-left: 24em;
 }
 
 /* Citações */
@@ -165,6 +218,11 @@
     text-align: justify;
 }
 
+.ql-editor .ql-direction-rtl {
+    direction: rtl;
+    text-align: inherit;
+}
+
 /* Limpar floats */
 .ql-editor p::after,
 .ql-editor h1::after,
@@ -177,9 +235,52 @@
 
 /* Vídeo */
 .ql-editor iframe {
+    display: block;
+    width: 100%;
     max-width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
     border-radius: 8px;
     margin: 2rem 0;
+}
+
+.ql-editor .ql-video {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+}
+
+.ql-editor sub,
+.ql-editor sup {
+    font-size: 0.75em;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+.ql-editor sup {
+    top: -0.5em;
+}
+
+.ql-editor sub {
+    bottom: -0.25em;
+}
+
+@media (max-width: 768px) {
+    .ql-editor .ql-indent-1,
+    .ql-editor .ql-indent-2,
+    .ql-editor .ql-indent-3,
+    .ql-editor .ql-indent-4,
+    .ql-editor .ql-indent-5,
+    .ql-editor .ql-indent-6,
+    .ql-editor .ql-indent-7,
+    .ql-editor .ql-indent-8 {
+        margin-left: 1.5rem;
+    }
+
+    .ql-editor .ql-size-huge {
+        font-size: 1.45em;
+    }
 }
 
 /* Espaçamento entre elementos */
@@ -320,7 +421,7 @@
             <!-- CONTEÚDO PRINCIPAL -->
             <article class="prose prose-lg max-w-none">
                 <div class="ql-editor">
-                    {!! $news->content !!}
+                    {!! $news->safe_content !!}
                 </div>
             </article>
 
@@ -343,6 +444,7 @@
 
                     <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode($news->title) }}"
                        target="_blank"
+                       rel="noopener noreferrer"
                        class="p-2 rounded-full bg-sky-100 text-sky-600 hover:bg-sky-200 transition"
                        title="Compartilhar no Twitter">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -351,6 +453,7 @@
                     </a>
                     <a href="https://api.whatsapp.com/send?text={{ urlencode($news->title . ' ' . request()->url()) }}"
                        target="_blank"
+                       rel="noopener noreferrer"
                        class="p-2 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition"
                        title="Compartilhar no WhatsApp">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

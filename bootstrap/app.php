@@ -12,8 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function ($middleware) {
 
-        // Middleware globais (se quiser)
-        // $middleware->append(\App\Http\Middleware\AlgumMiddleware::class);
+        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
 
         // Middleware nomeados (SUBSTITUI O KERNEL)
         $middleware->alias([

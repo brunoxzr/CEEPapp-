@@ -13,12 +13,17 @@ class DiretorOnly
         $adminId = session('admin_id');
 
         if (!$adminId) {
-            abort(403, 'Não autenticado.');
+            return redirect()->route('login.unificado');
         }
 
         $admin = Admin::find($adminId);
 
-        if (!$admin || $admin->role !== 'diretor') {
+        if (!$admin) {
+            session()->forget('admin_id');
+            return redirect()->route('login.unificado');
+        }
+
+        if ($admin->role !== 'diretor') {
             abort(403, 'Acesso restrito ao diretor.');
         }
 

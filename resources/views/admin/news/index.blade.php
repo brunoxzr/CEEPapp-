@@ -75,6 +75,7 @@
                         <div class="flex items-center justify-end gap-2">
                             <a href="{{ route('portal.news.show', $item->slug) }}"
                                target="_blank"
+                               rel="noopener noreferrer"
                                class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-semibold hover:bg-slate-50 transition"
                                title="Ver no site">
                                 Ver

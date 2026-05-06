@@ -57,7 +57,7 @@
         <!-- Senha -->
         <label class="col-span-2">
             <span class="text-sm font-semibold text-red-800">Senha</span>
-            <input type="password" name="senha" required
+            <input type="password" name="senha" minlength="8" autocomplete="new-password" required
             class="mt-1 w-full rounded-lg border-2 border-red-300 bg-white text-red-900 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
         </label>
 

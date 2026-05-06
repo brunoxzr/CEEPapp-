@@ -76,7 +76,7 @@
 
             <!-- EDITOR -->
             <div id="editor" class="min-h-[500px] bg-white border-2 border-slate-300 rounded-lg">
-                {!! old('content') !!}
+                {!! \App\Models\News::sanitizeHtml(old('content')) !!}
             </div>
 
             <input type="hidden" name="content" id="content">

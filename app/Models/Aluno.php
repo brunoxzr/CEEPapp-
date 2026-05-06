@@ -71,5 +71,16 @@ public function entregas()
 {
     return $this->hasMany(AtividadeAluno::class);
 }
+public function presidencias()
+{
+    return $this->hasMany(\App\Models\PresidenteTurma::class, 'aluno_id');
+}
 
+public function isPresidenteTurma(): bool
+{
+    return $this->presidencias()
+        ->where('turma', $this->turma)
+        ->where('ativo', true)
+        ->exists();
+}
 }

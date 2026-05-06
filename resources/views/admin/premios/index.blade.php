@@ -79,6 +79,7 @@
                             {{-- VER (PÚBLICO) --}}
                             <a href="{{ route('portal.premios.show', $premio) }}"
                                target="_blank"
+                               rel="noopener noreferrer"
                                class="px-4 py-2 text-sm font-bold rounded-lg border border-slate-300
                                       text-slate-700 hover:bg-slate-100 transition">
                                 Ver

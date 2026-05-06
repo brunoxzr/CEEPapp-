@@ -2,22 +2,28 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Models\Admin;
 use App\Models\Comunicado;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class ComunicadoSeeder extends Seeder
 {
     public function run(): void
     {
-        Comunicado::create([
-            'titulo' => 'Bem-vindos ao CEEPApp',
-            'conteudo' => '<p>Este é o canal oficial de comunicados do CEEP Assaí.</p>',
-            'publico' => 'geral',
-            'criado_por' => 1,
-            'ativo' => true,
-        ]);
+        $admin = Admin::firstOrCreate(
+            ['email' => 'brunin@escola.pr.gov.br'],
+            ['nome' => 'Gestor', 'senha' => Hash::make('senha123')]
+        );
+
+        Comunicado::updateOrCreate(
+            ['titulo' => 'Bem-vindos ao CEEPApp'],
+            [
+                'conteudo' => '<p>Este e o canal oficial de comunicados do CEEP Assai.</p>',
+                'publico' => 'geral',
+                'criado_por' => $admin->id,
+                'ativo' => true,
+            ]
+        );
     }
 }
-
-

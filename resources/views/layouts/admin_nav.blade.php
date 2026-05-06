@@ -69,7 +69,13 @@
                 <a href="{{ route('portal.courses') }}" class="hover:text-red-800">Cursos</a>
                 <a href="{{ route('portal.institucional') }}" class="hover:text-red-800">Institucional</a>
                 <a href="#contato" class="hover:text-red-800">Contato</a>
+                <a href="{{ route('admin.presidentes.index') }}" class="hover:text-red-800">
+    Presidentes
+</a>
 
+<a href="{{ route('admin.chamadas.index') }}" class="hover:text-red-800">
+    Chamadas
+</a>
                 <!-- ================= ÁREA AUTENTICADA ================= -->
                 @if(session('admin_id'))
                     <a href="{{ route('admin.dashboard') }}" class="px-4 py-2 bg-red-700 text-white rounded-md hover:bg-red-800 transition">Painel</a>
@@ -86,6 +92,7 @@
                 @else
                     <a href="{{ route('login.unificado') }}" class="px-4 py-2 border border-red-800 text-red-800 rounded-md hover:bg-red-50 transition">Área Acadêmica</a>
                 @endif
+
             </nav>
 
             <!-- BOTÃO MOBILE -->

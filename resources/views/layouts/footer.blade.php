@@ -78,13 +78,13 @@
             </h3>
             <ul class="space-y-2 text-sm">
 <li>
-    <a href="https://www.parana.pr.gov.br" target="_blank" class="hover:text-yellow-300 transition">
+    <a href="https://www.parana.pr.gov.br" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-300 transition">
         Governo do Estado do Paraná
     </a>
 </li>
 
 <li>
-    <a href="https://www.educacao.pr.gov.br" target="_blank" class="hover:text-yellow-300 transition">
+    <a href="https://www.educacao.pr.gov.br" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-300 transition">
         Secretaria da Educação
     </a>
 </li>

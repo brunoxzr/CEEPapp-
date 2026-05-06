@@ -94,28 +94,28 @@
 
       <ul id="div-header-social" class="header-social">
         <li><a href="https://www.instagram.com/governoparana/"
-               class="sgov sgov-instagram" target="_blank">Instagram</a></li>
+               class="sgov sgov-instagram" target="_blank" rel="noopener noreferrer">Instagram</a></li>
 
         <li><a href="https://twitter.com/governoparana"
-               class="sgov sgov-twitter" target="_blank">Twitter</a></li>
+               class="sgov sgov-twitter" target="_blank" rel="noopener noreferrer">Twitter</a></li>
 
         <li><a href="https://www.facebook.com/governoparana"
-               class="sgov sgov-facebook" target="_blank">Facebook</a></li>
+               class="sgov sgov-facebook" target="_blank" rel="noopener noreferrer">Facebook</a></li>
 
         <li><a href="https://www.youtube.com/user/paranagoverno"
-               class="sgov sgov-youtube" target="_blank">Youtube</a></li>
+               class="sgov sgov-youtube" target="_blank" rel="noopener noreferrer">Youtube</a></li>
 
         <li><a href="https://www.tiktok.com/@governoparana"
-               class="sgov sgov-tiktok" target="_blank">Tiktok</a></li>
+               class="sgov sgov-tiktok" target="_blank" rel="noopener noreferrer">Tiktok</a></li>
 
         <li><a href="https://www.linkedin.com/company/governoparana/"
-               class="sgov sgov-linkedin" target="_blank">Linkedin</a></li>
+               class="sgov sgov-linkedin" target="_blank" rel="noopener noreferrer">Linkedin</a></li>
 
         <li><a href="https://whatsapp.com/channel/0029Va86Qj5Jpe8kYSekbR3t"
-               class="sgov sgov-whatsapp" target="_blank">Whatsapp</a></li>
+               class="sgov sgov-whatsapp" target="_blank" rel="noopener noreferrer">Whatsapp</a></li>
 
         <li><a href="https://vimeo.com/governoparana"
-               class="sgov sgov-vimeo" target="_blank">Vimeo</a></li>
+               class="sgov sgov-vimeo" target="_blank" rel="noopener noreferrer">Vimeo</a></li>
       </ul>
     </div>
 

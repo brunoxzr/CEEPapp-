@@ -73,14 +73,23 @@
                 <a href="{{ route('aluno.dashboard') }}" class="hover:text-red-800">
                     Painel
                 </a>
+            @php
+    $alunoMenu = \App\Models\Aluno::find(session('aluno_id'));
 
-                <a href="{{ route('aluno.boletim') }}" class="hover:text-red-800">
-                    Boletim
-                </a>
+    $isPresidenteMenu = $alunoMenu
+        ? \App\Models\PresidenteTurma::where('aluno_id', $alunoMenu->id)
+            ->where('turma', $alunoMenu->turma)
+            ->where('ativo', true)
+            ->exists()
+        : false;
+@endphp
 
-                <a href="{{ route('aluno.saeb') }}" class="hover:text-red-800">
-                    SAEB
-                </a>
+@if($isPresidenteMenu)
+    <a href="{{ route('aluno.presidente.chamada') }}" class="hover:text-red-800">
+        Chamada
+    </a>
+@endif
+
 
                 <a href="{{ route('aluno.cronograma') }}" class="hover:text-red-800">
                     Cronograma
@@ -88,9 +97,7 @@
                 <a href="{{ route('aluno.calendario.index') }}" class="hover:text-red-800">
                     Calendario
                 </a>
-                <a href="{{ route('smartagro.inscricoes') }}" class="hover:text-red-800 transition">
-                    Smart Agro
-                </a>
+
 <a href="{{ route('aluno.atividades.index') }}" class="hover:text-red-800">
     Atividades
 </a>
@@ -142,11 +149,10 @@
 
             <nav class="flex flex-col gap-4 text-sm font-semibold text-slate-700">
                 <a href="{{ route('aluno.dashboard') }}">Painel</a>
-                <a href="{{ route('aluno.boletim') }}">Boletim</a>
-                <a href="{{ route('aluno.saeb') }}">SAEB</a>
+
                 <a href="{{ route('aluno.cronograma') }}">Cronograma</a>
                                 <a href="{{ route('aluno.calendario.index') }}">Calendario</a>
-                                                                <a href="{{ route('smartagro.inscricoes') }}">Smart Agro</a>
+
                                                                 <a href="{{ route('aluno.atividades.index') }}">Atividades</a>
 
                                                                 <a href="{{ route('aluno.perfil') }}">Perfil</a>

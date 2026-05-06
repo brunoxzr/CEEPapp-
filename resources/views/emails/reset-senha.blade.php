@@ -1,4 +1,4 @@
-<p>Olá, {{ $aluno->nome }}.</p>
+<p>Olá, {{ $usuario->nome }}.</p>
 
 <p>Recebemos uma solicitação para redefinir sua senha de acesso ao CEEP Assaí.</p>
 
