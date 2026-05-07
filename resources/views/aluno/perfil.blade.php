@@ -1,5 +1,4 @@
-@include('layouts.header', ['title' => 'Meu Perfil Profissional'])
-
+@include('layouts.aluno_nav', ['title' => 'Meu Perfil Aluno'])
 @php
     $aluno = \App\Models\Aluno::find(session('aluno_id'));
 @endphp

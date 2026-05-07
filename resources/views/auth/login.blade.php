@@ -19,7 +19,42 @@
         }
     </style>
 </head>
+<script>
+    function mostrarSenha() {
+        const senha = document.getElementById('senha');
+        const icone = document.getElementById('iconeSenha');
 
+        if (senha.type === 'password') {
+            senha.type = 'text';
+
+            icone.innerHTML = `
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M3 3l18 18" />
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M10.584 10.587A2 2 0 0012 14a2 2 0 001.414-.586" />
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9.88 4.24A9.77 9.77 0 0112 4c6 0 9.75 6.75 9.75 6.75a18.4 18.4 0 01-2.262 2.994" />
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6.228 6.228C3.72 8.048 2.25 12 2.25 12s3.75 6.75 9.75 6.75a9.7 9.7 0 004.005-.856" />
+            `;
+        } else {
+            senha.type = 'password';
+
+            icone.innerHTML = `
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12s-3.75 6.75-9.75 6.75S2.25 12 2.25 12z" />
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            `;
+        }
+    }
+</script>
 <body class="min-h-screen bg-slate-100">
 
 <div class="min-h-screen flex">
@@ -171,6 +206,7 @@
                     </div>
 
                     <!-- SENHA -->
+                    <!-- SENHA -->
                     <div>
                         <label class="text-sm font-bold text-slate-700">
                             Senha
@@ -179,25 +215,48 @@
                         <div class="relative mt-2">
                             <span class="absolute inset-y-0 left-4 flex items-center text-slate-400">
                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="w-5 h-5"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor"
-                                     stroke-width="2">
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2">
                                     <path stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                          d="M16.5 10.5V6.75a4.5 4.5 0 00-9 0v3.75m-.75 11.25h10.5A2.25 2.25 0 0019.5 19.5v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                        stroke-linejoin="round"
+                                        d="M16.5 10.5V6.75a4.5 4.5 0 00-9 0v3.75m-.75 11.25h10.5A2.25 2.25 0 0019.5 19.5v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                                 </svg>
                             </span>
 
                             <input type="password"
-                                   name="senha"
-                                   required
-                                   autocomplete="current-password"
-                                   class="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-2xl bg-slate-50
-                                          focus:bg-white focus:ring-2 focus:ring-red-700/20
-                                          focus:border-red-700 outline-none transition"
-                                   placeholder="••••••••">
+                                id="senha"
+                                name="senha"
+                                required
+                                autocomplete="current-password"
+                                class="w-full pl-12 pr-12 py-3 border border-slate-200 rounded-2xl bg-slate-50
+                                        focus:bg-white focus:ring-2 focus:ring-red-700/20
+                                        focus:border-red-700 outline-none transition"
+                                placeholder="••••••••">
+
+                            <button type="button"
+                                    onclick="mostrarSenha()"
+                                    class="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-red-800 transition"
+                                    aria-label="Mostrar ou ocultar senha">
+
+                                <!-- Ícone olho fechado/aberto -->
+                                <svg id="iconeSenha"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12s-3.75 6.75-9.75 6.75S2.25 12 2.25 12z" />
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
 

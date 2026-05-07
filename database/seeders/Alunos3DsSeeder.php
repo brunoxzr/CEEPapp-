@@ -43,6 +43,7 @@ class Alunos3DsSeeder extends Seeder
             ['nome' => 'PEDRO KALYEL GAIOSKI DA SILVA', 'dn' => '09/09/2008', 'email' => 'pedro.gaioski.silva@escola.pr.gov.br'],
             ['nome' => 'RENYAN EMANOEL DA SILVA', 'dn' => '26/10/2009', 'email' => 'renyan.silva@escola.pr.gov.br'],
             ['nome' => 'ROMARIO FONSECA LOPES DA COSTA', 'dn' => '27/05/2009', 'email' => 'c.romario@escola.pr.gov.br'],
+            ['nome' => 'VITOR EDUARDO RAMALHO MOTTA PEREIRA', 'dn' => '29/08/2009', 'email' => 'campos.pereira.vitor@escola.pr.gov.br'],
             ['nome' => 'VITOR KASUO MURATA', 'dn' => '07/02/2007', 'email' => 'vitor.murata@escola.pr.gov.br'],
         ];
 

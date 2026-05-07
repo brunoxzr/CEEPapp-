@@ -71,9 +71,6 @@
                     </svg>
                     Painel
                 </a>
-                <a href="{{ route('portal.news.index') }}" class="ceep-nav-link">Noticias</a>
-                <a href="{{ route('portal.courses') }}" class="ceep-nav-link">Cursos</a>
-                <a href="{{ route('portal.institucional') }}" class="ceep-nav-link">Institucional</a>
                 <a href="{{ route('admin.presidentes.index') }}" class="ceep-nav-link">Presidentes</a>
                 <a href="{{ route('admin.chamadas.index') }}" class="ceep-nav-link">Chamadas</a>
 
@@ -114,9 +111,6 @@
 
         <nav class="flex flex-col gap-1 p-4 text-sm font-bold text-slate-700">
             <a class="rounded-lg px-4 py-3 hover:bg-red-50 hover:text-red-800" href="{{ route('admin.dashboard') }}">Painel</a>
-            <a class="rounded-lg px-4 py-3 hover:bg-red-50 hover:text-red-800" href="{{ route('portal.news.index') }}">Noticias</a>
-            <a class="rounded-lg px-4 py-3 hover:bg-red-50 hover:text-red-800" href="{{ route('portal.courses') }}">Cursos</a>
-            <a class="rounded-lg px-4 py-3 hover:bg-red-50 hover:text-red-800" href="{{ route('portal.institucional') }}">Institucional</a>
             <a class="rounded-lg px-4 py-3 hover:bg-red-50 hover:text-red-800" href="{{ route('admin.presidentes.index') }}">Presidentes</a>
             <a class="rounded-lg px-4 py-3 hover:bg-red-50 hover:text-red-800" href="{{ route('admin.chamadas.index') }}">Chamadas</a>
 
