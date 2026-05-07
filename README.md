@@ -1,7 +1,7 @@
 # 📘 CEEPapp — Portal Acadêmico e Administrativo do CEEP Assaí
 
 <p align="center">
-  <img src="public/assets/imgs/ceepapp-banner.png" alt="CEEPapp Banner" width="80%">
+  <img src="public/img/logoCeep.png" alt="CEEPapp Banner" width="80%">
 </p>
 
 <p align="center">
